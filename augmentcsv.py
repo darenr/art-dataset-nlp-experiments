@@ -4,6 +4,7 @@ import codecs
 import requests
 from bs4 import BeautifulSoup
 import os
+import time
 
 def UnicodeDictReader():
   with open('Artworks.csv', 'rb') as csvfile:
@@ -17,10 +18,12 @@ for m in UnicodeDictReader():
   
   fname = os.path.join('extras', oid + '.txt')
   if url and not os.path.isfile(fname):
+    time.sleep(1)
     r = requests.get(url)
     soup = BeautifulSoup(r.text)
-    txt = soup.find("div", {"class": "body-copy"}).getText().encode('utf-8')
-    if txt:
+    txt = soup.find("div", {"class": "body-copy"}).getText().encode('utf-8').strip()
+    if len(txt) > 200 and not txt.startswith('In order to effectively'):
       with open(fname, "w") as tf:
         tf.write(txt)
         print 'writing', fname, len(txt), 'bytes'
+
