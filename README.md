@@ -6,7 +6,10 @@ The first steps is to enrich the MOMA's dataset by adding additional text for a 
 of interpretive text that describes the work beyond the meta data (size, date etc.) Unfortunately not many
 of the works contain additional text, but for those that do I scrape the site and add the data to the csv.
 
-This textual data is used for tf.idf based kek phrase extraction and for example to build word clouds.
+This textual data will be used for 
+
+- key phrase extraction 
+- to build word clouds
 
 ### Plan
 
