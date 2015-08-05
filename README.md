@@ -1,5 +1,18 @@
-# Art
-Based on MOMA dataset, a project to explore art through NLP and Machine Learning
+# MOMA Art Project
+
+Based on MOMA dataset, this project attempts to explore art through NLP and Machine Learning. 
+
+The first steps is to enrich the MOMA's dataset by adding additional text for a work , this isa rich source
+of interpretive text that describes the work beyond the meta data (size, date etc.) Unfortunately not many
+of the works contain additional text, but for those that do I scrape the site and add the data to the csv.
+
+This textual data is used for tf.idf based kek phrase extraction and for example to build word clouds.
+
+### Plan
+
+- scrape and enrich the meta data
+- ingest into elastic search
+- write a Kibana app to explore the data
 
 ### Required Attribution:
 
