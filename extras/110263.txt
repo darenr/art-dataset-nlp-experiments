@@ -1,0 +1,1 @@
+This free, open source project was initiated by Lyon with the goal of making visual representations of metaphysical spaces. The data represented and collected here serves a multitude of purposes: modeling the Internet, analyzing wasted Internet protocol (IP) space and distribution, detecting the result of natural disasters, weather, and war, and aesthetics or art.
