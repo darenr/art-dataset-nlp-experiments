@@ -1,3 +1,4 @@
+[![Project status](https://img.shields.io/badge/Project%20Status-Active-brightgreen.svg)](#status)
 # MOMA Art Project
 
 Based on MOMA dataset, this project attempts to explore art through NLP and Machine Learning. 
