@@ -19,5 +19,6 @@ with open('Artworks.csv', 'rb') as in_csv:
 
 with open('MergedArtworks.csv', 'wb') as out_csv:
   wr = unicodecsv.DictWriter(out_csv, encoding='utf-8', quoting=unicodecsv.QUOTE_ALL, fieldnames = results[0].keys())
+  wr.writeheader()
   for m in results:
     wr.writerow(m)
