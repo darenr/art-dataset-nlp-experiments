@@ -12,12 +12,9 @@ import fractions
 results = []
 
 def enrich(m):
-  r = re.search(r'([0-9 /]+)\s+x\s([0-9 /]+)["]*\s.*$', m['Dimensions'])
+  r = re.search(r'\((\w+).*$', m['ArtistBio'])
   if r:
-    x = sum(map(fractions.Fraction, r.group(1).split()))
-    y = sum(map(fractions.Fraction, r.group(2).split()) )
-    print float(x), float(y)
-    
+    m['ArtistNationality'] = r.group(1).upper()
 
 with open('Artworks.csv', 'rb') as in_csv:
   for m in unicodecsv.DictReader(in_csv, encoding='utf-8'):
@@ -31,7 +28,10 @@ with open('Artworks.csv', 'rb') as in_csv:
     fname = os.path.join('extras', oid + '.txt')
     if os.path.isfile(fname):
       with open(fname) as f:
+        m['HasExtraText'] = 'Y'
         m['ExtraText'] = unicode(f.read().replace('\n', ' ').replace('\r', ''), 'utf-8')
+    else:
+      m['HasExtraText'] = 'N'
     results.append(m)
 
 with open('MergedArtworks.csv', 'wb') as out_csv:
