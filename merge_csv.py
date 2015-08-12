@@ -12,7 +12,7 @@ results = []
 preview = []
 
 def enrich(m):
-  r = re.search(r'\((\w+).*$', m.get('ArtistBio', '(Unknown,)'))
+  r = re.search(r'\((\w+).*$', m['ArtistBio'])
   if r:
     m['ArtistNationality'] = r.group(1).upper()
 
