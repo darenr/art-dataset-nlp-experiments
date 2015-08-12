@@ -1,3 +1,4 @@
+from __future__ import division
 import unicodecsv
 import sys
 import codecs
@@ -5,7 +6,7 @@ import requests
 import os
 import time
 import re
-
+import random
 
 results = []
 preview = []
@@ -28,8 +29,7 @@ with open('Artworks.csv', 'rb') as in_csv:
       with open(fname) as f:
         m['HasExtraText'] = 'Y'
         m['ExtraText'] = unicode(f.read().replace('\n', ' ').replace('\r', ''), 'utf-8')
-        if len(preview) < 50:
-          preview.append(m)
+        preview.append(m)
     else :
       m['HasExtraText'] = 'N'
     results.append(m)
@@ -44,10 +44,11 @@ with open('MergedArtworks.csv', 'wb') as out_csv:
     wr.writerow(row)
 
 with open('MergedArtworksPreview.csv', 'wb') as out_csv:
+  rand_smpl = [preview[i] for i in sorted(random.sample(xrange(len(preview)), 25))]
   wr = unicodecsv.DictWriter(out_csv,
     encoding = 'utf-8',
     quoting = unicodecsv.QUOTE_ALL,
     fieldnames = results[0].keys())
   wr.writeheader()
-  for row in preview:
+  for row in rand_smpl:
     wr.writerow(row)
