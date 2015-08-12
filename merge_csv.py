@@ -5,16 +5,19 @@ import requests
 import os
 import time
 from textblob import TextBlob
+import re
+import fractions
+
 
 results = []
 
 def enrich(m):
-  txt = '. '.join([
-    m.get('Title', ' '), 
-    m.get('ExtraText', ' ')])
-  blob = TextBlob(txt)
-  m['NounPhrases'] = [x.replace(' ', '_') for x in blob.noun_phrases]
-  
+  r = re.search(r'([0-9 /]+)\s+x\s([0-9 /]+)["]*\s.*$', m['Dimensions'])
+  if r:
+    x = sum(map(fractions.Fraction, r.group(1).split()))
+    y = sum(map(fractions.Fraction, r.group(2).split()) )
+    print float(x), float(y)
+    
 
 with open('Artworks.csv', 'rb') as in_csv:
   for m in unicodecsv.DictReader(in_csv, encoding='utf-8'):
