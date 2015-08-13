@@ -17,7 +17,7 @@ def load_data(index):
     for m in unicodecsv.DictReader(in_csv, encoding='utf-8'):
       count += 1
       if count % 1000 == 0:
-        print ".",
+        print "\t", count, "rows..."
       id = m['ObjectID']
       if not m['DateAcquired']:
         m['DateAcquired'] = '2015-01-01'

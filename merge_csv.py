@@ -42,7 +42,7 @@ class CSVMerger(object):
         self.results.append(m)
 
   def sample(self):
-    filtered = [x for x in self.results if x['HasExtraText'] == 'Y' and x['CuratorApproved'] == 'Y']
+    filtered = [x for x in self.results if x['HasExtraText'] == 'Y' and x['CuratorApproved'] == 'Y' and x['DateAcquired'].startswith('2000-')]
     return [filtered[i] for i in sorted(random.sample(xrange(len(filtered)), 25))
             ]
 
