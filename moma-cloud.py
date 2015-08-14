@@ -9,9 +9,9 @@ d = path.dirname(__file__)
 # Read the whole text.
 text = open(path.join(d, 'unique_extra_files.txt')).read()
 
-wc = WordCloud(background_color="white", max_words=1000,
-               width=800, height=600,
-               stopwords=STOPWORDS.add("work"))
+wc = WordCloud(background_color="white", max_words=100,
+               width=700, height=500,
+               stopwords=STOPWORDS.update(["said", "work","one","two","three"]))
 # generate word cloud
 wc.generate(text)
 
