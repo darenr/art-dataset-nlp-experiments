@@ -31,7 +31,10 @@ This textual data will be used for
 
 MoMA requests that you actively acknowledge and give attribution to MoMA wherever possible. If you use the dataset for a publication, please cite it using the digital object identifier [![DOI](https://zenodo.org/badge/15218/MuseumofModernArt/collection.svg)](https://zenodo.org/badge/latestdoi/15218/MuseumofModernArt/collection). Attribution supports efforts to release other data. It also reduces the amount of “orphaned data,” helping retain links to authoritative sources.
 
-Note for gensim installation the following are prereqs:
+### Notes
+for gensim installation the following are prereqs:
 
 - $ sudo apt-get install liblapack-dev
 - $ sudo apt-get install gfortran
+
+Some interesting background on [art and machine learning](https://medium.com/the-physics-arxiv-blog/when-a-machine-learning-algorithm-studied-fine-art-paintings-it-saw-things-art-historians-had-never-b8e4e7bf7d3e)
