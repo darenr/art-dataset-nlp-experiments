@@ -14,10 +14,11 @@ This textual data will be used for
 
 ### Plan
 
-- scrape and enrich the meta data
-- ingest into elastic search
-- write a Kibana app to explore the data
+- scrape and enrich the meta data ✓
+- ingest into elastic search ✓
+- write a Kibana app to explore the data ✓
 - investigate [gensim LDA](http://sujitpal.blogspot.com/2014/08/topic-modeling-with-gensim-over-past.html)
+- investigate the [MIA dataset] (https://github.com/artsmia/collection)
 
 ### Required Attribution:
 
