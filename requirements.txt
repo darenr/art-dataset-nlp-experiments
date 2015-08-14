@@ -3,4 +3,8 @@ unicodecsv
 elasticsearch
 textblob
 rake
+gensim
+wordcloud
+Image
+matplotlib
 requests
