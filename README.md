@@ -10,7 +10,10 @@ of the works contain additional text, but for those that do I scrape the site an
 This textual data will be used for 
 
 - key phrase extraction 
-- to build [word clouds](https://github.com/amueller/word_cloud)
+- to build [word clouds](https://github.com/amueller/word_cloud), result from MOMA scraped extra txt: 
+ 
+![example word cloud](/moma-cloud.png)
+
 
 ### Plan
 
