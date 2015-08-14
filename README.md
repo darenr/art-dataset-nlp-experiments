@@ -14,10 +14,21 @@ This textual data will be used for
 
 ### Plan
 
-- scrape and enrich the meta data
-- ingest into elastic search
-- write a Kibana app to explore the data
+- scrape and enrich the meta data ✓
+- ingest into elastic search ✓
+- write a Kibana app to explore the data ✓
+- investigate [gensim LDA](http://sujitpal.blogspot.com/2014/08/topic-modeling-with-gensim-over-past.html)
+
+### Other Datasets
+
+- [Tate](https://github.com/tategallery/collection)
+- [MIA](https://github.com/artsmia/collection)
 
 ### Required Attribution:
 
 MoMA requests that you actively acknowledge and give attribution to MoMA wherever possible. If you use the dataset for a publication, please cite it using the digital object identifier [![DOI](https://zenodo.org/badge/15218/MuseumofModernArt/collection.svg)](https://zenodo.org/badge/latestdoi/15218/MuseumofModernArt/collection). Attribution supports efforts to release other data. It also reduces the amount of “orphaned data,” helping retain links to authoritative sources.
+
+Note for gensim installation the following are prereqs:
+
+- $ sudo apt-get install liblapack-dev
+- $ sudo apt-get install gfortran
