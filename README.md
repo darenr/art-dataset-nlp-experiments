@@ -17,6 +17,7 @@ This textual data will be used for
 - scrape and enrich the meta data
 - ingest into elastic search
 - write a Kibana app to explore the data
+- investigate [gensim LDA](http://sujitpal.blogspot.com/2014/08/topic-modeling-with-gensim-over-past.html)
 
 ### Required Attribution:
 
