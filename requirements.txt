@@ -1,9 +1,8 @@
-beautifulsoup4
 xlrd
 unicodecsv
+numpy==1.9.1
 elasticsearch
 textblob
-rake
 gensim
 wordcloud
 Image
