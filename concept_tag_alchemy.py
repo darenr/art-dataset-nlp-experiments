@@ -1,40 +1,35 @@
 from alchemyapi.alchemyapi import AlchemyAPI
 import json
+import unicodecsv
 
 alchemyapi = AlchemyAPI()
 
-txt = '''
-The Living's organic bricks are produced by combining corn stalks 
-(left over after corn processing) and specially developed living root structures 
-called mycelium, derived from mushrooms. These base components, pioneered by the 
-biomaterial company Ecovative, are placed together in molds and allowed to biologically cement through 
-fungal growth. When used as building blocks, the resulting mycelium bricks create 
-a structure that temporarily diverts the natural carbon cycle to produce architecture 
-that grows out of nothing but earth and returns to nothing but earth-with no waste, no energy, 
-and no carbon emissions. This "low-tech biotech" approach offers a new vision for our society's 
-approach to physical objects and the built environment through living structures that respond 
-to current crises of material sustainability.
-'''
+results = []
 
-response = alchemyapi.combined('text', txt.encode('utf-8', 'ignore'))
-
-if response['status'] == 'OK':
-    print('## Keywords ##')
-    for keyword in response['keywords']:
-        print(keyword['text'], ' : ', keyword['relevance'])
-    print('')
-
-    print('## Concepts ##')
-    for concept in response['concepts']:
-        print(concept['text'], ' : ', concept['relevance'])
-    print('')
-
-    print('## Entities ##')
-    for entity in response['entities']:
-        print(entity['type'], ' : ', entity['text'], ', ', entity['relevance'])
-    print(' ')
-
-else:
-    print('Error in concept tagging call: ', response['statusInfo'])
+with open('MOMA3k.csv', 'rb') as in_csv:
+  for i, m in enumerate(unicodecsv.DictReader(in_csv, encoding='utf-8')):
+    print i
+    fieldnames = m.keys()
+    fieldnames.extend(['AlchemyKeywords', 'AlchemyConcepts'])
+    if not 'AlchemyConcepts' in m:
+      txt = m['ExtraText'].encode('ascii', 'ignore')
+      keywords = alchemyapi.keywords('text', txt)
+      concepts = alchemyapi.concepts('text', txt)
+      if keywords['status'] == 'OK' and concepts['status'] == 'OK':
+        m['AlchemyKeywords'] = ', '.join(["{0} ({1})".format(k['text'].encode('ascii', 'ignore'), k['relevance']) 
+          for k in keywords['keywords']])
+        m['AlchemyConcepts'] = ', '.join(["{0} ({1})".format(k['text'].encode('ascii', 'ignore'), k['relevance']) 
+          for k in concepts['concepts']])
+      else:
+        print('Error in concept tagging call: ', keywords['statusInfo'])
+        break
+      results.append(m)
 
 
+with open('MOMA3k-tagged.csv', 'wb') as out_csv:
+  output = unicodecsv.DictWriter(out_csv, fieldnames=fieldnames, quoting=unicodecsv.QUOTE_ALL)
+  output.writerow(dict((fn,fn) for fn in fieldnames))
+  for i, row in enumerate(results):
+    output.writerow(row)
+    if i % 100 == 0:
+      out_csv.flush()
