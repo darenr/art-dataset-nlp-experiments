@@ -1,4 +1,5 @@
 beautifulsoup4
+xlrd
 unicodecsv
 elasticsearch
 textblob
