@@ -1,25 +1,21 @@
 from gensim import corpora, models, similarities
-from gensim.models import hdpmodel, ldamodel
+from gensim.models import hdpmodel, ldamodel, lsimodel
 import codecs
 from nltk.corpus import stopwords
 
 stoplist = stopwords.words('english')
+stoplist.extend(["said","work","one","two","three"])
 
 with codecs.open('unique_extra_files.txt', 'r', encoding='utf-8') as docs:
+
   documents = docs.readlines()
+  dictionary = corpora.Dictionary(text.lower().split() for text in documents)
+  stop_ids = [dictionary.token2id[stopword] for stopword in stoplist if stopword in dictionary.token2id]
+  once_ids = [tokenid for tokenid, docfreq in dictionary.dfs.iteritems() if docfreq == 1]
+  dictionary.filter_tokens(stop_ids + once_ids) # remove stop words and words that appear only once
+  dictionary.compactify()
 
-  texts = [[word for word in document.lower().split() if word not in stoplist]
-         for document in documents]
-
-  '''
-  all_tokens = sum(texts, [])
-  tokens_once = set(word for word in set(all_tokens) if all_tokens.count(word) == 1)
-  texts = [[word for word in text if word not in tokens_once]
-         for text in texts]
-  '''
-
-  dictionary = corpora.Dictionary(texts)
-  corpus = [dictionary.doc2bow(text) for text in texts]
+  corpus = [dictionary.doc2bow(line.lower().split()) for line in documents]
 
   tfidf = models.TfidfModel(corpus, normalize=True)
 
@@ -29,3 +25,13 @@ with codecs.open('unique_extra_files.txt', 'r', encoding='utf-8') as docs:
   lda = ldamodel.LdaModel(corpus, id2word=dictionary, num_topics=200)
   for topic in lda.show_topics(num_topics=20, num_words=10, log=False, formatted=False):
     print [x[1].encode('utf-8', 'ignore') for x in topic]
+
+  print 'LSI', '*'*50
+  lsi = lsimodel.LsiModel(corpus, id2word=dictionary, num_topics=50)
+  for topic in lsi.show_topics(num_topics=20, num_words=10, log=False, formatted=False):
+    print [x[1].encode('utf-8', 'ignore') for x in topic]
+
+  print 'HDP', '*'*50
+  hdp = hdpmodel.HdpModel(corpus, id2word=dictionary)
+  for count, topic in hdp.show_topics(topics=-1, topn=10, log=False, formatted=False):
+    print count, [x[0].encode('utf-8', 'ignore') for x in topic]
