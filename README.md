@@ -1,7 +1,7 @@
 [![Project status](https://img.shields.io/badge/Project%20Status-Active-brightgreen.svg)](#status)
-# MOMA Art Project
+# Art Project - Experiment with Art Datasets using NLP
 
-Based on MOMA dataset, this project attempts to explore art through NLP and Machine Learning. 
+Based on MOMA, Kadist & Tate datasets, this project attempts to explore art through NLP and Machine Learning. 
 
 The first steps is to enrich the MOMA's dataset by adding additional text for a work , this isa rich source
 of interpretive text that describes the work beyond the meta data (size, date etc.) Unfortunately not many
