@@ -1,23 +1,21 @@
+# -*- encoding: utf-8 -*-
 import xlrd
 import csv
 import sys
+import codecs
 
 
-def csv_from_excel(fname, sheet):
-  wb = xlrd.open_workbook(fname)
-  sh = wb.sheet_by_name(sheet)
-  # your_csv_file = open('your_csv_file.csv', 'wb')
-  #wr = csv.writer(your_csv_file, quoting=csv.QUOTE_ALL)
+wb = xlrd.open_workbook(sys.argv[1])
+sh = wb.sheet_by_name(sys.argv[2])
 
-  fieldnames = sh.row_values(0)
+fieldnames = sh.row_values(0)
 
+with codecs.open('kadist_descriptions.txt', 'wb', 'utf-8') as out:
   for rownum in xrange(1, sh.nrows):
-    #wr.writerow(sh.row_values(rownum))
     row = dict(zip(fieldnames, sh.row_values(rownum)))
-    print row
+    if 'description' in row and row['description']:
+      desc = row['description'].strip().replace(u'—', ' ').replace('\n', ' ').encode('ascii', 'ignore')
+      if desc:
+        out.write(desc + '\n')
+   
 
-    #your_csv_file.close()
-
-
-if __name__ == "__main__":
-  csv_from_excel(sys.argv[1], sys.argv[2])

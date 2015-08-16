@@ -1,12 +1,13 @@
 from gensim import corpora, models, similarities
 from gensim.models import hdpmodel, ldamodel, lsimodel
+import sys
 import codecs
 from nltk.corpus import stopwords
 
 stoplist = stopwords.words('english')
 stoplist.extend(["also","said","work","one","two","three"])
 
-with codecs.open('unique_extra_files.txt', 'r', encoding='utf-8') as docs:
+with codecs.open(sys.argv[1], 'r', encoding='utf-8') as docs:
 
   documents = docs.readlines()
   dictionary = corpora.Dictionary(text.lower().split() for text in documents)
