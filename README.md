@@ -38,3 +38,21 @@ for gensim installation the following are prereqs:
 - $ sudo apt-get install gfortran
 
 Some interesting background on [art and machine learning](https://medium.com/the-physics-arxiv-blog/when-a-machine-learning-algorithm-studied-fine-art-paintings-it-saw-things-art-historians-had-never-b8e4e7bf7d3e)
+
+Re word2vec models:
+
+The en_1000_no_stem can only be opened using this format:
+
+```
+from gensim.models import Word2Vec
+model = Word2Vec.load("en_1000_no_stem/en.model")
+model.similarity('woman', 'man')
+```
+
+the other models can be opened with the usual:
+
+```
+model = w.load_word2vec_format(model_path, binary=binary)
+```
+(or remove binary for non binary models)
+
