@@ -60,7 +60,7 @@ elements = []
 for row in j:
   
   if row['major_tags'] and row['worktype'] and row['description'] and row['imgurl']:
-    tags = ' '.join(['<span class="label label-primary">{0}</span>'.format(tag) for tag in row['major_tags']])
+    tags = ' '.join(['<span class="label label-primary">{0}</span>'.format(tag) for tag in row['alchemy_tags']])
     elements.append(u'''<div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">{0} - {1} [Ref: {2}]</h3>

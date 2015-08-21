@@ -4,8 +4,11 @@ import json
 import os
 import sys
 import codecs
+from alchemyapi.alchemyapi import AlchemyAPI
 
-if len(sys.argv) != 3:
+alchemyapi = AlchemyAPI()
+
+if len(sys.argv) != 2:
   print "usage: <kadist corpus json>"
   sys.exit(-1)
 
@@ -15,68 +18,32 @@ def load_json():
     return data
 
 def save_json(data):
-  with codecs.open(sys.argv[2], 'wb', 'utf-8') as f:
-    f.write(html)
+  with codecs.open(sys.argv[1], 'wb', 'utf-8') as f:
+    f.write(json.dumps(data, indent=2, ensure_ascii=False))
 
-
-html = u'''
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap 101 Template</title>
-
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
-
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-  <style>
-    body {{
-      margin: 20px;
-    }}
-  </style>
-
-  </head>
-  <body>
-    <h1>{0}</h1>
-
-    {1}
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  </body>
-</html>
-'''
+def get_tags(txt):
+  print 'tagging:', txt
+  concepts = alchemyapi.concepts('text', txt)
+  if concepts['status'] == 'OK':
+    tags = []
+    for tag in concepts['concepts']:
+      tags.append(tag['text'])
+    return tags
+  else:
+    print concepts
+    return None
 
 j = load_json()
 
-elements = []
-
 for row in j:
-  
+  if not 'alchemy_tags' in row:
+    row['alchemy_tags'] = []
   if row['major_tags'] and row['worktype'] and row['description'] and row['imgurl']:
-    tags = ' '.join(['<span class="label label-primary">{0}</span>'.format(tag) for tag in row['major_tags']])
-    elements.append(u'''<div class="panel panel-default">
-      <div class="panel-heading">
-        <h3 class="panel-title">{0} - {1} [Ref: {2}]</h3>
-      </div>
-      <div class="panel-body">
-        <img src="{3}" class="thumbnail">
-        <div class="caption"><h2><small>{4}</small></h2></div>
-        {5}
-        <h3>{6}</h3>
-      </div>
-    </div>'''.format(row['title'], 
-                     row['year'], 
-                     row['id'], 
-                     row['imgurl'],
-                     row['worktype'],
-                     row['description'],
-                     tags))
+    if len(row['alchemy_tags']) == 0:
+      tags = get_tags(row['description'])
+      print tags
+      sys.exit(-1)
+      if tags:
+        row['alchemy_tags'] = tags
 
-save_web(html.format('Kadist - AlchemyAPI Concept Tagged', '\n'.join(elements)))
+save_json(j)

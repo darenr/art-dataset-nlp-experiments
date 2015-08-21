@@ -13,7 +13,7 @@ fieldnames = sh.row_values(0)
 data = []
 
 def clean(v):
-  if type(v) is str: 
+  if type(v) is str:
     return unicode(v, "utf-8").strip().replace(u'—', ' ').replace('\n', ' ')
   else:
     if type(v) is float and v == int(v):
