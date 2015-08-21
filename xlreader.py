@@ -20,19 +20,25 @@ def clean(v):
       v = int(v)
     return v
 
-z = {}
+tagged = []
+descriptions = []
+for rownum in xrange(1, sh.nrows):
+  d = dict(zip(fieldnames, [clean(x) for x in sh.row_values(rownum)]))
+  data.append(d)
+  if d['tags']:
+    d['tags'] = d['tags'].split(',')  
+  if d['major_tags']:
+    d['major_tags'] = d['major_tags'].split(',')  
+    tagged.append(d)
+  if d['description']:
+    descriptions.append(d['description'])
 
 with codecs.open('kadist.json', 'wb', 'utf-8') as out:
-  for rownum in xrange(1, sh.nrows):
-    d = dict(zip(fieldnames, 
-          [clean(x) for x in sh.row_values(rownum)]))
-    if d['id'] == 962:
-      z = d
-      print d['description']
-      print type(d['id'])
-    data.append(d)
   out.write(json.dumps(data, indent=2, ensure_ascii=False))
 
-print json.dumps(z, indent=2, ensure_ascii=False)
-  
+with codecs.open('kadist-tagged.json', 'wb', 'utf-8') as out:
+  out.write(json.dumps(tagged, indent=2, ensure_ascii=False))
 
+with codecs.open('kadist_descriptions.txt', 'wb', 'utf-8') as out:
+  for desc in descriptions:
+    out.write(desc + '\n')
