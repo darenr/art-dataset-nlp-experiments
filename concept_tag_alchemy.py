@@ -16,14 +16,18 @@ with open('MOMA3k.csv', 'rb') as in_csv:
   for line in rows:
     m = OrderedDict([(k,line[i]) for i,k in enumerate(fieldnames)])
     if not stop:
-      txt = m['ExtraText'].encode('ascii', 'ignore').strip()
-      print 'tagging:', txt
-      concepts = alchemyapi.concepts('text', txt)
-      if concepts['status'] == 'OK':
-        m['AlchemyConcepts'] = ', '.join(["{0} ({1})".format(k['text'].encode('ascii', 'ignore'), k['relevance']) for k in concepts['concepts']])
+      if len(m['AlchemyConcepts']):
+        # already tagged
+        pass
       else:
-        print(concepts)
-        stop = True
+        txt = m['ExtraText'].encode('ascii', 'ignore').strip()
+        print 'tagging:', txt
+        concepts = alchemyapi.concepts('text', txt)
+        if concepts['status'] == 'OK':
+          m['AlchemyConcepts'] = ', '.join(["{0} ({1})".format(k['text'].encode('ascii', 'ignore'), k['relevance']) for k in concepts['concepts']])
+        else:
+          print(concepts)
+          stop = True
     results.append(m)
   in_csv.close()
 
