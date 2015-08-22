@@ -5,8 +5,8 @@ import os
 import sys
 import codecs
 
-if len(sys.argv) != 3:
-  print "usage: <kadist corpus json> <webpage filename>"
+if len(sys.argv) != 4:
+  print "usage: <kadist corpus json> <webpage filename> <json dict of tags>"
   sys.exit(-1)
 
 def load_json():
@@ -17,6 +17,9 @@ def load_json():
 def save_web(html):
   with codecs.open(sys.argv[2], 'wb', 'utf-8') as f:
     f.write(html)
+
+with codecs.open(sys.argv[3], 'rb', 'utf-8') as f:
+  tag_db = json.loads(f.read())
 
 
 html = u'''
@@ -60,7 +63,9 @@ elements = []
 for row in j:
   
   if row['major_tags'] and row['worktype'] and row['description'] and row['imgurl']:
-    tags = ' '.join(['<span class="label label-primary">{0}</span>'.format(tag) for tag in row['alchemy_tags']])
+    major_tags = ' '.join(['<span class="label label-primary">{0}</span>'.format(tag_db[str(tag_id)]['name']) for tag_id in row['major_tags']])
+    alchemy_tags = 'not yet'
+    #alchemy_tags = ' '.join(['<span class="label label-primary">{0}</span>'.format(tag) for tag in row['alchemy_tags']])
     elements.append(u'''<div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">{0} - {1} [Ref: {2}]</h3>
@@ -69,7 +74,8 @@ for row in j:
         <img src="{3}" class="thumbnail">
         <div class="caption"><h2><small>{4}</small></h2></div>
         {5}
-        <h3>{6}</h3>
+        <h3>Kadist Tags: {6}</h3>
+        <h3>Alchemy Tags: {7}</h3>
       </div>
     </div>'''.format(row['title'], 
                      row['year'], 
@@ -77,6 +83,7 @@ for row in j:
                      row['imgurl'],
                      row['worktype'],
                      row['description'],
-                     tags))
+                     major_tags,
+                     alchemy_tags))
 
 save_web(html.format('Kadist - AlchemyAPI Concept Tagged', '\n'.join(elements)))
