@@ -29,7 +29,7 @@ html = u'''
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap 101 Template</title>
+    <title>Kadist - AlchemyAPI Concept Tagged</title>
 
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
 
@@ -41,6 +41,10 @@ html = u'''
   <style>
     body {{
       margin: 20px;
+    }}
+
+    .extra-height {{
+      line-height: 1.5em;
     }}
   </style>
 
@@ -63,9 +67,8 @@ elements = []
 for row in j:
   
   if row['major_tags'] and row['worktype'] and row['description'] and row['imgurl']:
-    major_tags = ' '.join(['<span class="label label-primary">{0}</span>'.format(tag_db[str(tag_id)]['name']) for tag_id in row['major_tags']])
-    alchemy_tags = 'not yet'
-    #alchemy_tags = ' '.join(['<span class="label label-primary">{0}</span>'.format(tag) for tag in row['alchemy_tags']])
+    major_tags = ' '.join([u'<span class="label label-primary">{0}</span>'.format(tag_db[str(tag_id)]['name']) for tag_id in row['major_tags']])
+    alchemy_tags = ' '.join([u'<span class="label label-primary">{0}</span>'.format(tag) for tag in row['alchemy_tags']])
     elements.append(u'''<div class="panel panel-default">
       <div class="panel-heading">
         <h3 class="panel-title">{0} - {1} [Ref: {2}]</h3>
@@ -74,8 +77,12 @@ for row in j:
         <img src="{3}" class="thumbnail">
         <div class="caption"><h2><small>{4}</small></h2></div>
         {5}
-        <h3>Kadist Tags: {6}</h3>
-        <h3>Alchemy Tags: {7}</h3>
+        <div class="panel panel-default">
+          <div class="panel-body">
+            <h4 class="extra-height">Kadist Tags: {6}</h4>
+            <h4 class="extra-height">Alchemy Tags: {7}</h4>
+          </div>
+        </div>
       </div>
     </div>'''.format(row['title'], 
                      row['year'], 

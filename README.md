@@ -26,6 +26,8 @@ This textual data will be used for
 
 - [Tate](https://github.com/tategallery/collection)
 - [MIA](https://github.com/artsmia/collection)
+- [ICA Boston](http://www.icaboston.org/exhibitions/permanent-collection/artists/attia/)
+- [Brooklyn Museum](https://www.brooklynmuseum.org/opencollection/collections/)
 
 ### Required Attribution:
 
