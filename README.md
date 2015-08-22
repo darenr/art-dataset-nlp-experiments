@@ -12,7 +12,9 @@ This textual data will be used for
 - key phrase extraction 
 - to build [word clouds](https://github.com/amueller/word_cloud), result from MOMA scraped extra txt: 
  
-![example word cloud](/moma-cloud.png)
+<!--![example word cloud](/moma-cloud.png)-->
+<img src="/moma-cloud.png" width="600">
+
 
 
 ### Plan
