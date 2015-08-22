@@ -22,7 +22,6 @@ def save_json(data):
     f.write(json.dumps(data, indent=2, ensure_ascii=False))
 
 def get_tags(txt):
-  print 'tagging:', txt
   concepts = alchemyapi.concepts('text', txt)
   if concepts['status'] == 'OK':
     tags = []
@@ -42,7 +41,6 @@ for row in j:
     if len(row['alchemy_tags']) == 0:
       tags = get_tags(row['description'])
       print tags
-      sys.exit(-1)
       if tags:
         row['alchemy_tags'] = tags
 

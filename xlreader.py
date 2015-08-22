@@ -5,6 +5,10 @@ import csv
 import sys
 import codecs
 
+if len(sys.argv) != 3:
+  print "usage: <XL filename> <sheet name>"
+  sys.exit(-1)
+
 wb = xlrd.open_workbook(sys.argv[1])
 sh = wb.sheet_by_name(sys.argv[2])
 
