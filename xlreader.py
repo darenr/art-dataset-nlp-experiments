@@ -25,12 +25,12 @@ descriptions = []
 for rownum in xrange(1, sh.nrows):
   d = dict(zip(fieldnames, [clean(x) for x in sh.row_values(rownum)]))
   data.append(d)
-  if d['tags']:
+  if 'tags' in d and len(d['tags']):
     d['tags'] = d['tags'].split(',')  
-  if d['major_tags']:
+  if 'major_tags' in d and len(d['major_tags']):
     d['major_tags'] = d['major_tags'].split(',')  
     tagged.append(d)
-  if d['description']:
+  if 'description' in d and len(d['description']):
     descriptions.append(d['description'])
 
 with codecs.open('kadist.json', 'wb', 'utf-8') as out:
