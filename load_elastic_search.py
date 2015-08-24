@@ -1,7 +1,13 @@
 from datetime import datetime
 from elasticsearch import Elasticsearch
 import json
-import unicodecsv
+import codecs
+import sys
+
+
+if len(sys.argv) != 2:
+  print 'usage: <kadist.json>'
+  sys.exit(-1)
 
 es = Elasticsearch()
 
@@ -11,24 +17,16 @@ def load_data(index):
     print es.indices.delete(index=index)
   print es.indices.create(index=index)
 
-  count = 0
-
-  with open('MergedArtworks.csv', 'rb') as in_csv:
-    for m in unicodecsv.DictReader(in_csv, encoding='utf-8'):
-      count += 1
-      if count % 1000 == 0:
-        print "\t", count, "rows..."
-      id = m['ObjectID']
-      if not m['DateAcquired']:
-        m['DateAcquired'] = '2015-01-01'
+  with codecs.open(sys.argv[1], 'rb', 'utf-8') as f:
+    kadist = json.loads(f.read())
+    for m in kadist:
       try:
-        es.index(index=index, doc_type='moma_art_collection', id=id, body=m)
+        print es.index(index=index, doc_type='kadist_art_collection', id=m['id'], body=m)
       except KeyboardInterrupt:
         raise
       except:
         print m
 
 
-  print "loaded", count, "records"
 
-load_data('moma')
+load_data('kadist')
