@@ -59,7 +59,7 @@ model.similarity('woman', 'man')
 the other models can be opened with the usual:
 
 ```
-model = w.load_word2vec_format(model_path, binary=binary)
+model = Word2Vec.load_word2vec_format(model_path, binary=binary)
 ```
 (or remove binary for non binary models)
 
