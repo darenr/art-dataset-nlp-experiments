@@ -6,6 +6,8 @@ from collections import OrderedDict
 
 alchemyapi = AlchemyAPI()
 
+idx = {}
+
 results = []
 
 with open('MOMA3k.csv', 'rb') as in_csv:
@@ -26,9 +28,14 @@ with open('MOMA3k.csv', 'rb') as in_csv:
         if concepts['status'] == 'OK':
           m['AlchemyConcepts'] = ', '.join(["{0} ({1})".format(k['text'].encode('ascii', 'ignore'), k['relevance']) for k in concepts['concepts']])
         else:
-          print(concepts)
-          stop = True
-    results.append(m)
+          if concepts['statusInfo'] == 'unsupported-text-language':
+            pass
+          else:
+            print(concepts)
+            stop = True
+    if not m['ExtraText'] in idx:
+      results.append(m)
+      idx[m['ExtraText']] = 42
   in_csv.close()
 
 with open('MOMA3k.csv', 'wb') as out_csv:

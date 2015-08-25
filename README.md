@@ -12,7 +12,12 @@ This textual data will be used for
 - key phrase extraction 
 - to build [word clouds](https://github.com/amueller/word_cloud), result from MOMA scraped extra txt: 
  
-![example word cloud](/moma-cloud.png)
+<img src="/moma-cloud.png" width="600">
+
+- word cloud from Kadist Collection 
+
+<img src="/kadist-cloud.png" width="600">
+
 
 
 ### Plan
@@ -26,6 +31,8 @@ This textual data will be used for
 
 - [Tate](https://github.com/tategallery/collection)
 - [MIA](https://github.com/artsmia/collection)
+- [ICA Boston](http://www.icaboston.org/exhibitions/permanent-collection/artists/attia/)
+- [Brooklyn Museum](https://www.brooklynmuseum.org/opencollection/collections/)
 
 ### Required Attribution:
 
@@ -52,7 +59,7 @@ model.similarity('woman', 'man')
 the other models can be opened with the usual:
 
 ```
-model = w.load_word2vec_format(model_path, binary=binary)
+model = Word2Vec.load_word2vec_format(model_path, binary=binary)
 ```
 (or remove binary for non binary models)
 
