@@ -44,9 +44,11 @@ for gensim installation the following are prereqs:
 - $ sudo apt-get install liblapack-dev
 - $ sudo apt-get install gfortran
 
-Some interesting background on [art and machine learning](https://medium.com/the-physics-arxiv-blog/when-a-machine-learning-algorithm-studied-fine-art-paintings-it-saw-things-art-historians-had-never-b8e4e7bf7d3e)
+- Some interesting background on [art and machine learning](https://medium.com/the-physics-arxiv-blog/when-a-machine-learning-algorithm-studied-fine-art-paintings-it-saw-things-art-historians-had-never-b8e4e7bf7d3e)
 
-Re word2vec models:
+- [gensim similarity engine](http://radimrehurek.com/gensim/simserver.html)
+
+- Re word2vec models:
 
 The en_1000_no_stem can only be opened using this format:
 
