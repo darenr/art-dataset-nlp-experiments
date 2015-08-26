@@ -17,7 +17,8 @@ The benefits of being able to materialize the data in this way is many fold, dat
 
 An equally important reason for having a “clean” database is to facilitate the search goals.
 
-The collection **search goals** are to be able to perform searches within a collection with the possible future extension of searching between collections. 
+The collection **search goals** are to be able to organize and navigate works in a more abstract way than is traditionally possible both within a collection, and in the future between collections. 
+
 Stated simply the goal is to be to art search what Google is to web search, the similarity engine should be able to fast, powerful, intuitive and lightning fast. Much of this is the UX (user experience) but there’s also some sophisticated algorithmic approaches that should deliver on these goals.
 
 There are three search types.
