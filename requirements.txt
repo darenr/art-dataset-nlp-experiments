@@ -1,4 +1,6 @@
 xlrd
+pandas
+sklearn
 unicodecsv
 numpy==1.9.1
 elasticsearch
