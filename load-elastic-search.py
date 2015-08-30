@@ -21,7 +21,6 @@ def load_data(index):
     kadist = json.loads(f.read())
     for m in kadist:
       try:
-        m['timestamp'] = datetime.datetime.now().strftime('%Y/%m/%d %H:%M:%S')
         es.index(index=index, doc_type='kadist_art_collection', id=m['id'], body=m)
       except KeyboardInterrupt:
         raise

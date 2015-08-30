@@ -18,7 +18,7 @@ def dict_factory(cursor, row):
 
 def save_json(data):
   with codecs.open(sys.argv[2], 'wb', 'utf-8') as out:
-    out.write(json.dumps(data, indent=2, ensure_ascii=False))
+    out.write(json.dumps(data, indent=2, sort_keys=True, ensure_ascii=False))
 
 def copydict(d, *keys):
   ret = {}
@@ -76,7 +76,8 @@ try:
       d = copydict(row, 'id', 'title', 'year', 'imgurl', 'worktype', 'technique', 'dimensions', 'description')
       # resolve artist details
       if row['creator_id'] and row['creator_id'] in artists:
-        d['artist'] = artists[row['creator_id']]
+        d['artist_name'] = artists[row['creator_id']]['name']
+        d['artist_description'] = artists[row['creator_id']]['description']
 
       # resolve major_tags
       d['major_tags'] = []

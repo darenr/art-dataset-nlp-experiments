@@ -8,6 +8,6 @@ import datetime
 es = Elasticsearch()
 
 res = es.search(index="kadist", body={"query": {"fuzzy": {"minor_tags": "earthquake"}}})
-print("Got %d Hits:" % res['hits']['total'])
+print("Got %d Hits (%d ms):" % (res['hits']['total'], res['took']))
 for hit in res['hits']['hits']:
     print("%(id)d - [%(worktype)s] %(title)s" % hit["_source"])
