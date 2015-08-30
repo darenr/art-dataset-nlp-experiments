@@ -20,7 +20,14 @@ def save_json(data):
   with codecs.open(sys.argv[2], 'wb', 'utf-8') as out:
     out.write(json.dumps(data, indent=2, ensure_ascii=False))
 
-copydict = lambda dct, *keys: {key: dct[key] for key in keys}
+def copydict(d, *keys):
+  ret = {}
+  for key in keys:
+    if type(d[key]) in [str, unicode]:
+      ret[key] = d[key].strip()
+    else:
+      ret[key] = d[key]
+  return ret
 
 
 artists = {} # keyed by artist ID
@@ -45,7 +52,7 @@ try:
     # load the major_tags
     cur.execute("SELECT * FROM kadist_majortag")
     for row in cur.fetchall():
-      major_tags[row['id']] = {'name': row['name']}
+      major_tags[row['id']] = copydict(row, 'name')
 
     # load the major tag to works relationship
     cur.execute("SELECT * FROM kadist_majortaggeditem")
@@ -55,7 +62,7 @@ try:
     # load the minor_tags
     cur.execute("SELECT * FROM taggit_tag")
     for row in cur.fetchall():
-      minor_tags[row['id']] = {'name': row['name']}
+      minor_tags[row['id']] = copydict(row, 'name')
 
     # load the minor tag to works relationship
     cur.execute("SELECT * FROM taggit_taggeditem")
