@@ -12,11 +12,11 @@ This textual data will be used for
 - key phrase extraction 
 - to build [word clouds](https://github.com/amueller/word_cloud), result from MOMA scraped extra txt: 
  
-<img src="/moma-cloud.png" width="600">
+<img src="moma/moma-cloud.png" width="600">
 
 - word cloud from Kadist Collection 
 
-<img src="/kadist-cloud.png" width="600">
+<img src="kadist/kadist-cloud.png" width="600">
 
 
 
