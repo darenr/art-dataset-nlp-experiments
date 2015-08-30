@@ -1,0 +1,1 @@
+Raycounting generates accurate three-dimensional replicas of objects by measuring the intensity and orientation of light rays. Explains Oxman, “The models explore the relation between geometry and light performance from a computational- geometry perspective. . . . The project is inspired by one of the first rapid prototyping technologies from the 1860s, known as photo sculpting.”
