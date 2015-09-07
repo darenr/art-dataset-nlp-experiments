@@ -1,0 +1,29 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  padding-top: 70px;
+  padding-bottom: 30px;
+  background: url('../images/blurred_blue.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  margin-bottom: 80px;
+}
+
+.jumbotron {
+  padding: 30px;
+  background-color: #000;
+  opacity: 0.9;
+  filter: alpha(opacity=90);
+  /* For IE8 and earlier */
+}
+.jumbotron h3 {
+  color: white;
+}
+.jumbotron p {
+  color: #bbb;
+  font-size: 1.1em;
+}
