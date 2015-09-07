@@ -13,7 +13,7 @@ def homepage():
     q = request.args.get('q')
     if q:
       q = q.strip()
-      sr = es.search(index="kadist", body={"query": {"match": {"_all": q}}})['hits']
+      sr = es.search(index="kadist", body={"size": 50, "query": { "match": {"_all": q}}})['hits']
       results= {
         "count": sr['total'],
         "hits": [hit['_source'] for hit in sr['hits'] if hit['_source']['description']],
@@ -26,7 +26,7 @@ def homepage():
         "hits" : None
       }
 
-    print results
+    print results['count']
 
     try:
         return render_template("index.html", 
