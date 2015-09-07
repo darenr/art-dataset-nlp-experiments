@@ -1,14 +1,35 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
+from datetime import datetime
+from elasticsearch import Elasticsearch
  
 app = Flask(__name__)
+
+es = Elasticsearch()
 
 @app.route('/')
 def homepage():
     title = "Kadist"
-    results = [{"title": "bronze sculpture", "description": "bla bla bla"}]
+    
+    q = request.args.get('q')
+    if q:
+      sr = es.search(index="kadist", body={"query": {"match": {"_all": q}}})['hits']
+      results= {
+        "count": sr['total'],
+        "hits": [hit['_source'] for hit in sr['hits']]
+      }
+    else:
+      results = {
+        "count": 0,
+        "hits" : None
+      }
+
+    print results
 
     try:
-        return render_template("index.html", title = title, results=results)
+        return render_template("index.html", 
+          q = q,
+          title = title, 
+          results=results)
     except Exception, e:
         return str(e)
 

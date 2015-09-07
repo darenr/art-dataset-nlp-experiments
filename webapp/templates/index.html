@@ -24,7 +24,7 @@
 
                 <form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Search">
+                        <input type="text" class="form-control" id="q" name="q" placeholder="{% if q %} {{q}} {% else %} Search {% endif %}">
                     </div>
                     <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>
                     </button>
@@ -52,21 +52,28 @@
           
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h4 class="page-header">Results</h4>
+          <h4 class="page-header">Results ({{results['count']}})</h4>
           
-					{% if request.args.get('q') %} 
-						{% for result in results %}
-				      <div class="panel panel-default">
-	  		        <div class="panel-heading">
-    		          <h3 class="panel-title">{{result['title']}}</h3>
-    			      </div> <!-- panel heading -->
-    			      <div class="panel-body">
-    		          {{result['description']}}
-    		 		    </div> <!-- panel body -->
-        			</div> <!-- panel -->
-        		{% endfor %} 
+					{% if results['hits'] %}
+						{% for hit in results['hits'] %}
+					    <div class="panel panel-default">
+				        <div class="panel-heading">
+				          <div class="panel-title">
+										<h3>Title: {{hit['title']}}</h3>		
+										<h4>Artist: {{hit['artist_name']}}</h4>		
+										<h5>Year: {{hit['year']}}</h5>		
+				            <h5>Type: {{hit['worktype']}}</h5>
+									</div>
+					      </div> <!-- panel heading -->
+					      <div class="panel-body">
+									{% if hit['imgurl'] %}
+										<img class="thumbnail" src="{{hit['imgurl']}}">
+					        {% endif %}							
+				          <p> {{hit['description']}}</p>
+				 		    </div> <!-- panel body -->
+		    			</div> <!-- panel -->
+		    		{% endfor %} 
 					{% endif %}
-
           
           
 	    	</div> <!-- main -->
@@ -76,6 +83,12 @@
 
   <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+	<script>
+		$( document ).ready(function() {
+  		$('#q').focus();
+		});
+  </script>
 
 </body>
 
