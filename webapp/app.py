@@ -12,6 +12,7 @@ def homepage():
     
     q = request.args.get('q')
     if q:
+      q = q.strip()
       sr = es.search(index="kadist", body={"query": {"match": {"_all": q}}})['hits']
       results= {
         "count": sr['total'],
