@@ -15,11 +15,13 @@ def homepage():
       sr = es.search(index="kadist", body={"query": {"match": {"_all": q}}})['hits']
       results= {
         "count": sr['total'],
-        "hits": [hit['_source'] for hit in sr['hits']]
+        "hits": [hit['_source'] for hit in sr['hits'] if hit['_source']['description']],
+        "hidden": len([hit for hit in sr['hits'] if not hit['_source']['description']])
       }
     else:
       results = {
         "count": 0,
+        "hidden": 0,
         "hits" : None
       }
 

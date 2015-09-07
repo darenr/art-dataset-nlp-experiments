@@ -12,30 +12,31 @@
 </head>
 
 <body class="body">
-    <nav class="navbar navbar-default navbar-fixed-top navbar-custom" role="navigation">
+    <nav class="navbar navbar-inverse navbar-fixed-top navbar-custom" role="navigation">
         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-            </div>
-
-            <div class="collapse navbar-collapse" id="top_bar">
-                <ul class="nav navbar-nav">
-                </ul>
+      		<div class="row">
+						<div class="search-bar">
+           	 <div class="collapse navbar-collapse">
 
                 <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" id="q" name="q" placeholder="{% if q %} {{q}} {% else %} Search {% endif %}">
-                    </div>
-                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span>
-                    </button>
+
+                  <div class="input-group add-on">
+                    <input type="text" class="form-control" id="q" name="q" value= "{% if q %} {{q}} {% endif %}" placeholder="search kadist index">
+										<div class="input-group-btn">
+							        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+							      </div>
+                  </div>
                 </form>
 
                 <ul class="nav navbar-nav navbar-right">
                     <li class="active"><a href="http://www.kadist.org">Kadist.org</a>
                     </li>
                 </ul>
-            </div> <!-- navbar-collapse -->
+            	</div> <!-- navbar-collapse -->
+						</div> <!-- search-box -->
+					</div> <!-- row -->
         </div> <!-- container -->
+
     </nav>
 
 
@@ -52,24 +53,27 @@
           
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h4 class="page-header">Results ({{results['count']}})</h4>
+          <h4 class="results-header"><span class="pull-left">{{results['count']}} results for '{{q}}'</span><span class="pull-right"><small style="color: white;">{{results['hidden']}} hidden, no description</small></span></h4>
           
 					{% if results['hits'] %}
 						{% for hit in results['hits'] %}
 					    <div class="panel panel-default">
 				        <div class="panel-heading">
 				          <div class="panel-title">
-										<h3>Title: {{hit['title']}}</h3>		
-										<h4>Artist: {{hit['artist_name']}}</h4>		
-										<h5>Year: {{hit['year']}}</h5>		
-				            <h5>Type: {{hit['worktype']}}</h5>
+										<h2><span class="label label-warning">{{hit['artist_name']}}</span> - <span class="label label-primary">{{hit['title']}}</span></h2>
 									</div>
 					      </div> <!-- panel heading -->
 					      <div class="panel-body">
-									{% if hit['imgurl'] %}
-										<img class="thumbnail" src="{{hit['imgurl']}}">
-					        {% endif %}							
-				          <p> {{hit['description']}}</p>
+									<div class="col-sm-5 pull-left">
+										{% if hit['imgurl'] %}
+											<img class="img" width="100%" src="{{hit['imgurl']}}">
+										{% endif %}		
+										<h3><span class="label label-default">{{hit['year']}}</span></h3>		
+					          <h3><span class="label label-default">{{hit['worktype']}}</span></h3>
+									</div> <!-- image column -->
+									<div class="col-sm-7">
+						        <p> {{hit['description']}}</p>
+									</div> <!-- description column -->
 				 		    </div> <!-- panel body -->
 		    			</div> <!-- panel -->
 		    		{% endfor %} 
