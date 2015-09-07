@@ -5,10 +5,10 @@ app = Flask(__name__)
 @app.route('/')
 def homepage():
     title = "Kadist"
-    paragraph = ['art work' for x in range(5)] 
+    results = [{"title": "bronze sculpture", "description": "bla bla bla"}]
 
     try:
-        return render_template("index.html", title = title, paragraph=paragraph)
+        return render_template("index.html", title = title, results=results)
     except Exception, e:
         return str(e)
 

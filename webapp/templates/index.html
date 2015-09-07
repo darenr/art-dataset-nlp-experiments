@@ -1,68 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<link rel="stylesheet" media="screen" href = "{{ url_for('static', filename='css/bootstrap.min.css') }}">
-<link rel="stylesheet" media="screen" href = "{{ url_for('static', filename='css/bootstrap-theme.css') }}">
-<link rel="stylesheet" media="screen" href = "{{ url_for('static', filename='css/main.css') }}">
 
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/bootstrap-theme.css') }}">
+    <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
 
-<body class = "body">
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
+<body class="body">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+            </div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-      </ul>
+            <div class="collapse navbar-collapse" id="top_bar">
+                <ul class="nav navbar-nav">
+                </ul>
 
-<form class="navbar-form navbar-left" role="search">
-    <div class="form-group">
-        <input type="text" class="form-control" placeholder="Search">
-    </div>
-    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span></button>
-</form>
+                <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </form>
 
-      <!--
-      <form class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="Search">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="active"><a href="http://www.kadist.org">Kadist.org</a>
+                    </li>
+                </ul>
+            </div> <!-- navbar-collapse -->
+        </div> <!-- container -->
+    </nav>
+
+
+		<div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">Facet 0 <span class="sr-only">(current)</span></a></li>
+            <li><a href="#">Facet 1</a></li>
+            <li><a href="#">Facet 2</a></li>
+            <li><a href="#">Facet 3</a></li>
+          </ul>
+          
+          
         </div>
-        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-      </form>
-    -->
-      <ul class="nav navbar-nav navbar-right">
-        <li class="active"><a href="http://www.kadist.org">Kadist.org</a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div>
-</nav>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h4 class="page-header">Results</h4>
+          
+					{% if request.args.get('q') %} 
+						{% for result in results %}
+				      <div class="panel panel-default">
+	  		        <div class="panel-heading">
+    		          <h3 class="panel-title">{{result['title']}}</h3>
+    			      </div> <!-- panel heading -->
+    			      <div class="panel-body">
+    		          {{result['description']}}
+    		 		    </div> <!-- panel body -->
+        			</div> <!-- panel -->
+        		{% endfor %} 
+					{% endif %}
 
-<div class="container theme-showcase" role="main">
+          
+          
+	    	</div> <!-- main -->
+    	</div> <!-- row -->
+  </div> <!-- container -->
 
-      <div class="jumbotron">
-        <h1>Kadist</h1>
-				<hr/>
-				{% for sentence in paragraph %}
-					<p>{{sentence}}</p>
-				{% endfor %}
-			</div>
-</div>
-		
-<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
 
 </body>
+
 </html>
