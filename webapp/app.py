@@ -13,11 +13,50 @@ def homepage():
     q = request.args.get('q')
     if q:
       q = q.strip()
-      sr = es.search(index="kadist", body={"size": 50, "query": { "match": {"_all": q}}})['hits']
+      
+      search_body = {
+        "size": 50, 
+        "query": { 
+          "match": {
+            "_all": q
+          }
+        },
+        "aggregations": {
+           "worktype_facet": {
+              "terms": {
+                 "field": "worktype"
+              }
+           },
+           "year_facet": {
+              "terms": {
+                 "field": "year"
+              }
+           },
+           "major_facet": {
+              "terms": {
+                 "field": "major_tags"
+              }
+           },
+           "minor_facet": {
+              "terms": {
+                 "field": "minor_tags"
+              }
+           }
+        }
+      }
+      sr = es.search(index="kadist", body=search_body)
+      
+      hits = sr['hits']
+      aggs = sr['aggregations']
+      
       results= {
-        "count": sr['total'],
-        "hits": [hit['_source'] for hit in sr['hits'] if hit['_source']['description']],
-        "hidden": len([hit for hit in sr['hits'] if not hit['_source']['description']])
+        "count": hits['total'],
+        "hits": [hit['_source'] for hit in hits['hits'] if hit['_source']['description']],
+        "hidden": len([hit for hit in hits['hits'] if not hit['_source']['description']]),
+        "facets": {
+          "year_facet": aggs['year_facet']['buckets'],
+          "worktype_facet": aggs['worktype_facet']['buckets']
+        }
       }
     else:
       results = {
