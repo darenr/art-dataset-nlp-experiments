@@ -20,4 +20,4 @@ def wn_getword(word):
 for ss in ["gay.n.01", "portraiture.n.01", "folk_art.n.01", "gender_identity.n.01", "gender.n.02"]:
 
   print ss, ': wordnet:', ', '.join(wn_synonyms(ss))
-  print ss, ': wordvec-first:', ', '.join(wv_synonyms(ss.split('.')[0]))
+  print ss, ': wordvec-first:', ', '.join(wv_synonyms(ss.split('.')[0].replace('_', ' ')))
