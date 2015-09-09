@@ -106,7 +106,7 @@
                 {% endif %}	
                 {% if hit['minor_tags'] %}
                   {% for tag in hit['minor_tags'] %}
-                  <h4><span class="label label-default">{{tag}}</span></h4>
+                  <a href="/?q={{tag}}"><h4><span class="label label-default">{{tag}}</span></h4></a>
                   {% endfor %}		                
                 {% endif %}	
               </div> <!-- description column -->

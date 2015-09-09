@@ -20,6 +20,9 @@ def load_data(index):
   with codecs.open(sys.argv[1], 'rb', 'utf-8') as f:
     kadist = json.loads(f.read())
     for m in kadist:
+      # first change the tags to all be simple (no synsets)
+      m['major_tags'] = [x.split('.')[0] for x in m['major_tags']]
+      m['minor_tags'] = [x.split('.')[0] for x in m['minor_tags']]
       try:
         es.index(index=index, doc_type='kadist_art_collection', id=m['id'], body=m)
       except KeyboardInterrupt:
