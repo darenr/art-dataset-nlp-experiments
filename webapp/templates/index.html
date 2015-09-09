@@ -49,11 +49,13 @@
         <div class="col-sm-3 col-md-2 sidebar">
           {% if results['facets'] %}
             {% for facet in results['facets'] %}
+              <h3><span class="label label-success">{{facet}}:</span></h3>
               <ul class="nav nav-sidebar">
-              {% for f in results['facets'][facet] %}
-                <li><a href="#"><span class="label label-info">{{f['key']}} ({{f['doc_count']}})</span></a></li>
-              {% endfor %} 
-              </ul>  
+                {% for f in results['facets'][facet] %}
+                  <li><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></li>
+                {% endfor %}
+                <li><a href="/?q={{q}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></li>
+              </ul>
             {% endfor %} 
           {% endif %}
         </div>
