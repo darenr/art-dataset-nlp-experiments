@@ -54,7 +54,9 @@
                 {% for f in results['facets'][facet] %}
                   <li><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></li>
                 {% endfor %}
-                <li><a href="/?q={{q}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></li>
+                {% if results['filter'] %}
+                  <li><a href="/?q={{q}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></li>
+                {% endif %}
               </ul>
             {% endfor %} 
           {% endif %}
@@ -70,7 +72,13 @@
           </div>          
 
           <div>
-            <h4 class="page-header"><span class="pull-left">{{results['count']}} results for "{{q}}"</span><span class="pull-right"><small style="color: white;">{{results['hidden']}} hidden</small></span></h4>
+            <h4 class="page-header">
+              <span class="pull-left">{{results['count']}} results for "{{q}}"
+                {% if results['filter'] %}
+                  ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
+                {% endif %}
+              </span>
+              <span class="pull-right"><small style="color: white;">{{results['hidden']}} hidden</small></span></h4>
           </div>
 
           {% if results['hits'] %}

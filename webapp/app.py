@@ -12,8 +12,6 @@ def homepage():
 
   q = request.args.get('q')
 
-
-
   if q:
     q = q.strip()
 
@@ -36,7 +34,6 @@ def homepage():
       },
 
       "filter": {
-
       }
     }
 
@@ -58,8 +55,11 @@ def homepage():
       "hidden": len([hit for hit in hits['hits'] if not hit['_source']['description']]),
       "facets": {
         "worktype": aggs['worktype']['buckets']
-      }
+      },
     }
+    if 'term' in search_body['filter']:
+      results['filter'] = tuple(search_body['filter']['term'].items()[0])
+
   else:
     results = {
       "count": 0,
