@@ -33,6 +33,7 @@
 
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
+          <li><a href="http://www.kapsul.org">Kapsul.org</a></li>
           <li><a href="http://www.kadist.org">Kadist.org</a></li>
         </ul>
       </div><!--/.navbar-collapse -->
@@ -67,10 +68,10 @@
           <!-- Search Bar -->
           <div class="search-bar">
             <form class="form-inline" role="search">
-                  <span class="label label-warning search-text"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>:</span>&nbsp;
               <div class="input-group">
-                  <input tabindex = "1" type="text" autocomplete='off' class="form-control" id="q" name="q" value="{% if q %}{{q}}{% endif %}" placeholder="search index">
-              </div>                
+                <input tabindex = "1" type="text" describedby="search-label" autocomplete='off' class="form-control" id="q" name="q" value="{% if q %}{{q}}{% endif %}" placeholder="Search the Collection">
+                <span class="input-group-addon" id="search-label"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span></span>
+              </div>
             </form>
           </div>          
           <!-- End Search Bar -->
@@ -95,20 +96,7 @@
             {% for hit in results['hits'] %}
             <div class="panel panel-default">
               <div class="panel-body">
-                <div class="col-sm-5 pull-left">
-                  <div class="well">
-                  {% if hit['imgurl'] %}
-                  <img class="img" width="100%" src="{{hit['imgurl']}}">
-                  {% endif %}
-                  <p>
-                    {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
 
-                    {% if hit['artist_description'] %}
-                    <p>{{hit['artist_description']}}</p>
-                    {% endif %}
-                  </p>
-                  </div>
-                </div> <!-- image column -->
                 <div class="col-sm-7">
                   <h2>{{hit['title']}}</h2>
                   <h3>{{hit['artist_name']}}</h3>
@@ -125,6 +113,22 @@
                     {% endfor %}
                   {% endif %}
                 </div> <!-- description column -->
+
+                <div class="col-sm-5 pull-left">
+                  <div class="well">
+                  {% if hit['imgurl'] %}
+                  <img class="img" width="100%" src="{{hit['imgurl']}}">
+                  {% endif %}
+                  <p>
+                    {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
+
+                    {% if hit['artist_description'] %}
+                    <small>{{hit['artist_description']}}</small>
+                    {% endif %}
+                  </p>
+                  </div>
+                </div> <!-- image column -->
+
               </div> <!-- panel body -->
             </div> <!-- panel -->
             {% endfor %}
