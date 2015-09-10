@@ -3,11 +3,14 @@ from nltk.corpus.reader import NOUN
 from gensim.models import Word2Vec
 import os
 
-model = Word2Vec.load_word2vec_format(os.environ['HOME'] + "/models/en_deps_300D_words.model")
+#model = Word2Vec.load_word2vec_format(os.environ['HOME'] + "/models/en_deps_300D_words.model")
+#model = Word2Vec.load_word2vec_format(os.environ['HOME'] + "/models/glove.42B.300d.txt", binary=False)
+model = Word2Vec.load_word2vec_format(os.environ['HOME'] + "/models/freebase-vectors-skipgram1000-en.bin", binary=True)
 
 def wv_synonyms(word):
   if word in model:
-    return [x[0] for x in model.most_similar(word)[:5]]
+    print '/en/'+word
+    return [x[0] for x in model.most_similar('/en/'+word)[:5]]
   else:
     return []
 

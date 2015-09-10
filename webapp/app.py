@@ -21,6 +21,7 @@ def homepage():
       "query": {
         "multi_match": {
           "query": q,
+          "fuzziness": "AUTO",
           "fields": ["major_tags^5", "minor_tags^4", "title^3", "artist_name^2", "description", "worktype"]
         }
       },
