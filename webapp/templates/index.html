@@ -94,29 +94,34 @@
           {% if results['hits'] %}
             {% for hit in results['hits'] %}
             <div class="panel panel-default">
-              <div class="panel-heading">
-                <div class="panel-title">
-                  <h2><span class="label label-warning">{{hit['artist_name']}}</span> <span class="label label-primary">{{hit['title']}}</span></h2>
-                </div>
-              </div> <!-- panel heading -->
               <div class="panel-body">
                 <div class="col-sm-5 pull-left">
+                  <div class="well">
                   {% if hit['imgurl'] %}
                   <img class="img" width="100%" src="{{hit['imgurl']}}">
                   {% endif %}
-                  <h3><span class="label label-info">{{hit['year']}}</span></h3>
-                  <h3><span class="label label-info">{{hit['worktype']}}</span></h3>
+                  <p>
+                    {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
+
+                    {% if hit['artist_description'] %}
+                    <p>{{hit['artist_description']}}</p>
+                    {% endif %}
+                  </p>
+                  </div>
                 </div> <!-- image column -->
                 <div class="col-sm-7">
+                  <h2>{{hit['title']}}</h2>
+                  <h3>{{hit['artist_name']}}</h3>
                   <p> {{hit['description']}}</p>
+
                   {% if hit['major_tags'] %}
                     {% for tag in hit['major_tags'] %}
-                    <a href="/?q={{tag}}"><h4><span class="label label-info">{{tag}}</span></h4></a>
+                    <a href="/?q={{tag}}"><span class="label label-material-indigo tags">{{tag}}</span></a>
                     {% endfor %}
                   {% endif %}
                   {% if hit['minor_tags'] %}
                     {% for tag in hit['minor_tags'] %}
-                      <a href="/?q={{tag}}"><h4><span class="label label-default">{{tag}}</span></h4></a>
+                      <a href="/?q={{tag}}"><span class="label label-material-purple tags">{{tag}}</span></a>
                     {% endfor %}
                   {% endif %}
                 </div> <!-- description column -->

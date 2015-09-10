@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request
-from datetime import datetime
 from elasticsearch import Elasticsearch
 
 app = Flask(__name__)
@@ -15,14 +14,25 @@ def homepage():
   if q:
     q = q.strip()
 
+    # fuzziness is allowed edit distance (ED), for words that are short we disable it, but for longer words
+    # where the chance of a misspelling are increased we ED 2
+    fuzziness = "0" if len(q) < 7 else "2"
+
     search_body = {
       "size": 50,
 
       "query": {
         "multi_match": {
           "query": q,
-          "fuzziness": "AUTO",
-          "fields": ["major_tags^5", "minor_tags^4", "title^3", "artist_name^2", "description", "worktype"]
+          "fuzziness": fuzziness,
+          "fields": ["major_tags^5",
+                      "minor_tags^4",
+                      "title^3",
+                      "artist_name^2",
+                      "description",
+                      "worktype",
+                      "artist_description"
+                     ]
         }
       },
 

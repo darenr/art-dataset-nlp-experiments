@@ -128,3 +128,8 @@ add-on .input-group-btn > .btn {
   font-size: 0.9em;
 }
 
+.tags {
+  font-size:1.1em;
+  line-height: 200%;
+}
+

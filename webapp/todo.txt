@@ -1,5 +1,7 @@
+- use http://bartaz.github.io/sandbox.js/jquery.highlight.html when q is not None on all text fields
 - add major/minor tags to app DONE
 - organize the year/media type etc better
 - try on other browsers
 - add facets to search DONE
 - in the database load strip the wordnet disambiguations into a new field
+- if q is a synset we need to NOT do fuzzy search
