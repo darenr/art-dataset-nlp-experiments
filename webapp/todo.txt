@@ -1,5 +1,5 @@
-- add major/minor tags to app
+- add major/minor tags to app DONE
 - organize the year/media type etc better
 - try on other browsers
-- add facets to search
+- add facets to search DONE
 - in the database load strip the wordnet disambiguations into a new field
