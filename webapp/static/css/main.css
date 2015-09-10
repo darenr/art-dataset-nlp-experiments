@@ -118,3 +118,13 @@ add-on .input-group-btn > .btn {
   border-width: 0px;
 }
 
+.search-text {
+  font-size: 1.5em;
+}
+
+.search-text span {
+  postition: relative;
+  top: 4px;
+  font-size: 0.9em;
+}
+
