@@ -11,7 +11,7 @@ def wv_synonyms(word):
   if word in model:
     # results are not sorted, so before we truncate let's sort them,
     sorted_sims = sorted(model.most_similar(word), key=lambda tup: tup[1])
-    return [x[0]+':'+str(x[1]) for x in sorted_sims]
+    return [x[0] for x in sorted_sims if x[1] > 0.5]
   else:
     return []
 
@@ -37,11 +37,11 @@ for word in [ "gay.n.01", "war", "battle", "taboo", "portraiture.n.01", "folk_ar
   synonyms = []
 
   ss = wn_make_synset(word)
-  #if ss:
-  #  synonyms += wn_synonyms(ss)
+  if ss:
+    synonyms += wn_synonyms(ss)
 
   synonyms += wv_synonyms(wn_getword(ss) if ss else word)
-
+  
   synonyms = list(set(synonyms))
 
   print word, synonyms
