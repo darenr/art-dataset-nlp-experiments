@@ -9,7 +9,7 @@ model = Word2Vec.load_word2vec_format(os.environ['HOME'] + "/models/en_bow5_300d
 def wv_synonyms(word):
   print 'expanding', word
   if word in model:
-    return [x[0]+':'+x[1] for x in model.most_similar(word)[:9]]
+    return [x[0]+':'+str(x[1]) for x in model.most_similar(word)[:9]]
   else:
     return []
 

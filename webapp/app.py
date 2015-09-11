@@ -16,7 +16,7 @@ def homepage():
 
     # fuzziness is allowed edit distance (ED), for words that are short we disable it, but for longer words
     # where the chance of a misspelling are increased we ED 2
-    fuzziness = "0" if len(q) < 7 else "2"
+    fuzziness = "0" if len(q) < 10 else "1"
 
     search_body = {
       "size": 50,
@@ -25,6 +25,7 @@ def homepage():
         "multi_match": {
           "query": q,
           "fuzziness": fuzziness,
+          "type": "phrase",
           "fields": ["major_tags^5",
                       "minor_tags^4",
                       "title^3",

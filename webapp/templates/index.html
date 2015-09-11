@@ -115,18 +115,20 @@
                 </div> <!-- description column -->
 
                 <div class="col-sm-5 pull-left">
-                  <div class="well">
-                  {% if hit['imgurl'] %}
-                  <img class="img" width="100%" src="{{hit['imgurl']}}">
-                  {% endif %}
-                  <p>
-                    {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
+                  <div class="panel panel-default">
+                    <div class="panel-body">
+                      {% if hit['imgurl'] %}
+                        <img class="img" width="100%" src="{{hit['imgurl']}}">
+                      {% endif %}
+                      <p>
+                        {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
 
-                    {% if hit['artist_description'] %}
-                    <small>{{hit['artist_description']}}</small>
-                    {% endif %}
-                  </p>
-                  </div>
+                        {% if hit['artist_description'] %}
+                        <br/><small>{{hit['artist_description']}}</small>
+                        {% endif %}
+                      </p>
+                    </div> <!-- panel body -->
+                  </div>  <!-- panel -->
                 </div> <!-- image column -->
 
               </div> <!-- panel body -->
