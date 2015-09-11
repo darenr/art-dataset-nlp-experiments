@@ -52,6 +52,8 @@ def load_data(index):
   with codecs.open(sys.argv[1], 'rb', 'utf-8') as f:
     kadist = json.loads(f.read())
     for m in kadist:
+      if 'imgurl' in m and m['imgurl']:
+        m['imgurl'] = m['imgurl'].split('?')[0]
       # first change the tags to all be simple (no synsets)
       try:
         es.index(index=index, doc_type=doc_type, id=m['id'], body=m)
