@@ -38,7 +38,7 @@ body {
 @media (min-width: 768px) {
   .sidebar {
     position: fixed;
-    top: 25px;
+    top: 30px;
     bottom: 0;
     left: 0;
     z-index: 1000;
@@ -95,7 +95,7 @@ body {
 
 .search-bar {
   padding: 15px;
-  padding-left: 0px;
+  padding-left: 0px;  
 }
 
 .label {
@@ -136,8 +136,10 @@ add-on .input-group-btn > .btn {
   width: 100%;
 }
 
+.white, .white a {
+  color: #fff;
+}
 
-
-
-
-
+.main-content {
+  margin-top: 20px;
+}
