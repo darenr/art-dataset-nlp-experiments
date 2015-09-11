@@ -38,7 +38,7 @@ body {
 @media (min-width: 768px) {
   .sidebar {
     position: fixed;
-    top: 51px;
+    top: 25px;
     bottom: 0;
     left: 0;
     z-index: 1000;
@@ -84,7 +84,6 @@ body {
   padding-top: 0px;
 }
 
-
 .main .page-header {
   margin-top: 0;
   background-color: #3f51b5;
@@ -94,17 +93,10 @@ body {
   padding-top: 10px;
 }
 
-
 .search-bar {
   padding: 15px;
   padding-left: 0px;
 }
-
-
-#q {
-  font-size: 1.5em;
-}
-
 
 .label {
   white-space: normal;
@@ -128,9 +120,24 @@ add-on .input-group-btn > .btn {
   font-size: 0.9em;
 }
 
+#q {
+  font-size: 1.5em;
+  padding: 10px;
+  background-color: #ddd;
+}
+
+
 .tags {
   font-size:1.1em;
   line-height: 200%;
 }
+
+.input-group {
+  width: 100%;
+}
+
+
+
+
 
 

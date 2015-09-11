@@ -9,7 +9,9 @@ model = Word2Vec.load_word2vec_format(os.environ['HOME'] + "/models/en_bow5_300d
 def wv_synonyms(word):
   print 'expanding', word
   if word in model:
-    return [x[0]+':'+str(x[1]) for x in model.most_similar(word)[:9]]
+    # results are not sorted, so before we truncate let's sort them,
+    sorted_sims = sorted(model.most_similar(word), key=lambda tup: tup[1])
+    return [x[0]+':'+str(x[1]) for x in sorted_sims]
   else:
     return []
 
@@ -29,7 +31,7 @@ def wn_make_synset(word):
     else:
       return None
 
-for word in [ "gay.n.01", "taboo", "portraiture.n.01", "folk_art.n.01", "gender_identity.n.01", "gender.n.02"]:
+for word in [ "gay.n.01", "war", "battle", "taboo", "portraiture.n.01", "folk_art.n.01", "gender_identity.n.01", "gender.n.02"]:
   
 
   synonyms = []
