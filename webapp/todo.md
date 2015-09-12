@@ -16,7 +16,8 @@
 - import imdb as a collection
 - figure out more-like-this query on tags only 
 - better than MLT is to use disjunctive filtered OR
-  
+- 
+  ```
   {
     "query": {
       "filtered": {
@@ -36,6 +37,7 @@
       }
     }
   }
+  ```
   
   requires change to elasticsearch.yml
   
