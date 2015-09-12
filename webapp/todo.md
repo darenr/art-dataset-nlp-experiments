@@ -12,3 +12,4 @@
 - "taboo" only matches 2 works, word2vec should expand this to include the gay/lesbian works too,
   an example of their power of expansion
 - change tag fields to not_analyzed so they aren't full text searchable (mappings) DONE
+- term expansion: for every major/minor tag create es synonyms, then weight them in main query

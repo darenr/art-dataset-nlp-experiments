@@ -80,7 +80,6 @@
                 ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
               {% endif %}
             </span>
-            <span class="pull-right"><small style="color: white;">{{results['hidden']}} hidden</small></span></h4>
           {% endif %}
         </div>
         <!-- End Results Count Header Bar -->
@@ -89,13 +88,19 @@
         <!-- Search Results -->
         {% if results['hits'] %}
           {% for hit in results['hits'] %}
+
+
+            </script>
           <div class="panel panel-default">
             <div class="panel-body">
 
               <div class="col-sm-7">
-                <h2>{{hit['title']}}</h2>
+
+                <h2><a href="/?q=_{{hit['id']}}"><i class="mdi-image-blur-on"></i></a>&nbsp;{{hit['title']}}</h2>
                 <h3>{{hit['artist_name']}}</h3>
-                <p> {{hit['description']}}</p>
+                {% if hit['artist_description'] %}
+                <p> {{hit['artist_description']}}</p>
+                {% endif %}
 
                 {% if hit['major_tags'] %}
                   {% for tag in hit['major_tags'] %}
@@ -116,10 +121,11 @@
                       <img class="img" width="100%" src="{{hit['imgurl']}}">
                     {% endif %}
                     <p>
-                      {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
-
-                      {% if hit['artist_description'] %}
-                      <br/><small>{{hit['artist_description']}}</small>
+                      <center>
+                        {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
+                      </center>
+                      {% if hit['description'] %}
+                        <br/><small>{{hit['description']}}</small>
                       {% endif %}
                     </p>
                   </div> <!-- panel body -->
