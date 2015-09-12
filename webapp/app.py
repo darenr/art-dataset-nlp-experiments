@@ -27,7 +27,7 @@ def homepage():
         "query": {
             "more_like_this": {
                 "fields": [
-                  "x"
+                  "mlt_tags"
                 ],
                 "docs": [
                     {
@@ -67,7 +67,8 @@ def homepage():
                       "artist_name^2",
                       "description",
                       "worktype",
-                      "artist_description"
+                      "artist_description",
+                      "id"
                      ]
         }
       },
