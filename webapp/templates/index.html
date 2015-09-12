@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <title>Kadist Index Search</title>
   <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/bootstrap.css') }}">
 
   <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/material/roboto.min.css') }}">
@@ -96,7 +97,7 @@
 
               <div class="col-sm-7">
 
-                <h2><a href="/?q=_{{hit['id']}}"><i class="mdi-image-blur-on"></i></a>&nbsp;{{hit['title']}}</h2>
+                <h2><a href="/?q=_{{hit['id']}}" title="Similar Works"><i class="mdi-image-blur-on"></i></a>&nbsp;{{hit['title']}}</h2>
                 <h3>{{hit['artist_name']}}</h3>
                 {% if hit['artist_description'] %}
                 <p> {{hit['artist_description']}}</p>

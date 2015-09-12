@@ -24,12 +24,10 @@ def homepage():
     # pattern we use the alternative query form
 
     more_like_this = {
-        "size": 10,
         "query": {
             "more_like_this": {
                 "fields": [
-                  "artist_description",
-                  "description"
+                  "x"
                 ],
                 "docs": [
                     {
@@ -37,7 +35,10 @@ def homepage():
                         "_type": "kadist_art_collection",
                         "_id": q[1:]
                     }
-                ]
+                ],
+                "min_term_freq": 1,
+                "percent_terms_to_match": 0,
+                "min_doc_freq": 1
             }
         },
 
