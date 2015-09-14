@@ -50,6 +50,11 @@ def load_data(index):
                 "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
+              "id" : {
+                "type" :    "string",
+                "term_vector" : "yes",
+                "index":    "not_analyzed"
+              },
               "imgurl" : {
                 "type" :    "string",
                 "stored" : "yes",
