@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request
 from elasticsearch import Elasticsearch
+import json
+import sys
 
 app = Flask(__name__)
 
@@ -11,16 +13,49 @@ def homepage():
 
   q = request.args.get('q')
 
-  if q:
+  if q and len(q.strip()):
     q = q.strip()
 
     # fuzziness is allowed edit distance (ED), for words that are short we disable it, but for longer words
     # where the chance of a misspelling are increased we ED 2
     fuzziness = "0" if len(q) < 10 else "1"
 
-    search_body = {
-      "size": 50,
+    # for a more-like-this query q will have the form of _<id number>, if we see this
+    # pattern we use the alternative query form
 
+    more_like_this = {
+        "query": {
+            "more_like_this": {
+                "fields": [
+                  "mlt_tags"
+                ],
+                "docs": [
+                    {
+                        "_index": "kadist",
+                        "_type": "kadist_art_collection",
+                        "_id": q[1:]
+                    }
+                ],
+                "min_term_freq": 1,
+                "percent_terms_to_match": 0,
+                "min_doc_freq": 1
+            }
+        },
+
+        "aggregations": {
+          "worktype": {
+            "terms": {
+              "field": "worktype"
+            }
+          }
+        },
+
+        "filter": {
+        }
+    }
+
+    search_regular = {
+      "size": 50,
       "query": {
         "multi_match": {
           "query": q,
@@ -32,7 +67,8 @@ def homepage():
                       "artist_name^2",
                       "description",
                       "worktype",
-                      "artist_description"
+                      "artist_description",
+                      "id"
                      ]
         }
       },
@@ -49,6 +85,8 @@ def homepage():
       }
     }
 
+    search_body = more_like_this if q[0] == '_'  else search_regular
+
     if request.args.get('filter_field') and request.args.get('filter_value'):
       search_body['filter'] = {
         "term":{
@@ -58,15 +96,16 @@ def homepage():
 
     sr = es.search(index="kadist", body=search_body)
 
+    print json.dumps(sr, indent=2)
+
     hits = sr['hits']
     aggs = sr['aggregations']
 
     results = {
       "count": hits['total'],
-      "hits": [hit['_source'] for hit in hits['hits'] if hit['_source']['description']],
-      "hidden": len([hit for hit in hits['hits'] if not hit['_source']['description']]),
+      "hits": [hit['_source'] for hit in hits['hits']],
       "facets": {
-        "worktype": aggs['worktype']['buckets']
+        "worktype": [x for x in aggs['worktype']['buckets'] if len(x['key'].strip())>0]
       },
     }
     if 'term' in search_body['filter']:
@@ -75,7 +114,6 @@ def homepage():
   else:
     results = {
       "count": 0,
-      "hidden": 0,
       "hits": None
     }
 
@@ -91,4 +129,9 @@ def homepage():
 
 
 if __name__ == "__main__":
+  if len(sys.argv) == 2:
+    # if there's a second argument it is assumed to be a valid word vector model
+    print "please wait, loading wordvector model ..."
+    model = Word2Vec.load_word2vec_format(sys.argv[1])
+
   app.run(debug=True, host='0.0.0.0', port=5000, passthrough_errors=True)

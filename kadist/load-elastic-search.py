@@ -16,7 +16,15 @@ def load_data(index):
   doc_type = 'kadist_art_collection'
   if es.indices.exists(index=index):
     print es.indices.delete(index=index)
-  print es.indices.create(index=index)
+
+  request_body = {
+    "settings" : {
+        "number_of_shards": 1,
+        "number_of_replicas": 0
+    }
+  }
+
+  print es.indices.create(index=index, body = request_body)
 
   schema = {
         'mappings': {
@@ -24,22 +32,32 @@ def load_data(index):
             "properties" : {
               "worktype" : {
                 "type" :    "string",
+                "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "major_tags" : {
                 "type" :    "string",
+                "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "minor_tags" : {
                 "type" :    "string",
+                "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "artist_name" : {
                 "type" :    "string",
+                "term_vector" : "yes",
+                "index":    "not_analyzed"
+              },
+              "id" : {
+                "type" :    "string",
+                "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "imgurl" : {
                 "type" :    "string",
+                "stored" : "yes",
                 "index":    "no"
               }
             }
@@ -54,7 +72,10 @@ def load_data(index):
     for m in kadist:
       if 'imgurl' in m and m['imgurl']:
         m['imgurl'] = m['imgurl'].split('?')[0]
-      # first change the tags to all be simple (no synsets)
+
+      m['mlt_tags'] = ' '.join([x.replace('.','') for x in m['major_tags']+m['minor_tags']])
+      m['collection'] = 'Kadist'
+
       try:
         es.index(index=index, doc_type=doc_type, id=m['id'], body=m)
       except KeyboardInterrupt:
