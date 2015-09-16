@@ -136,7 +136,7 @@ add-on .input-group-btn > .btn {
 }
 
 #columns:hover .pin:not(:hover) {
-	opacity: 0.4;
+	opacity: 0.8;
 }
 
 @media (max-width: 960px) {

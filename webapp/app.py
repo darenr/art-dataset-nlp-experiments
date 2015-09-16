@@ -112,6 +112,8 @@ def homepage():
       },
     }
 
+    print json.dumps([x['title'] for x in results['hits']], indent=True)
+
     if 'term' in search_body['filter']:
       results['filter'] = tuple(search_body['filter']['term'].items()[0])
 

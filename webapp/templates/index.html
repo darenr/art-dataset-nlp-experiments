@@ -158,7 +158,11 @@
                     <div class="pin">
                       <h4>{{hit['title']}}</h4>
                       <img class="img" src="{{hit['imgurl']}}">
-                      <p>{{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}</p>
+                      <center>
+                        <p>{{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
+                        <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a>
+                        </p>
+                      </center>
                     </div>
                   {% endif %}
                 {% endfor %}
