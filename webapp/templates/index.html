@@ -17,7 +17,7 @@
 
 <body class="body">
 
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="navbar navbar navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -40,9 +40,13 @@
   </nav>
 
   <div class="container-fluid">
+
+    <hr/>
+
     <div class="row">
-      <div class="col-sm-3 col-md-2 sidebar ">
-        {% if results['facets'] %}
+
+      {% if results['facets'] %}
+        <div class="col-sm-3 col-md-2 sidebar ">
           {% for facet in results['facets'] %}
             <h3><span class="label label-success">{{facet}}:</span></h3>
             <ul class="nav nav-sidebar">
@@ -54,29 +58,42 @@
               {% endif %}
             </ul>
           {% endfor %}
-        {% endif %}
-      </div>
+        </div>
+      {% endif %}
 
-      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
 
         <!-- Search & results count Bar -->
         <div class="col-sm-12 search-bar">
-          <div class="panel panel-primary">
-            <div class="panel-heading">
-              {% if q %}
-                <h4>{{results['count']}} results for "{{q}}"
-                  {% if results['filter'] %}
-                    ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
-                  {% endif %}
-                </h4>
-              {% endif %}
-              <form class="form-inline" role="search">
-                <div class="input-group">
-                  <input tabindex = "1" type="text" describedby="search-label" autocomplete='off' class="form-control" id="q" name="q" value="{% if q %}{{q}}{% endif %}" placeholder="Search the Collection">
-                  <span class="input-group-addon" id="search-label"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span></span>
-                </div>
-              </form>
+          <div class="panel">
+            {% if q %}
+              <h4>{{results['count']}} results for: "{{q}}"
+                {% if results['filter'] %}
+                  ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
+                {% endif %}
+              </h4>
+            {% endif %}
+
+            {% if not q %}
+            <div class="panel">
+              <h1><img src="{{ url_for('static', filename='images/kadist_logo.png') }}" class="thumbnail"> Welcome to the Kadist Discovery Tool</h1>
+              <p>Kadist Art Foundation is a non-profit visual arts organization that believes the arts make a
+                fundamental contribution to a progressive society. Its programs actively encourage the engagement
+                of artists, often represented in its collection, with the important issues of today to promote their
+                role as cultural agents. Kadist's collections and productions reflect the global scope of contemporary
+                art, and its programs develop collaborations with like-minded artists, curators and many art
+                organizations around the world. Local programs in Kadist's hubs of Paris and San Francisco,
+                including exhibitions, public events, residencies and educational initiatives, aim at creating
+                vibrant conversations about contemporary art and ideas.</p>
             </div>
+            {% endif %}
+
+            <form class="form-inline" role="search">
+              <div class="input-group">
+                <input tabindex = "1" type="text" describedby="search-label" autocomplete='off' class="form-control" id="q" name="q" value="{% if q %}{{q}}{% endif %}" placeholder="Search the Collection">
+                <span class="input-group-addon" id="search-label"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+              </div>
+            </form>
           </div>
         </div>
         <!-- End Search & results count Bar -->
@@ -96,7 +113,7 @@
                         <div class="caption">
                           <center>
                           {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
-                          <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-bookmark" aria-hidden="true"></span></a>
+                          <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a>
                           </center>
                         </div>
                       </div>
@@ -132,8 +149,8 @@
             {% else %} <!-- else list_layout -->
               {% if hit['imgurl'] %}
                 <div class="col-sm-4 data-columns">
-                  <div class="panel panel-primary">
-                    <div class="panel-heading">
+                  <div class="panel panel-primary works">
+                    <div class="panel-heading works-heading">
                       <h4>{{hit['title']}}</h4>
                     </div>
 
@@ -141,7 +158,7 @@
                       <img class="img" width="100%" src="{{hit['imgurl']}}">
                       <center>
                         {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
-                        <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-bookmark" aria-hidden="true"></span></a>
+                        <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a>
                       </center>
                     </div>
                   </div>
