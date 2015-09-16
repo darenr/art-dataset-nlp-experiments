@@ -2,7 +2,6 @@ from flask import Flask, render_template, request
 from elasticsearch import Elasticsearch
 import json
 import sys
-from random import randint
 
 app = Flask(__name__)
 
