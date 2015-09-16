@@ -12,11 +12,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
+   <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
 </head>
 
 <body class="body">
 
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="navbar navbar navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -71,10 +72,15 @@
               {% endif %}
             </ul>
           {% endfor %}
-        {% endif %}
-      </div>
+        </div>
+      {% endif %}
 
-      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+
+        <!-- Search & results count Bar -->
+        <div class="col-sm-12 search-bar">
+          <div class="panel">
+
 
         <!-- Results Count Header Bar -->
         <div>
@@ -86,60 +92,107 @@
               {% endif %}
             </span>
           {% endif %}
+            {% if not q %}
+            <div class="panel">
+              <h1><img src="{{ url_for('static', filename='images/kadist_logo.png') }}" class="thumbnail"> Welcome to the Kadist Discovery Tool</h1>
+              <p>Kadist Art Foundation is a non-profit visual arts organization that believes the arts make a
+                fundamental contribution to a progressive society. Its programs actively encourage the engagement
+                of artists, often represented in its collection, with the important issues of today to promote their
+                role as cultural agents. Kadist's collections and productions reflect the global scope of contemporary
+                art, and its programs develop collaborations with like-minded artists, curators and many art
+                organizations around the world. Local programs in Kadist's hubs of Paris and San Francisco,
+                including exhibitions, public events, residencies and educational initiatives, aim at creating
+                vibrant conversations about contemporary art and ideas.</p>
+            </div>
+            {% endif %}
+
+            <form class="form-inline" role="search">
+              <div class="input-group">
+                <input tabindex = "1" type="text" describedby="search-label" autocomplete='off' class="form-control" id="q" name="q" value="{% if q %}{{q}}{% endif %}" placeholder="Search the Collection">
+                <span class="input-group-addon" id="search-label"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+              </div>
+            </form>
+
+            {% if q %}
+              <h4>{{results['count']}} results for: "{{q}}"
+                {% if results['filter'] %}
+                  ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
+                {% endif %}
+              </h4>
+            {% endif %}
+
+          </div>
         </div>
-        <!-- End Results Count Header Bar -->
+        <!-- End Search & results count Bar -->
 
 
         <!-- Search Results -->
         {% if results['hits'] %}
-          {% for hit in results['hits'] %}
-
-
-            </script>
-          <div class="panel panel-default">
-            <div class="panel-body">
-
-              <div class="col-sm-5">
-
-                <h2><a href="/?q=_{{hit['id']}}" title="Similar Works"><span class="glyphicon glyphicon glyphicon-th" aria-hidden="true"></span></a>&nbsp;{{hit['title']}}</h2>
-                <h3>{{hit['artist_name']}}</h3>
-                {% if hit['artist_description'] %}
-                <p> {{hit['artist_description']}}</p>
-                {% endif %}
-
-                {% if hit['major_tags'] %}
-                  {% for tag in hit['major_tags'] %}
-                  <a href="/?q={{tag}}"><span class="label label-material-indigo tags">{{tag}}</span></a>
-                  {% endfor %}
-                {% endif %}
-                {% if hit['minor_tags'] %}
-                  {% for tag in hit['minor_tags'] %}
-                    <a href="/?q={{tag}}"><span class="label label-material-purple tags">{{tag}}</span></a>
-                  {% endfor %}
-                {% endif %}
-              </div> <!-- description column -->
-
-              <div class="col-sm-7 pull-left">
-                <div class="panel panel-default">
-                  <div class="panel-body">
+          {% if results['list_layout'] %}
+            {% for hit in results['hits'] %}
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="col-sm-8">
                     {% if hit['imgurl'] %}
-                      <img class="img" width="100%" src="{{hit['imgurl']}}">
+                      <h2>{{hit['title']}}</h2>
+                      <div class="thumbnail">
+                        <img class="img" alt="{{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}" width="100%" src="{{hit['imgurl']}}">
+                        <div class="caption">
+                          <center>
+                          {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
+                          <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a>
+                          </center>
+                        </div>
+                      </div>
                     {% endif %}
-                    <p>
-                      <center>
-                        {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
-                      </center>
                       {% if hit['description'] %}
+                      <p>
                         <br/><small>{{hit['description']}}</small>
-                      {% endif %}
-                    </p>
-                  </div> <!-- panel body -->
-                </div>  <!-- panel -->
-              </div> <!-- image column -->
+                      </p>
+                    {% endif %}
 
-            </div> <!-- panel body -->
-          </div> <!-- panel -->
-          {% endfor %}
+                    {% if hit['major_tags'] %}
+                      {% for tag in hit['major_tags'] %}
+                        <a href="/?q={{tag}}"><span class="label label-primary tags">{{tag}}</span></a>
+                      {% endfor %}
+                      <br/>
+                    {% endif %}
+                    {% if hit['minor_tags'] %}
+                      {% for tag in hit['minor_tags'] %}
+                        <a href="/?q={{tag}}"><span class="label label-info tags">{{tag}}</span></a>
+                      {% endfor %}
+                    {% endif %}
+                  </div> <!-- works column -->
+
+                  <div class="col-sm-4 pull-left">
+                   <h2>{{hit['artist_name']}}</h2>
+                    {% if hit['artist_description'] %}
+                      <p> {{hit['artist_description']}}</p>
+                    {% endif %}
+                  </div> <!-- artist column -->
+
+                </div> <!-- panel body -->
+              </div> <!-- panel -->
+            {% endfor %}
+          {% else %} <!-- else list_layout -->
+            <div class="col-sm-12">
+              <div id="columns">
+                {% for hit in results['hits'] %}
+                  {% if hit['imgurl'] %}
+                    <div class="pin">
+                      <h4>{{hit['title']}}</h4>
+                      <img class="img" src="{{hit['imgurl']}}">
+                      <center>
+                        <p>{{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
+                        <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a>
+                        </p>
+                      </center>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %} <!-- list_layout -->
         {% endif %}
         <!-- Search Results -->
 
@@ -149,10 +202,11 @@
   </div> <!-- container -->
 
 
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-    <script>
+
+  <script>
     $( document ).ready(function() {
 
       $("#q").focus(function() {
@@ -166,7 +220,7 @@
       {% endif %}
 
     });
-    </script>
+  </script>
 
   </body>
   </html>

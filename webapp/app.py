@@ -18,40 +18,42 @@ def homepage():
 
     # fuzziness is allowed edit distance (ED), for words that are short we disable it, but for longer words
     # where the chance of a misspelling are increased we ED 2
+
     fuzziness = "0" if len(q) < 10 else "1"
 
     # for a more-like-this query q will have the form of _<id number>, if we see this
     # pattern we use the alternative query form
 
     more_like_this = {
-        "query": {
-            "more_like_this": {
-                "fields": [
-                  "mlt_tags"
-                ],
-                "docs": [
-                    {
-                        "_index": "kadist",
-                        "_type": "kadist_art_collection",
-                        "_id": q[1:]
-                    }
-                ],
-                "min_term_freq": 1,
-                "percent_terms_to_match": 0,
-                "min_doc_freq": 1
-            }
-        },
-
-        "aggregations": {
-          "worktype": {
-            "terms": {
-              "field": "worktype"
-            }
+      "size": 50,
+      "query": {
+          "more_like_this": {
+              "fields": [
+                "mlt_tags"
+              ],
+              "docs": [
+                  {
+                      "_index": "kadist",
+                      "_type": "kadist_art_collection",
+                      "_id": q[1:]
+                  }
+              ],
+              "min_term_freq": 1,
+              "percent_terms_to_match": 0,
+              "min_doc_freq": 1
           }
-        },
+      },
 
-        "filter": {
+      "aggregations": {
+        "worktype": {
+          "terms": {
+            "field": "worktype"
+          }
         }
+      },
+
+      "filter": {
+      }
     }
 
     search_regular = {
@@ -87,6 +89,8 @@ def homepage():
 
     search_body = more_like_this if q[0] == '_'  else search_regular
 
+    print search_body
+
     if request.args.get('filter_field') and request.args.get('filter_value'):
       search_body['filter'] = {
         "term":{
@@ -96,25 +100,27 @@ def homepage():
 
     sr = es.search(index="kadist", body=search_body)
 
-    print json.dumps(sr, indent=2)
-
     hits = sr['hits']
     aggs = sr['aggregations']
 
     results = {
       "count": hits['total'],
-      "hits": [hit['_source'] for hit in hits['hits']],
+      "list_layout": "list" in request.args,
+      "hits": [hit['_source'] for hit in hits['hits'] if hit['_source']['description']],
       "facets": {
         "worktype": [x for x in aggs['worktype']['buckets'] if len(x['key'].strip())>0]
       },
     }
+
+    print json.dumps([x['title'] for x in results['hits']], indent=True)
+
     if 'term' in search_body['filter']:
       results['filter'] = tuple(search_body['filter']['term'].items()[0])
+
 
   else:
     results = {
       "count": 0,
-      "hits": None
     }
 
   print results['count']

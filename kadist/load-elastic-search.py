@@ -4,6 +4,7 @@ import json
 import codecs
 import sys
 import datetime
+from textblob import TextBlob
 
 if len(sys.argv) != 2:
   print 'usage: <kadist.json>'
@@ -73,7 +74,13 @@ def load_data(index):
       if 'imgurl' in m and m['imgurl']:
         m['imgurl'] = m['imgurl'].split('?')[0]
 
-      m['mlt_tags'] = ' '.join([x.replace('.','') for x in m['major_tags']+m['minor_tags']])
+      if len(m['major_tags']) or len(m['minor_tags']):
+        m['mlt_tags'] = ' '.join([x.replace('.','') for x in m['major_tags']+m['minor_tags']])
+      else:
+        blob = TextBlob(' '.join([m['artist_name'], m['description']]))
+        m['mlt_tags'] = ' '.join([x for x in blob.noun_phrases if blob.noun_phrases.count(x) > 0])
+
+
       m['collection'] = 'Kadist'
 
       try:
