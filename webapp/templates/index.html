@@ -12,6 +12,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
+   <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
 </head>
 
 <body class="body">
@@ -92,43 +93,45 @@
           <div class="panel panel-default">
             <div class="panel-body">
 
-              <div class="col-sm-5">
+              <div class="col-sm-8">
 
-                <h2><a href="/?q=_{{hit['id']}}" title="Similar Works"><span class="glyphicon glyphicon glyphicon-th" aria-hidden="true"></span></a>&nbsp;{{hit['title']}}</h2>
-                <h3>{{hit['artist_name']}}</h3>
-                {% if hit['artist_description'] %}
-                <p> {{hit['artist_description']}}</p>
+                {% if hit['imgurl'] %}
+                  <h2>{{hit['title']}}</h2>
+                  <div class="thumbnail">
+                    <img class="img" alt="{{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}" width="100%" src="{{hit['imgurl']}}">
+                    <div class="caption">
+                      <center>
+                      {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
+                      <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-bookmark" aria-hidden="true"></span></a>
+                      </center>
+                    </div>
+                  </div>
+                {% endif %}
+                  {% if hit['description'] %}
+                  <p>
+                    <br/><small>{{hit['description']}}</small>
+                  </p>
                 {% endif %}
 
                 {% if hit['major_tags'] %}
                   {% for tag in hit['major_tags'] %}
-                  <a href="/?q={{tag}}"><span class="label label-material-indigo tags">{{tag}}</span></a>
+                    <a href="/?q={{tag}}"><span class="label label-primary tags">{{tag}}</span></a>
                   {% endfor %}
+                  <br/>
                 {% endif %}
                 {% if hit['minor_tags'] %}
                   {% for tag in hit['minor_tags'] %}
-                    <a href="/?q={{tag}}"><span class="label label-material-purple tags">{{tag}}</span></a>
+                    <a href="/?q={{tag}}"><span class="label label-info tags">{{tag}}</span></a>
                   {% endfor %}
                 {% endif %}
-              </div> <!-- description column -->
+              </div> <!-- works column -->
 
-              <div class="col-sm-7 pull-left">
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                    {% if hit['imgurl'] %}
-                      <img class="img" width="100%" src="{{hit['imgurl']}}">
-                    {% endif %}
-                    <p>
-                      <center>
-                        {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
-                      </center>
-                      {% if hit['description'] %}
-                        <br/><small>{{hit['description']}}</small>
-                      {% endif %}
-                    </p>
-                  </div> <!-- panel body -->
-                </div>  <!-- panel -->
-              </div> <!-- image column -->
+              <div class="col-sm-4 pull-left">
+               <h2>{{hit['artist_name']}}</h2>
+                {% if hit['artist_description'] %}
+                  <p> {{hit['artist_description']}}</p>
+                {% endif %}
+              </div> <!-- artist column -->
 
             </div> <!-- panel body -->
           </div> <!-- panel -->
