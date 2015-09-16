@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 from elasticsearch import Elasticsearch
 import json
 import sys
+from random import randint
 
 app = Flask(__name__)
 
@@ -105,18 +106,20 @@ def homepage():
 
     results = {
       "count": hits['total'],
+      "list_layout": "list" in request.args,
       "hits": [hit['_source'] for hit in hits['hits'] if hit['_source']['description']],
       "facets": {
         "worktype": [x for x in aggs['worktype']['buckets'] if len(x['key'].strip())>0]
       },
     }
+
     if 'term' in search_body['filter']:
       results['filter'] = tuple(search_body['filter']['term'].items()[0])
+
 
   else:
     results = {
       "count": 0,
-      "hits": None
     }
 
   print results['count']

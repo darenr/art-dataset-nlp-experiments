@@ -41,7 +41,7 @@
 
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-3 col-md-2 sidebar">
+      <div class="col-sm-3 col-md-2 sidebar ">
         {% if results['facets'] %}
           {% for facet in results['facets'] %}
             <h3><span class="label label-success">{{facet}}:</span></h3>
@@ -59,82 +59,95 @@
 
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-        <!-- Search Bar -->
-        <div class="search-bar">
-          <form class="form-inline" role="search">
-            <div class="input-group">
-              <input tabindex = "1" type="text" describedby="search-label" autocomplete='off' class="form-control" id="q" name="q" value="{% if q %}{{q}}{% endif %}" placeholder="Search the Collection">
-              <span class="input-group-addon" id="search-label"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span></span>
-            </div>
-          </form>
-        </div>
-        <!-- End Search Bar -->
-
-        <!-- Results Count Header Bar -->
-        <div>
-          {% if q %}
-          <h4 class="page-header">
-            <span class="pull-left">{{results['count']}} results for "{{q}}"
-              {% if results['filter'] %}
-                ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
+        <!-- Search & results count Bar -->
+        <div class="col-sm-12 search-bar">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              {% if q %}
+                <h4>{{results['count']}} results for "{{q}}"
+                  {% if results['filter'] %}
+                    ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
+                  {% endif %}
+                </h4>
               {% endif %}
-            </span>
-          {% endif %}
+              <form class="form-inline" role="search">
+                <div class="input-group">
+                  <input tabindex = "1" type="text" describedby="search-label" autocomplete='off' class="form-control" id="q" name="q" value="{% if q %}{{q}}{% endif %}" placeholder="Search the Collection">
+                  <span class="input-group-addon" id="search-label"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span></span>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
-        <!-- End Results Count Header Bar -->
+        <!-- End Search & results count Bar -->
 
 
         <!-- Search Results -->
         {% if results['hits'] %}
           {% for hit in results['hits'] %}
+            {% if results['list_layout'] %}
+              <div class="panel panel-default">
+                <div class="panel-body">
+                  <div class="col-sm-8">
+                    {% if hit['imgurl'] %}
+                      <h2>{{hit['title']}}</h2>
+                      <div class="thumbnail">
+                        <img class="img" alt="{{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}" width="100%" src="{{hit['imgurl']}}">
+                        <div class="caption">
+                          <center>
+                          {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
+                          <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-bookmark" aria-hidden="true"></span></a>
+                          </center>
+                        </div>
+                      </div>
+                    {% endif %}
+                      {% if hit['description'] %}
+                      <p>
+                        <br/><small>{{hit['description']}}</small>
+                      </p>
+                    {% endif %}
 
+                    {% if hit['major_tags'] %}
+                      {% for tag in hit['major_tags'] %}
+                        <a href="/?q={{tag}}"><span class="label label-primary tags">{{tag}}</span></a>
+                      {% endfor %}
+                      <br/>
+                    {% endif %}
+                    {% if hit['minor_tags'] %}
+                      {% for tag in hit['minor_tags'] %}
+                        <a href="/?q={{tag}}"><span class="label label-info tags">{{tag}}</span></a>
+                      {% endfor %}
+                    {% endif %}
+                  </div> <!-- works column -->
 
-            </script>
-          <div class="panel panel-default">
-            <div class="panel-body">
+                  <div class="col-sm-4 pull-left">
+                   <h2>{{hit['artist_name']}}</h2>
+                    {% if hit['artist_description'] %}
+                      <p> {{hit['artist_description']}}</p>
+                    {% endif %}
+                  </div> <!-- artist column -->
 
-              <div class="col-sm-8">
+                </div> <!-- panel body -->
+              </div> <!-- panel -->
+            {% else %} <!-- else list_layout -->
+              {% if hit['imgurl'] %}
+                <div class="col-sm-4 data-columns">
+                  <div class="panel panel-primary">
+                    <div class="panel-heading">
+                      <h4>{{hit['title']}}</h4>
+                    </div>
 
-                {% if hit['imgurl'] %}
-                  <h2>{{hit['title']}}</h2>
-                  <div class="thumbnail">
-                    <img class="img" alt="{{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}" width="100%" src="{{hit['imgurl']}}">
-                    <div class="caption">
+                    <div class="panel-body">
+                      <img class="img" width="100%" src="{{hit['imgurl']}}">
                       <center>
-                      {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
-                      <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-bookmark" aria-hidden="true"></span></a>
+                        {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
+                        <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-bookmark" aria-hidden="true"></span></a>
                       </center>
                     </div>
                   </div>
-                {% endif %}
-                  {% if hit['description'] %}
-                  <p>
-                    <br/><small>{{hit['description']}}</small>
-                  </p>
-                {% endif %}
-
-                {% if hit['major_tags'] %}
-                  {% for tag in hit['major_tags'] %}
-                    <a href="/?q={{tag}}"><span class="label label-primary tags">{{tag}}</span></a>
-                  {% endfor %}
-                  <br/>
-                {% endif %}
-                {% if hit['minor_tags'] %}
-                  {% for tag in hit['minor_tags'] %}
-                    <a href="/?q={{tag}}"><span class="label label-info tags">{{tag}}</span></a>
-                  {% endfor %}
-                {% endif %}
-              </div> <!-- works column -->
-
-              <div class="col-sm-4 pull-left">
-               <h2>{{hit['artist_name']}}</h2>
-                {% if hit['artist_description'] %}
-                  <p> {{hit['artist_description']}}</p>
-                {% endif %}
-              </div> <!-- artist column -->
-
-            </div> <!-- panel body -->
-          </div> <!-- panel -->
+                </div>
+              {% endif %}
+            {% endif %} <!-- list_layout -->
           {% endfor %}
         {% endif %}
         <!-- Search Results -->
@@ -145,10 +158,11 @@
   </div> <!-- container -->
 
 
-    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-    <script>
+
+  <script>
     $( document ).ready(function() {
 
       $("#q").focus(function() {
@@ -162,7 +176,7 @@
       {% endif %}
 
     });
-    </script>
+  </script>
 
   </body>
   </html>
