@@ -66,13 +66,7 @@
         <!-- Search & results count Bar -->
         <div class="col-sm-12 search-bar">
           <div class="panel">
-            {% if q %}
-              <h4>{{results['count']}} results for: "{{q}}"
-                {% if results['filter'] %}
-                  ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
-                {% endif %}
-              </h4>
-            {% endif %}
+
 
             {% if not q %}
             <div class="panel">
@@ -94,6 +88,15 @@
                 <span class="input-group-addon" id="search-label"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
               </div>
             </form>
+
+            {% if q %}
+              <h4>{{results['count']}} results for: "{{q}}"
+                {% if results['filter'] %}
+                  ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
+                {% endif %}
+              </h4>
+            {% endif %}
+
           </div>
         </div>
         <!-- End Search & results count Bar -->
@@ -101,8 +104,8 @@
 
         <!-- Search Results -->
         {% if results['hits'] %}
-          {% for hit in results['hits'] %}
-            {% if results['list_layout'] %}
+          {% if results['list_layout'] %}
+            {% for hit in results['hits'] %}
               <div class="panel panel-default">
                 <div class="panel-body">
                   <div class="col-sm-8">
@@ -146,26 +149,22 @@
 
                 </div> <!-- panel body -->
               </div> <!-- panel -->
-            {% else %} <!-- else list_layout -->
-              {% if hit['imgurl'] %}
-                <div class="col-sm-4 data-columns">
-                  <div class="panel panel-primary works">
-                    <div class="panel-heading works-heading">
+            {% endfor %}
+          {% else %} <!-- else list_layout -->
+            <div class="col-sm-12">
+              <div id="columns">
+                {% for hit in results['hits'] %}
+                  {% if hit['imgurl'] %}
+                    <div class="pin">
                       <h4>{{hit['title']}}</h4>
+                      <img class="img" src="{{hit['imgurl']}}">
+                      <p>{{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}</p>
                     </div>
-
-                    <div class="panel-body">
-                      <img class="img" width="100%" src="{{hit['imgurl']}}">
-                      <center>
-                        {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
-                        <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a>
-                      </center>
-                    </div>
-                  </div>
-                </div>
-              {% endif %}
-            {% endif %} <!-- list_layout -->
-          {% endfor %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %} <!-- list_layout -->
         {% endif %}
         <!-- Search Results -->
 
