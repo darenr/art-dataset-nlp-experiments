@@ -60,7 +60,12 @@ def load_data(index):
                 "type" :    "string",
                 "stored" : "yes",
                 "index":    "no"
-              }
+              },
+              "year" : {
+                "type" :    "string",
+                "term_vector" : "yes",
+                "index":    "not_analyzed"
+              },              
             }
           }
         }
