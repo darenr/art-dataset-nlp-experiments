@@ -55,23 +55,31 @@
     <div class="row main-content">
       <div class="col-sm-3 col-md-2 sidebar">
         {% if results['facets'] %}
+        <!-- <form class="target" method="POST" action="{{ url_for('homepage') }}"> -->
+        <form id="myform" class="myform" method="post" name="myform" action="msn.com">
+
           {% for facet in results['facets'] %}
             <h3><span class="label label-success">{{facet}}:</span></h3>
-            <ul class="nav nav-sidebar">
-              {% for f in results['facets'][facet] %} 
-              <div class="checkbox">                
-                  <li>
-                    <label>
-                      <input type="checkbox" name="" value=""><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a>
-                    </label>
-                  </li>                
-              </div>
-              {% endfor %}
-              {% if results['filter'] %}
-                <li><a href="/?q={{q}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></li>
-              {% endif %}
+            <ul class="nav nav-sidebar">              
+                {% for f in results['facets'][facet] %} 
+                <div class="checkbox">                
+                    <li>
+                      <label>
+                        <input type="checkbox" name="{{facet}}" value="{{f['key']}}"><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a>
+                      </label>
+                    </li>                
+                </div>
+                {% endfor %}
+
+
+                {% if results['filter'] %}
+                  <li><a href="/?q={{q}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></li>
+                {% endif %}             
             </ul>
-          {% endfor %}
+          {% endfor %}  
+
+          <button id="multi-submit" type="button" class="btn btn-default">Submit</button>
+        </form>                 
         </div>
       {% endif %}
 
@@ -106,12 +114,15 @@
             </div>
             {% endif %}
 
+
+          <div class="search-bar">
             <form class="form-inline" role="search">
               <div class="input-group">
                 <input tabindex = "1" type="text" describedby="search-label" autocomplete='off' class="form-control" id="q" name="q" value="{% if q %}{{q}}{% endif %}" placeholder="Search the Collection">
                 <span class="input-group-addon" id="search-label"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
               </div>
             </form>
+          </div>
 
             {% if q %}
               <h4>{{results['count']}} results for: "{{q}}"
@@ -204,7 +215,7 @@
 
   <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-
+  <script src="{{ url_for('static', filename='js/multifacet.js') }}"></script>
 
   <script>
     $( document ).ready(function() {

@@ -1,5 +1,20 @@
 [
   {
+    "artist_description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum", 
+    "artist_name": "Foo Bar", 
+    "description": "", 
+    "dimensions": "", 
+    "id": 999, 
+    "imgurl": "http://www.kadist.org/sites/default/files/styles/large/public/works/michelle_handelman_dorianportrait_copy.jpg?itok=5t7Z5dcx", 
+    "major_tags": [], 
+    "minor_tags": [], 
+    "technique": "", 
+    "title": "Test Title", 
+    "worktype": "Video", 
+    "year": 2009,
+    "collection": "Paris"
+  }, 
+  {
     "artist_description": "", 
     "artist_name": "Michelle Handelman", 
     "description": "", 
