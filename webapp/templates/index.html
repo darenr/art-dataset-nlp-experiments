@@ -114,7 +114,7 @@
                           </div>
                         </div>
                       {% endif %}
-                        {% if hit['description'] %}
+                      {% if hit['description'] %}
                         <p>
                           <br/><small>{{hit['description']}}</small>
                         </p>
@@ -144,23 +144,51 @@
                 </div> <!-- panel -->
               {% endfor %}
             {% else %} <!-- else list_layout -->
-              <div>
-                <div id="columns">
+              <div id="columns">
                   {% for hit in results['hits'] %}
                     {% if hit['imgurl'] %}
                       <div class="pin">
-                        <h4>{{hit['title']}}</h4>
                         <img class="img" src="{{hit['imgurl']}}">
                         <center>
-                          <p>{{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
+                          <h4>{{hit['title']}}</h4>
+                          <p><a href="/?q={{hit['artist_name']}}">{{hit['artist_name']}}</a>{% if hit['year'] %}, <a href="/?q={{hit['year']}}">{{hit['year']}}</a>{% endif %}
                           <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a>
                           </p>
                         </center>
+                        <div class="details">
+                          <hr/>
+                          {% if hit['description'] %}
+                            <h4>Works Description</h4>
+                            <p>
+                              {% if hit['worktype'] %}
+                                <h5>{{hit['worktype']}}</h5>
+                              {% endif %}
+                              {{hit['description']}}
+                            </p>
+                          {% endif %}
+
+                          {% if hit['artist_name'] and hit['artist_description'] %}
+                            <a href="/?q={{hit['artist_name']}}"><h4>{{hit['artist_name']}}</h4></a>
+                            <p>
+                              {{hit['artist_description']}}
+                            </p>
+                          {% endif %}
+
+                          {% if hit['major_tags'] %}
+                            <h4>Tags</h4>
+                            {% for tag in hit['major_tags'] %}
+                              <a href="/?q={{tag}}"><span class="label label-primary tags">{{tag}}</span></a>
+                            {% endfor %}
+
+                            {% for tag in hit['minor_tags'] %}
+                              <a href="/?q={{tag}}"><span class="label label-info tags">{{tag}}</span></a>
+                            {% endfor %}
+                          {% endif %}
+                        </div>
                       </div>
                     {% endif %}
                   {% endfor %}
                 </div>
-              </div>
             {% endif %} <!-- list_layout -->
           </article>
         {% endif %}
@@ -172,23 +200,45 @@
   </div> <!-- container -->
 
 
-  <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+  <script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
+  <script src="{{ url_for('static', filename='js/masonry.pkgd.min.js') }}" type="text/javascript"></script>
+  <script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}" type="text/javascript"></script>
 
   <script>
     $( document ).ready(function() {
 
-      $("#q").focus(function() {
-        $(this).select();
+      $("#q").focus();
+      $("#q").select();
+
+      $('#columns').masonry({
+        columnWidth: 125,
+        "gutter": 10,
+        itemSelector: '.pin'
       });
 
-      $(".main").scrollTop();
+      $('#columns').imagesLoaded(function() {
+        $('#columns').masonry('layout');
+      });
 
-      {% if not results['hits'] %}
-        $("#q").focus();
-      {% endif %}
-
+      $(".pin").on('click', function() {
+          var state = $(this).data('state');
+          if ( state ) {
+            $(this).removeClass("resize")
+            $(this).find(".details").slideToggle('fast', function() {
+              $('#columns').masonry();
+            });
+            state = false;
+          }else{
+            $(this).addClass("resize")
+            $(this).find(".details").slideToggle('fast', function() {
+              $('#columns').masonry();
+            });
+            state = true;
+          }
+          $(this).data('state', state);
+      });
     });
   </script>
 
