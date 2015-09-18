@@ -84,7 +84,7 @@
           </form>
 
           {% if q %}
-            <p class="search-result-header">{{results['count']}} results ({{results['took']}} seconds)
+            <p class="search-result-header"><span class="label label-primary label-as-badge">{{results['count']}} results</span>&nbsp;({{results['took']}} seconds)
               {% if results['filter'] %}
                 ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
               {% endif %}
@@ -155,7 +155,7 @@
                           <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a>
                           </p>
                         </center>
-                        <div class="details">
+                          <div class="details">
                           <hr/>
                           {% if hit['description'] %}
                             <h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;Works Description</h4>
@@ -174,7 +174,7 @@
                             </p>
                           {% endif %}
 
-                          {% if hit['major_tags'] %}
+                          {% if hit['major_tags'] or hit['minor_tags'] %}
                             <h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;Tags</h4>
                             {% for tag in hit['major_tags'] %}
                               <a href="/?q={{tag}}"><span class="label label-primary tags">{{tag}}</span></a>
@@ -213,8 +213,8 @@
       $("#q").select();
 
       $('#columns').masonry({
-        columnWidth: 130,
-        gutter: 5,
+        columnWidth: 250,
+        gutter: 20,
         itemSelector: '.pin'
       });
 
@@ -223,6 +223,7 @@
       });
 
       $(".pin").on('click', function() {
+          //$('.pin').removeClass("resize").find('.details').hide("fast");
           var state = $(this).data('state');
           if ( state ) {
             $(this).removeClass("resize")
@@ -230,13 +231,17 @@
               $('#columns').masonry('layout');
             });
             state = false;
-          }else{
+          } else {
+            $('html, body').animate({
+              scrollTop: $(this).offset().top - 20
+            }, 'slow');
             if($('#columns').width() > 768) {
               $(this).addClass("resize")
             }
             $(this).find(".details").slideToggle('fast', function() {
               $('#columns').masonry('layout');
             });
+
             state = true;
           }
           $(this).data('state', state);

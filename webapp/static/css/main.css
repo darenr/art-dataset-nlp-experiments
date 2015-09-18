@@ -71,6 +71,10 @@ body {
 #q {
   font-size:17px;
   line-height: 1.2;
+  border-color: none;
+  box-shadow: none;
+  -webkit-box-shadow: none;
+  outline: none;
 }
 
 .search-result-header {
@@ -119,5 +123,8 @@ body {
 	width: 500px;
 }
 
+.label-as-badge {
+    border-radius: 1em;
+}
 
 
