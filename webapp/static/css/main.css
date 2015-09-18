@@ -78,6 +78,7 @@ body {
 }
 
 .search-result-header {
+  font-size: 1.2em;
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -123,8 +124,5 @@ body {
 	width: 500px;
 }
 
-.label-as-badge {
-    border-radius: 1em;
-}
 
 

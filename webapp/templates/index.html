@@ -50,7 +50,7 @@
       {% if results['facets'] %}
         <div class="col-sm-3 col-md-2 sidebar ">
           {% for facet in results['facets'] %}
-            <h3><span class="label label-success">{{facet}}:</span></h3>
+            <h3><span class="label label-default">{{facet}}:</span></h3>
             <ul class="nav nav-sidebar">
               {% for f in results['facets'][facet] %}
                 <li><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></li>
@@ -88,10 +88,12 @@
           </form>
 
           {% if q %}
-            <p class="search-result-header"><span class="label label-primary label-as-badge">{{results['count']}} results&nbsp;({{results['took']}} seconds)</span>
-              {% if results['filter'] %}
-                ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
-              {% endif %}
+            <p class="search-result-header">
+                {{results['count']}} results
+                {% if results['filter'] %}
+                  ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
+                {% endif %}
+                &nbsp;({{results['took']}} seconds)
             </p>
           {% endif %}
         </div>
@@ -226,7 +228,6 @@
       });
 
       $(".pin").on('click', function() {
-;
 
           var el = $(this);
 
