@@ -1,15 +1,12 @@
 #TODO List
 
 - use http://bartaz.github.io/sandbox.js/jquery.highlight.html when q is not None on all text fields
-- move the search bar into the nav bar
 - add artist name as a facet (and other categorical types)
 - try on other browsers
 - if q is a synset we need to NOT do fuzzy search
 - "taboo" only matches 2 works, word2vec should expand this to include the gay/lesbian works too,
   an example of their power of expansion
 - term expansion: for every major/minor tag create es synonyms, then weight them in main query
-- change layout to image-first pinterest like responsive layout
-- import imdb as a collection
 - figure out more-like-this query on tags only 
 - better than MLT is to use disjunctive filtered OR
 - 
