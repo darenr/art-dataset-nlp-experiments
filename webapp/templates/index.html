@@ -12,7 +12,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
-   <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+  <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+
 </head>
 
 <body class="body">
@@ -84,7 +88,7 @@
           </form>
 
           {% if q %}
-            <p class="search-result-header"><span class="label label-primary label-as-badge">{{results['count']}} results</span>&nbsp;({{results['took']}} seconds)
+            <p class="search-result-header"><span class="label label-primary label-as-badge">{{results['count']}} results&nbsp;({{results['took']}} seconds)</span>
               {% if results['filter'] %}
                 ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
               {% endif %}
@@ -194,7 +198,6 @@
         {% endif %}
         <!-- Search Results -->
 
-
       </div> <!-- main -->
     </div> <!-- row -->
   </div> <!-- container -->
@@ -223,28 +226,25 @@
       });
 
       $(".pin").on('click', function() {
-          //$('.pin').removeClass("resize").find('.details').hide("fast");
-          var state = $(this).data('state');
-          if ( state ) {
-            $(this).removeClass("resize")
-            $(this).find(".details").slideToggle('fast', function() {
-              $('#columns').masonry('layout');
-            });
-            state = false;
-          } else {
-            $('html, body').animate({
-              scrollTop: $(this).offset().top - 20
-            }, 'slow');
-            if($('#columns').width() > 768) {
-              $(this).addClass("resize")
-            }
-            $(this).find(".details").slideToggle('fast', function() {
-              $('#columns').masonry('layout');
-            });
+;
 
-            state = true;
-          }
-          $(this).data('state', state);
+          var el = $(this);
+
+          $(this).find(".details").slideToggle('fast', function(deets) {
+            if($(this).is(':hidden')) {
+              el.removeClass("resize")
+            } else {
+              if($('#columns').width() > 768) {
+                el.addClass("resize")
+                $('html, body').animate({
+                  scrollTop: el.offset().top - 20
+                }, 'slow')
+              }
+            }
+            $('.pin').not(el).removeClass("resize").find('.details').hide("fast");
+            $('#columns').masonry('layout');
+          });
+
       });
     });
   </script>
