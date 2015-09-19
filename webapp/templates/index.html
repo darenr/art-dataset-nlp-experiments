@@ -17,6 +17,12 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
 
 
+  <script>
+    function formatStr(s) {
+      return s.replace('_', ' ').replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+  </script>
+
 </head>
 
 <body class="body">
@@ -48,9 +54,9 @@
     <div class="row">
 
       {% if results['facets'] %}
-        <div class="col-sm-3 col-md-2 sidebar ">
+        <div class="col-sm-4 col-md-3 sidebar ">
           {% for facet in results['facets'] %}
-            <h3><span class="label label-default">{{facet}}:</span></h3>
+            <h3><span class="label label-default"><script>document.write(formatStr('{{facet}}'))</script>:</span></h3>
             <ul class="nav nav-sidebar">
               {% for f in results['facets'][facet] %}
                 <li><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></li>
@@ -63,7 +69,7 @@
         </div>
       {% endif %}
 
-      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2">
+      <div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3">
 
         <!-- Search & results count Bar -->
         <div>
@@ -80,7 +86,8 @@
 
           <form role="search" method="get" class="search-form">
             <div class="input-group full-width">
-              <input type="search" name="q" id="q" value="{% if q %}{{q}}{% endif %}" autocomplete="off" class="search-field form-control" placeholder="Search">
+              <input type="search" name="q" id="q" value="{% if q %}{{q}}{% endif %}" autocomplete="off" autocapitalize="off"
+                autocorrect="off" class="search-field form-control" placeholder="Search">
               <span class="input-group-btn">
                 <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
               </span>
@@ -103,99 +110,51 @@
         <!-- Search Results -->
         {% if results['hits'] %}
           <article>
-            {% if results['list_layout'] %}
-              {% for hit in results['hits'] %}
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                    <div class="col-sm-8">
-                      {% if hit['imgurl'] %}
-                        <h2>{{hit['title']}}</h2>
-                        <div class="thumbnail">
-                          <img class="img" alt="{{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}" width="100%" src="{{hit['imgurl']}}">
-                          <div class="caption">
-                            <center>
-                            {{hit['artist_name']}}{% if hit['year'] %}, {{hit['year']}}{% endif %}, {{hit['worktype']}}
-                            <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a>
-                            </center>
-                          </div>
-                        </div>
-                      {% endif %}
-                      {% if hit['description'] %}
-                        <p>
-                          <br/><small>{{hit['description']}}</small>
+            <div id="columns">
+                {% for hit in results['hits'] %}
+                  {% if hit['imgurl'] %}
+                    <div class="pin">
+                      <img class="img" src="{{hit['imgurl']}}">
+                      <center>
+                        <h4>{{hit['title']}}</h4>
+                        <p><a href="/?q={{hit['artist_name']}}">{{hit['artist_name']}}</a>{% if hit['year'] %}, <a href="/?q={{hit['year']}}">{{hit['year']}}</a>{% endif %}
+                        <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a>
                         </p>
-                      {% endif %}
-
-                      {% if hit['major_tags'] %}
-                        {% for tag in hit['major_tags'] %}
-                          <a href="/?q={{tag}}"><span class="label label-primary tags">{{tag}}</span></a>
-                        {% endfor %}
-                        <br/>
-                      {% endif %}
-                      {% if hit['minor_tags'] %}
-                        {% for tag in hit['minor_tags'] %}
-                          <a href="/?q={{tag}}"><span class="label label-info tags">{{tag}}</span></a>
-                        {% endfor %}
-                      {% endif %}
-                    </div> <!-- works column -->
-
-                    <div class="col-sm-4 pull-left">
-                     <h2>{{hit['artist_name']}}</h2>
-                      {% if hit['artist_description'] %}
-                        <p> {{hit['artist_description']}}</p>
-                      {% endif %}
-                    </div> <!-- artist column -->
-
-                  </div> <!-- panel body -->
-                </div> <!-- panel -->
-              {% endfor %}
-            {% else %} <!-- else list_layout -->
-              <div id="columns">
-                  {% for hit in results['hits'] %}
-                    {% if hit['imgurl'] %}
-                      <div class="pin">
-                        <img class="img" src="{{hit['imgurl']}}">
-                        <center>
-                          <h4>{{hit['title']}}</h4>
-                          <p><a href="/?q={{hit['artist_name']}}">{{hit['artist_name']}}</a>{% if hit['year'] %}, <a href="/?q={{hit['year']}}">{{hit['year']}}</a>{% endif %}
-                          <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a>
+                      </center>
+                        <div class="details">
+                        <hr/>
+                        {% if hit['description'] %}
+                          <h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;Works Description</h4>
+                          <p>
+                            {% if hit['worktype'] %}
+                              <a href="/?q={{hit['worktype']}}"><h5>{{hit['worktype']}}</h5></a>
+                            {% endif %}
+                            {{hit['description']}}
                           </p>
-                        </center>
-                          <div class="details">
-                          <hr/>
-                          {% if hit['description'] %}
-                            <h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;Works Description</h4>
-                            <p>
-                              {% if hit['worktype'] %}
-                                <a href="/?q={{hit['worktype']}}"><h5>{{hit['worktype']}}</h5></a>
-                              {% endif %}
-                              {{hit['description']}}
-                            </p>
-                          {% endif %}
+                        {% endif %}
 
-                          {% if hit['artist_name'] and hit['artist_description'] %}
-                            <a href="/?q={{hit['artist_name']}}"><h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;{{hit['artist_name']}}</h4></a>
-                            <p>
-                              {{hit['artist_description']}}
-                            </p>
-                          {% endif %}
+                        {% if hit['artist_name'] and hit['artist_description'] %}
+                          <a href="/?q={{hit['artist_name']}}"><h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;{{hit['artist_name']}}</h4></a>
+                          <p>
+                            {{hit['artist_description']}}
+                          </p>
+                        {% endif %}
 
-                          {% if hit['major_tags'] or hit['minor_tags'] %}
-                            <h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;Tags</h4>
-                            {% for tag in hit['major_tags'] %}
-                              <a href="/?q={{tag}}"><span class="label label-primary tags">{{tag}}</span></a>
-                            {% endfor %}
+                        {% if hit['major_tags'] or hit['minor_tags'] %}
+                          <h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;Tags</h4>
+                          {% for tag in hit['major_tags'] %}
+                            <a href="/?q={{tag}}"><span class="label label-primary tags">{{tag}}</span></a>
+                          {% endfor %}
 
-                            {% for tag in hit['minor_tags'] %}
-                              <a href="/?q={{tag}}"><span class="label label-info tags">{{tag}}</span></a>
-                            {% endfor %}
-                          {% endif %}
-                        </div>
+                          {% for tag in hit['minor_tags'] %}
+                            <a href="/?q={{tag}}"><span class="label label-info tags">{{tag}}</span></a>
+                          {% endfor %}
+                        {% endif %}
                       </div>
-                    {% endif %}
-                  {% endfor %}
-                </div>
-            {% endif %} <!-- list_layout -->
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div> <!-- columns -->
           </article>
         {% endif %}
         <!-- Search Results -->
@@ -212,13 +171,16 @@
   <script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}" type="text/javascript"></script>
 
   <script>
+
+
+
     $( document ).ready(function() {
 
       $("#q").focus();
       $("#q").select();
 
       $('#columns').masonry({
-        columnWidth: 250,
+        columnWidth: 235,
         gutter: 20,
         itemSelector: '.pin'
       });
@@ -235,12 +197,13 @@
             if($(this).is(':hidden')) {
               el.removeClass("resize")
             } else {
-              if($('#columns').width() > 768) {
-                el.addClass("resize")
-                $('html, body').animate({
-                  scrollTop: el.offset().top - 20
-                }, 'slow')
+              if($('#columns').width() > 500) {
+                el.addClass("resize");
               }
+
+              $('html, body').animate({
+                scrollTop: el.offset().top - 20
+              }, 'slow');
             }
             $('.pin').not(el).removeClass("resize").find('.details').hide("fast");
             $('#columns').masonry('layout');

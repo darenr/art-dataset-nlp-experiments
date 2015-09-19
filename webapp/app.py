@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Markup
 from elasticsearch import Elasticsearch
 import json
 import sys
@@ -44,6 +44,16 @@ def homepage():
           }
       },
 
+      "highlight" : {
+        "pre_tags" : ["<em>"],
+        "post_tags" : ["</em>"],
+        "fields" : {
+            "description" : {},
+            "artist_description" : {},
+            "title" : {}
+        }
+      },
+
       "aggregations": {
         "worktype": {
           "terms": {
@@ -75,21 +85,44 @@ def homepage():
         }
       },
 
-      "aggregations": {
-        "worktype": {
-          "terms": {
-            "field": "worktype"
-          }
+      "highlight" : {
+        "pre_tags" : ["<em>"],
+        "post_tags" : ["</em>"],
+        "fields" : {
+            "description" : {},
+            "artist_description" : {},
+            "title" : {}
         }
       },
 
+      "aggregations": {
+        "worktype": {
+          "terms": {
+            "field": "worktype",
+          },
+        },
+        "collection": {
+          "terms": {
+            "field": "collection",
+          }
+        },
+        "decade": {
+          "terms": {
+            "field": "decade",
+          }
+        }
+        ,
+        "artist_name": {
+          "terms": {
+            "field": "artist_name",
+          }
+        }
+      },
       "filter": {
       }
     }
 
     search_body = more_like_this if q[0] == '_'  else search_regular
-
-    print search_body
 
     if request.args.get('filter_field') and request.args.get('filter_value'):
       search_body['filter'] = {
@@ -103,17 +136,33 @@ def homepage():
     hits = sr['hits']
     aggs = sr['aggregations']
 
+    # copy the highlighter results over the regular ones (when present)
+    for hit in hits['hits']:
+      if 'highlight' in hit:
+        if 'description' in hit['highlight']:
+          hit['_source']['description'] = Markup(hit['highlight']['description'][0])
+        if 'artist_description' in hit['highlight']:
+          hit['_source']['artist_description'] = Markup(hit['highlight']['artist_description'][0])
+        if 'title' in hit['highlight']:
+          hit['_source']['title'] = Markup(hit['highlight']['title'][0])
+
     results = {
       "count": hits['total'],
       "took": sr['took']/1000.0,
       "list_layout": "list" in request.args,
       "hits": [hit['_source'] for hit in hits['hits'] if hit['_source']['description']],
       "facets": {
-        "worktype": [x for x in aggs['worktype']['buckets'] if len(x['key'].strip())>0]
+        "worktype": [x for x in aggs['worktype']['buckets'] if len(x['key'])>1],
+        "collection": [x for x in aggs['collection']['buckets'] if len(x['key'])>1],
+        "decade": [x for x in aggs['decade']['buckets'] if len(x['key'])>1],
+        "artist_name": [x for x in aggs['artist_name']['buckets'] if len(x['key'])>1]
       },
     }
 
-    print json.dumps([x['title'] for x in results['hits']], indent=True)
+    # "fix up" tags that are in wordnet form
+    for hit in results['hits']:
+      hit['major_tags'] = [x.split('.')[0] for x in hit['major_tags']]
+      hit['minor_tags'] = [x.split('.')[0] for x in hit['minor_tags']]
 
     if 'term' in search_body['filter']:
       results['filter'] = tuple(search_body['filter']['term'].items()[0])
@@ -124,7 +173,7 @@ def homepage():
       "count": 0,
     }
 
-  print results['count']
+  print results
 
   try:
     return render_template("index.html",
