@@ -21,6 +21,40 @@ def homepage():
 
     fuzziness = "0" if len(q) < 10 else "1"
 
+    qry_aggs =  {
+      "worktype": {
+        "terms": {
+          "field": "worktype",
+        },
+      },
+      "collection": {
+        "terms": {
+          "field": "collection",
+        }
+      },
+      "decade": {
+        "terms": {
+          "field": "decade",
+        }
+      }
+      ,
+      "artist_name": {
+        "terms": {
+          "field": "artist_name",
+        }
+      }
+    }
+
+    qry_highlight = {
+      "pre_tags" : ["<em>"],
+      "post_tags" : ["</em>"],
+      "fields" : {
+          "description" : {},
+          "artist_description" : {},
+          "title" : {}
+        }
+    }
+
     # for a more-like-this query q will have the form of _<id number>, if we see this
     # pattern we use the alternative query form
 
@@ -43,25 +77,8 @@ def homepage():
               "min_doc_freq": 1
           }
       },
-
-      "highlight" : {
-        "pre_tags" : ["<em>"],
-        "post_tags" : ["</em>"],
-        "fields" : {
-            "description" : {},
-            "artist_description" : {},
-            "title" : {}
-        }
-      },
-
-      "aggregations": {
-        "worktype": {
-          "terms": {
-            "field": "worktype"
-          }
-        }
-      },
-
+      "highlight" : qry_highlight,
+      "aggregations": qry_aggs,
       "filter": {
       }
     }
@@ -84,40 +101,8 @@ def homepage():
                      ]
         }
       },
-
-      "highlight" : {
-        "pre_tags" : ["<em>"],
-        "post_tags" : ["</em>"],
-        "fields" : {
-            "description" : {},
-            "artist_description" : {},
-            "title" : {}
-        }
-      },
-
-      "aggregations": {
-        "worktype": {
-          "terms": {
-            "field": "worktype",
-          },
-        },
-        "collection": {
-          "terms": {
-            "field": "collection",
-          }
-        },
-        "decade": {
-          "terms": {
-            "field": "decade",
-          }
-        }
-        ,
-        "artist_name": {
-          "terms": {
-            "field": "artist_name",
-          }
-        }
-      },
+      "highlight" : qry_highlight,
+      "aggregations": qry_aggs,
       "filter": {
       }
     }
