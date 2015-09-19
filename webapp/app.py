@@ -134,7 +134,6 @@ def homepage():
     results = {
       "count": hits['total'],
       "took": sr['took']/1000.0,
-      "list_layout": "list" in request.args,
       "hits": [hit['_source'] for hit in hits['hits'] if hit['_source']['description']],
       "facets": {
         "worktype": [x for x in aggs['worktype']['buckets'] if len(x['key'])>1],
