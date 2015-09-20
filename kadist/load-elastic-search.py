@@ -3,7 +3,6 @@ from elasticsearch import Elasticsearch
 import json
 import codecs
 import sys
-import datetime
 from textblob import TextBlob, Word
 
 if len(sys.argv) != 2:

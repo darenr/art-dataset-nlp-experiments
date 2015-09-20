@@ -131,6 +131,7 @@ def homepage():
         if 'title' in hit['highlight']:
           hit['_source']['title'] = Markup(hit['highlight']['title'][0])
 
+
     results = {
       "count": hits['total'],
       "took": sr['took']/1000.0,
@@ -142,11 +143,6 @@ def homepage():
         "artist_name": [x for x in aggs['artist_name']['buckets'] if len(x['key'])>1]
       },
     }
-
-    # "fix up" tags that are in wordnet form
-    for hit in results['hits']:
-      hit['major_tags'] = [x.split('.')[0] for x in hit['major_tags']]
-      hit['minor_tags'] = [x.split('.')[0] for x in hit['minor_tags']]
 
     if 'term' in search_body['filter']:
       results['filter'] = tuple(search_body['filter']['term'].items()[0])
