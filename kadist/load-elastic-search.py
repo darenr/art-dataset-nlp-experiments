@@ -3,8 +3,7 @@ from elasticsearch import Elasticsearch
 import json
 import codecs
 import sys
-import datetime
-from textblob import TextBlob
+from textblob import TextBlob, Word
 
 if len(sys.argv) != 2:
   print 'usage: <kadist.json>'
@@ -32,34 +31,56 @@ def load_data(index):
           doc_type: {
             "properties" : {
               "worktype" : {
+                "store":  "true",
+                "type" :    "string",
+                "term_vector" : "yes",
+                "index":    "not_analyzed"
+              },
+              "collection" : {
+                "store":  "true",
+                "type" :    "string",
+                "term_vector" : "yes",
+                "index":    "not_analyzed"
+              },
+              "decade" : {
+                "store":  "true",
                 "type" :    "string",
                 "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "major_tags" : {
+                "store":  "true",
                 "type" :    "string",
                 "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "minor_tags" : {
+                "store":  "true",
                 "type" :    "string",
                 "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "artist_name" : {
+                "store":  "true",
                 "type" :    "string",
                 "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "id" : {
+                "store":  "true",
                 "type" :    "string",
                 "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "imgurl" : {
+                "store":  "true",
                 "type" :    "string",
                 "stored" : "yes",
                 "index":    "no"
+              },
+              "description": {
+                "store":  "true",
+                "type" :    "string"
               }
             }
           }
@@ -80,8 +101,8 @@ def load_data(index):
         blob = TextBlob(' '.join([m['artist_name'], m['description']]))
         m['mlt_tags'] = ' '.join([x for x in blob.noun_phrases if blob.noun_phrases.count(x) > 0])
 
-
       m['collection'] = 'Kadist'
+      m['decade'] = int(m['year'] / 10)*10
 
       try:
         es.index(index=index, doc_type=doc_type, id=m['id'], body=m)

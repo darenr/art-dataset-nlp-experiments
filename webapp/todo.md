@@ -1,6 +1,6 @@
 #TODO List
 
-- use http://bartaz.github.io/sandbox.js/jquery.highlight.html when q is not None on all text fields
+- use http://leaverou.github.io/awesomplete/ seed with artist names and works titles
 - add artist name as a facet (and other categorical types)
 - try on other browsers
 - if q is a synset we need to NOT do fuzzy search
@@ -38,3 +38,37 @@
   script.inline: on
   script.indexed: on
   ```
+- alternative, pre-compute tag hypernyms and store in results, then query becomes an 
+  OR of the current work's tag's hypernyms. Eg. if this work has the tag "war.n.01" the hypernym
+  Synset('military_action.n.01') is common to:
+  [Synset('amphibious_landing.n.01'), 
+   Synset('battle.n.01'), 
+   Synset('blockade.n.01'), 
+   Synset('defense.n.01'), 
+   Synset('electronic_warfare.n.01'), 
+   Synset('police_action.n.01'), 
+   Synset('resistance.n.04'), 
+   Synset('saber_rattling.n.01'), 
+   Synset('sortie.n.01'), 
+   Synset('war.n.01')]
+   
+   hence a work that is tagged with battle.n.01 will also match the search. When multiple tags are 
+   involved, the query becomes an OR to bias towards the most matching. This is a filter query, so 
+   relevance can be superimposed on top if required.
+   
+  
+  ```
+  {
+    "filtered" : {
+        "query" : {
+        "filter" : {
+            "or" : [
+                {
+                    "term" : { "hypernym" : "amphibious_landing.n.01" }
+                },
+                ...
+            ]
+        }
+    }
+}
+```
