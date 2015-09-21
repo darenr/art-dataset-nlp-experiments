@@ -62,7 +62,7 @@
             <h3><span class="label label-default"><script>document.write(formatFacet('{{facet}}'))</script>:</span></h3>
             <ul class="nav nav-sidebar">
               {% for f in results['facets'][facet] %}
-                <li><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></li>
+                <li><input type="checkbox" name="{{facet}}" value="{{f['key']}}"><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></input></li>
               {% endfor %}
               {% if results['filter'] %}
                 <li><a href="/?q={{q}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></li>
