@@ -7,8 +7,12 @@ app = Flask(__name__)
 
 es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
 
-@app.route('/')
+@app.route('/', methods=["GET", "POST"])
 def homepage():
+  if request.method == 'POST':    
+    formData = request.values 
+    print formData   
+  
   title = "Kadist"
 
   q = request.args.get('q')
