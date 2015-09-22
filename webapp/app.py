@@ -118,7 +118,7 @@ def homepage():
         }
       }   
 
-    # Multifacet Search TODO: use list comprehension
+    # TODO: use list comprehension
     if request.method == 'POST':      
       formData = request.values      
 

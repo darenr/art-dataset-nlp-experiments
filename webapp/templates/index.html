@@ -58,13 +58,13 @@
 
       {% if results['facets'] %}
         <div class="col-sm-4 col-md-3 sidebar ">
-          <form id="multi-facet" method="post" action="/?q={{q}}" >            
+          <form id="filter-section" method="post" action="/?q={{q}}" >            
           {% for facet in results['facets'] %}
-            <h3><span class="label label-default"><script>document.write(formatFacet('{{facet}}'))</script>:</span></h3>
+            <h3 class="title"><script>document.write(formatFacet('{{facet}}'))</script></h3>
             <ul class="nav nav-sidebar">
               
                 {% for f in results['facets'][facet] %}
-                <div class="checkbox"> 
+                <div class="checkbox-primary"> 
                   <li>
                     <label>
                       <input type="checkbox" name="{{facet}}" value="{{f['key']}}"><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></input>
@@ -77,7 +77,7 @@
                 {% endif %}                                              
             </ul>
           {% endfor %}
-            <input type="submit" value="Submit">
+            <input class="btn btn-primary btn-sm" type="submit" value="Filter">
           </form>
         </div>
       {% endif %}
