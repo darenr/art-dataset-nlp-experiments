@@ -65,3 +65,7 @@ model = Word2Vec.load_word2vec_format(model_path, binary=True)
 ```
 (or remove binary for non binary models)
 
+
+## LSI
+LSI provides a way to expand terms, synonyms, hyper/hyponyms, experiment with
+LSI and pyLDAvis for visualization
