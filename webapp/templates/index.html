@@ -58,7 +58,7 @@
 
       {% if results['facets'] %}
         <div class="col-sm-4 col-md-3 sidebar ">
-          <form id="multi-facet">
+          <form id="multi-facet" method="post" action="/?q={{q}}" >            
           {% for facet in results['facets'] %}
             <h3><span class="label label-default"><script>document.write(formatFacet('{{facet}}'))</script>:</span></h3>
             <ul class="nav nav-sidebar">
@@ -77,7 +77,7 @@
                 {% endif %}                                              
             </ul>
           {% endfor %}
-            <input type="submit" value="Submit" id="submit">
+            <input type="submit" value="Submit">
           </form>
         </div>
       {% endif %}

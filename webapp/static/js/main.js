@@ -1,5 +1,6 @@
 $(function() {
 	$('#submit').on('click', function(e) {
+		console.log('clicked!')
 		e.preventDefault();				
 
 		$.ajax({

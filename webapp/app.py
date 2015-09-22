@@ -8,16 +8,14 @@ app = Flask(__name__)
 es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
 
 @app.route('/', methods=["GET", "POST"])
-def homepage():
-  if request.method == 'POST':    
-    formData = request.values 
-    print formData   
-  
+def homepage():  
+
   title = "Kadist"
 
   q = request.args.get('q')
 
   if q and len(q.strip()):
+    
     q = q.strip()
 
     # fuzziness is allowed edit distance (ED), for words that are short we disable it, but for longer words
@@ -118,7 +116,20 @@ def homepage():
         "term":{
           request.args.get('filter_field'): request.args.get('filter_value')
         }
-      }
+      }   
+
+    # Multifacet Search TODO: use list comprehension
+    if request.method == 'POST':      
+      formData = request.values      
+
+      term = {}
+      for filter_field in formData.keys():         
+        filter_value = []
+        for value in formData.getlist(filter_field):
+          filter_value.append(value)    
+        if filter_field != 'q':  
+          term[filter_field] = filter_value          
+      search_body['filter'] = { "and": [ { "terms": term } ] }      
 
     sr = es.search(index="kadist", body=search_body)
 
@@ -157,7 +168,7 @@ def homepage():
       "count": 0,
     }
 
-  print results
+  # print results
 
   try:
     return render_template("index.html",
