@@ -127,3 +127,20 @@ em {
     font-style:normal;
 }
 
+h3.title {
+  margin-bottom: 10px;
+  font-family: 'Lato', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #999;
+}
+
+input[type="checkbox"] {
+  margin: 5px 5px 0;
+  line-height: normal;
+}
+
+.filter-section {
+  
+}
