@@ -101,7 +101,8 @@ def homepage():
                      "description",
                      "worktype",
                      "artist_description",
-                     "id"
+                     "id",
+                     "collection"
                      ]
         }
       },
@@ -113,12 +114,6 @@ def homepage():
 
     search_body = more_like_this if q[0] == '_'  else search_regular
 
-    if request.args.get('filter_field') and request.args.get('filter_value'):
-      search_body['filter'] = {
-        "term":{
-          request.args.get('filter_field'): request.args.get('filter_value')
-        }
-      }   
 
     # TODO: use list comprehension
     if request.method == 'POST':      
@@ -155,10 +150,10 @@ def homepage():
       "took": sr['took']/1000.0,
       "hits": [hit['_source'] for hit in hits['hits'] if hit['_source']['description']],
       "facets": {
-        "worktype": [x for x in aggs['worktype']['buckets'] if len(x['key'])>1],
-        "collection": [x for x in aggs['collection']['buckets'] if len(x['key'])>1],
-        "decade": [x for x in aggs['decade']['buckets'] if len(x['key'])>1],
-        "artist_name": [x for x in aggs['artist_name']['buckets'] if len(x['key'])>1]
+        "worktype": sorted([x for x in aggs['worktype']['buckets'] if len(x['key'])>1]),
+        "collection": sorted([x for x in aggs['collection']['buckets'] if len(x['key'])>1]),
+        "decade": sorted([x for x in aggs['decade']['buckets'] if len(x['key'])>1]),
+        "artist_name": sorted([x for x in aggs['artist_name']['buckets'] if len(x['key'])>1])
       },
     }
 
