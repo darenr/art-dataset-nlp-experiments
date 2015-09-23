@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, Markup
 from elasticsearch import Elasticsearch
-import json
 import sys
 
 app = Flask(__name__)
