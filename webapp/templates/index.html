@@ -60,9 +60,8 @@
         <div class="col-sm-4 col-md-3 sidebar ">
           <form id="filter-section" method="post" action="/?q={{q}}" >            
           {% for facet in results['facets'] %}
-            <h3 class="title"><script>document.write(formatFacet('{{facet}}'))</script></h3>
+            <h3 class="facet-title"><script>document.write(formatFacet('{{facet}}'))</script></h3>
             <ul class="nav nav-sidebar">
-              
                 {% for f in results['facets'][facet] %}
                 <div class="checkbox-primary"> 
                   <li>
@@ -183,49 +182,6 @@
   <script src="{{ url_for('static', filename='js/masonry.pkgd.min.js') }}" type="text/javascript"></script>
   <script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}" type="text/javascript"></script>
   <script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript"></script>
-
-  <script>
-
-
-
-    $( document ).ready(function() {
-
-      $("#q").focus();
-      $("#q").select();
-
-      $('#columns').masonry({
-        columnWidth: 235,
-        gutter: 20,
-        itemSelector: '.pin'
-      });
-
-      $('#columns').imagesLoaded(function() {
-        $('#columns').masonry('layout');
-      });
-
-      $(".pin").on('click', function() {
-
-          var el = $(this);
-
-          $(this).find(".details").slideToggle('fast', function(deets) {
-            if($(this).is(':hidden')) {
-              el.removeClass("resize")
-            } else {
-              if($('#columns').width() > 500) {
-                el.addClass("resize");
-              }
-
-              $('html, body').animate({
-                scrollTop: el.offset().top - 20
-              }, 'slow');
-            }
-            $('.pin').not(el).removeClass("resize").find('.details').hide("fast");
-            $('#columns').masonry('layout');
-          });
-
-      });
-    });
-  </script>
 
   </body>
   </html>

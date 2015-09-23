@@ -18,3 +18,40 @@
 // 		});
 // 	});
 // });
+
+$(function() {
+  $("#q").focus();
+  $("#q").select();
+
+  $('#columns').masonry({
+    columnWidth: 235,
+    gutter: 20,
+    itemSelector: '.pin'
+  });
+
+  $('#columns').imagesLoaded(function() {
+    $('#columns').masonry('layout');
+  });
+
+  $(".pin").on('click', function() {
+
+      var el = $(this);
+
+      $(this).find(".details").slideToggle('fast', function(deets) {
+        if($(this).is(':hidden')) {
+          el.removeClass("resize")
+        } else {
+          if($('#columns').width() > 500) {
+            el.addClass("resize");
+          }
+
+          $('html, body').animate({
+            scrollTop: el.offset().top - 20
+          }, 'slow');
+        }
+        $('.pin').not(el).removeClass("resize").find('.details').hide("fast");
+        $('#columns').masonry('layout');
+      });
+
+  });
+});

@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, Markup
 from elasticsearch import Elasticsearch
+import urllib3
 import sys
+
+urllib3.disable_warnings()
 
 app = Flask(__name__)
 
@@ -92,13 +95,13 @@ def homepage():
           "fuzziness": fuzziness,
           "type": "phrase",
           "fields": ["major_tags^5",
-                      "minor_tags^4",
-                      "title^3",
-                      "artist_name^2",
-                      "description",
-                      "worktype",
-                      "artist_description",
-                      "id"
+                     "minor_tags^4",
+                     "title^3",
+                     "artist_name^2",
+                     "description",
+                     "worktype",
+                     "artist_description",
+                     "id"
                      ]
         }
       },
@@ -119,16 +122,17 @@ def homepage():
 
     # TODO: use list comprehension
     if request.method == 'POST':      
-      formData = request.values      
+      formData = request.values
 
       term = {}
-      for filter_field in formData.keys():         
+      for filter_field in [key for key in formData.keys() if key != 'q']:
         filter_value = []
         for value in formData.getlist(filter_field):
           filter_value.append(value)    
-        if filter_field != 'q':  
-          term[filter_field] = filter_value          
-      search_body['filter'] = { "and": [ { "terms": term } ] }      
+        term[filter_field] = filter_value
+      search_body['filter'] = { "and": [ { "terms": term } ] }
+
+
 
     sr = es.search(index="kadist", body=search_body)
 

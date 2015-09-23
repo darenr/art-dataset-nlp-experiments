@@ -1,19 +1,11 @@
-from datetime import datetime
 from elasticsearch import Elasticsearch
-import json 
+import json
 import codecs
 import sys
-import datetime
-from textblob import TextBlob
+from textblob import TextBlob, Word
 
-if len(sys.argv) != 2:
-  print 'usage: <kadist.json>'
-  sys.exit(-1)
 
-es = Elasticsearch(  
-  ['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io']
-)
-
+es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
 
 def load_data(index):
   doc_type = 'kadist_art_collection'
@@ -34,34 +26,56 @@ def load_data(index):
           doc_type: {
             "properties" : {
               "worktype" : {
+                "store":  "true",
+                "type" :    "string",
+                "term_vector" : "yes",
+                "index":    "not_analyzed"
+              },
+              "collection" : {
+                "store":  "true",
+                "type" :    "string",
+                "term_vector" : "yes",
+                "index":    "not_analyzed"
+              },
+              "decade" : {
+                "store":  "true",
                 "type" :    "string",
                 "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "major_tags" : {
+                "store":  "true",
                 "type" :    "string",
                 "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "minor_tags" : {
+                "store":  "true",
                 "type" :    "string",
                 "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "artist_name" : {
+                "store":  "true",
                 "type" :    "string",
                 "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "id" : {
+                "store":  "true",
                 "type" :    "string",
                 "term_vector" : "yes",
                 "index":    "not_analyzed"
               },
               "imgurl" : {
+                "store":  "true",
                 "type" :    "string",
                 "stored" : "yes",
                 "index":    "no"
+              },
+              "description": {
+                "store":  "true",
+                "type" :    "string"
               }
             }
           }
@@ -70,7 +84,7 @@ def load_data(index):
 
   print es.indices.put_mapping(index=index, doc_type=doc_type, body=schema['mappings'] )
 
-  with codecs.open(sys.argv[1], 'rb', 'utf-8') as f:
+  with codecs.open("data/kadist.json", 'rb', 'utf-8') as f:
     kadist = json.loads(f.read())
     for m in kadist:
       if 'imgurl' in m and m['imgurl']:
@@ -82,8 +96,8 @@ def load_data(index):
         blob = TextBlob(' '.join([m['artist_name'], m['description']]))
         m['mlt_tags'] = ' '.join([x for x in blob.noun_phrases if blob.noun_phrases.count(x) > 0])
 
-
       m['collection'] = 'Kadist'
+      m['decade'] = int(m['year'] / 10)*10
 
       try:
         es.index(index=index, doc_type=doc_type, id=m['id'], body=m)

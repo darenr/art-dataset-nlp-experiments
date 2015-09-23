@@ -1,6 +1,6 @@
 body {
-  min-height:2000px;
-  padding-top:70px;
+  min-height: 2000px;
+  padding-top: 70px;
 }
 
 .sub-header {
@@ -97,9 +97,9 @@ body {
 }
 
 @media (max-width: 767px) {
-.pin {
-  width:340px
-}
+  .pin {
+    width:340px
+  }
 }
 
 .pin h4 {
@@ -127,11 +127,10 @@ em {
     font-style:normal;
 }
 
-h3.title {
+h3.facet-title {
   margin-bottom: 10px;
-  font-family: 'Lato', Helvetica, Arial, sans-serif;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: bold;
   text-transform: uppercase;
   color: #999;
 }
@@ -141,6 +140,6 @@ input[type="checkbox"] {
   line-height: normal;
 }
 
-.filter-section {
-  
+#filter-section {
+  margin-left: 15px;
 }
