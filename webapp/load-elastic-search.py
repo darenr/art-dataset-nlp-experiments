@@ -1,23 +1,24 @@
 from elasticsearch import Elasticsearch
 import json
+import sys
 import codecs
 import urllib3
 from textblob import TextBlob, Word
 
 urllib3.disable_warnings()
 
-
 es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
 
-def load_data(index):
+def load_data(filename):
+  index = 'kadist'
   doc_type = 'kadist_art_collection'
   if es.indices.exists(index=index):
     print es.indices.delete(index=index)
 
   request_body = {
     "settings" : {
-        "number_of_shards": 1,
-        "number_of_replicas": 0
+      "number_of_shards": 1,
+      "number_of_replicas": 0
     }
   }
 
@@ -77,7 +78,7 @@ def load_data(index):
               },
               "description": {
                 "store":  "true",
-                "type" :    "string"
+                "type" :  "string"
               }
             }
           }
@@ -86,7 +87,7 @@ def load_data(index):
 
   print es.indices.put_mapping(index=index, doc_type=doc_type, body=schema['mappings'] )
 
-  with codecs.open("data/kadist.json", 'rb', 'utf-8') as f:
+  with codecs.open(filename, 'rb', 'utf-8') as f:
     kadist = json.loads(f.read())
     for m in kadist:
       if 'imgurl' in m and m['imgurl']:
@@ -99,7 +100,7 @@ def load_data(index):
         m['mlt_tags'] = ' '.join([x for x in blob.noun_phrases if blob.noun_phrases.count(x) > 0])
 
       m['collection'] = 'Kadist'
-      m['decade'] = int(m['year'] / 10)*10
+      m['decade'] = str(int(m['year'] / 10)*10) + "s"
 
       try:
         es.index(index=index, doc_type=doc_type, id=m['id'], body=m)
@@ -110,4 +111,8 @@ def load_data(index):
 
 
 
-load_data('kadist')
+if len(sys.argv) != 2:
+  print 'usage: <kadist.json>'
+  sys.exit(-1)
+else:
+  load_data(sys.argv[1])

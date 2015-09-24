@@ -33,11 +33,11 @@ $(function() {
     $('#columns').masonry('layout');
   });
 
-  $(".pin").on('click', function() {
+  $(".pin img").on('click', function() {
 
-      var el = $(this);
+      var el = $(this).parent();
 
-      $(this).find(".details").slideToggle('fast', function(deets) {
+      $(el).find(".details").slideToggle('fast', function() {
         if($(this).is(':hidden')) {
           el.removeClass("resize")
         } else {

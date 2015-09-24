@@ -152,7 +152,7 @@ def homepage():
       "facets": {
         "worktype": sorted([x for x in aggs['worktype']['buckets'] if len(x['key'])>1]),
         "collection": sorted([x for x in aggs['collection']['buckets'] if len(x['key'])>1]),
-        "decade": sorted([x for x in aggs['decade']['buckets'] if len(x['key'])>1]),
+        "decade": sorted([x for x in aggs['decade']['buckets'] if len(x['key'])>2]),
         "artist_name": sorted([x for x in aggs['artist_name']['buckets'] if len(x['key'])>1])
       },
     }
