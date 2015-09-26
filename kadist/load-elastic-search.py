@@ -14,12 +14,9 @@ def wn_hypernym(w):
  ss = Synset(w)
  return [s._name for s in ss.hypernyms()]
 
-
 urllib3.disable_warnings()
 
-
 es = Elasticsearch()
-
 
 def load_data(filename):
   index = 'kadist'
