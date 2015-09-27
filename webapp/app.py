@@ -7,7 +7,8 @@ urllib3.disable_warnings()
 
 app = Flask(__name__)
 
-es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
+#es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
+es = Elasticsearch()
 
 @app.route('/', methods=["GET", "POST"])
 def homepage():  

@@ -21,7 +21,7 @@
 
 $(function() {
   $("#q").focus();
-  $("#q").select();
+  //$("#q").select();
 
   $('#columns').masonry({
     columnWidth: 235,

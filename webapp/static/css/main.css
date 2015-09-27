@@ -86,14 +86,15 @@ body {
 }
 
 .pin {
-  float:left;
-  width:240px;
-  border:1px solid #f5eacd;
-  box-shadow:0 1px 2px rgba(34,25,25,0.4);
-  padding:10px;
-  margin:0 0 20px;
-  background:#f2f2f3;
-  background:-webkit-linear-gradient(45deg,#FFF,#f2f2f3)
+  float: left;
+  width: 240px;
+  border-radius: 5px;
+  border:1 px solid #f5eacd;
+  box-shadow: 0 1px 2px rgba(34,25,25,0.4);
+  padding: 10px;
+  margin: 0 0 20px;
+  background: #f2f2f3;
+  background: -webkit-linear-gradient(45deg,#FFF,#f2f2f3)
 }
 
 @media (max-width: 767px) {
@@ -142,4 +143,15 @@ input[type="checkbox"] {
 
 #filter-section {
   margin-left: 15px;
+}
+
+.logo-img {
+  display: inline-block;
+  margin: 5px;
+  height: 40px;
+}
+
+.logo-text {
+  font-size: 18px;
+  margin-left: 10px;
 }

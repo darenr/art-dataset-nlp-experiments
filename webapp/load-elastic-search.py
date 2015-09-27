@@ -7,7 +7,8 @@ from textblob import TextBlob, Word
 
 urllib3.disable_warnings()
 
-es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
+#es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
+es = Elasticsearch()
 
 def load_data(filename):
   index = 'kadist'
