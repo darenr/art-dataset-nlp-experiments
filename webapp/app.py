@@ -1,19 +1,24 @@
 from flask import Flask, render_template, request, Markup
 from elasticsearch import Elasticsearch
-import json
+import urllib3
 import sys
+
+urllib3.disable_warnings()
 
 app = Flask(__name__)
 
-es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
+#es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
+es = Elasticsearch()
 
-@app.route('/')
-def homepage():
+@app.route('/', methods=["GET", "POST"])
+def homepage():  
+
   title = "Kadist"
 
   q = request.args.get('q')
 
   if q and len(q.strip()):
+    
     q = q.strip()
 
     # fuzziness is allowed edit distance (ED), for words that are short we disable it, but for longer words
@@ -91,13 +96,14 @@ def homepage():
           "fuzziness": fuzziness,
           "type": "phrase",
           "fields": ["major_tags^5",
-                      "minor_tags^4",
-                      "title^3",
-                      "artist_name^2",
-                      "description",
-                      "worktype",
-                      "artist_description",
-                      "id"
+                     "minor_tags^4",
+                     "title^3",
+                     "artist_name^2",
+                     "description",
+                     "worktype",
+                     "artist_description",
+                     "id",
+                     "collection"
                      ]
         }
       },
@@ -109,12 +115,20 @@ def homepage():
 
     search_body = more_like_this if q[0] == '_'  else search_regular
 
-    if request.args.get('filter_field') and request.args.get('filter_value'):
-      search_body['filter'] = {
-        "term":{
-          request.args.get('filter_field'): request.args.get('filter_value')
-        }
-      }
+
+    # TODO: use list comprehension
+    if request.method == 'POST':      
+      formData = request.values
+
+      term = {}
+      for filter_field in [key for key in formData.keys() if key != 'q']:
+        filter_value = []
+        for value in formData.getlist(filter_field):
+          filter_value.append(value)    
+        term[filter_field] = filter_value
+      search_body['filter'] = { "and": [ { "terms": term } ] }
+
+
 
     sr = es.search(index="kadist", body=search_body)
 
@@ -137,10 +151,10 @@ def homepage():
       "took": sr['took']/1000.0,
       "hits": [hit['_source'] for hit in hits['hits'] if hit['_source']['description']],
       "facets": {
-        "worktype": [x for x in aggs['worktype']['buckets'] if len(x['key'])>1],
-        "collection": [x for x in aggs['collection']['buckets'] if len(x['key'])>1],
-        "decade": [x for x in aggs['decade']['buckets'] if len(x['key'])>1],
-        "artist_name": [x for x in aggs['artist_name']['buckets'] if len(x['key'])>1]
+        "worktype": sorted([x for x in aggs['worktype']['buckets'] if len(x['key'])>1]),
+        "collection": sorted([x for x in aggs['collection']['buckets'] if len(x['key'])>1]),
+        "decade": sorted([x for x in aggs['decade']['buckets'] if len(x['key'])>2]),
+        "artist_name": sorted([x for x in aggs['artist_name']['buckets'] if len(x['key'])>1])
       },
     }
 
@@ -153,7 +167,7 @@ def homepage():
       "count": 0,
     }
 
-  print results
+  # print results
 
   try:
     return render_template("index.html",

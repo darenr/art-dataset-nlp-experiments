@@ -2,25 +2,34 @@
 <html lang="en">
 
 <head>
-  <title>Kadist Index Search</title>
-
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-
-  <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/main.css') }}">
-
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
 
-  <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
+  <title>Kadist Index Search</title>
+
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+
+  <!-- local styles -->
+  <link rel="stylesheet" media="screen" href="{{ url_for('static', filename='css/main.css') }}">
+
+  <link rel="shortcut icon"                    href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon"/>
+  <link rel="apple-touch-icon"                 href="{{ url_for('static', filename='images/apple-touch-icon.png') }} "/>
+  <link rel="apple-touch-icon" sizes="57x57"   href="{{ url_for('static', filename='images/apple-touch-icon-57x57.png') }}" />
+  <link rel="apple-touch-icon" sizes="72x72"   href="{{ url_for('static', filename='images/apple-touch-icon-72x72.png') }}" />
+  <link rel="apple-touch-icon" sizes="76x76"   href="{{ url_for('static', filename='images/apple-touch-icon-76x76.png') }}" />
+  <link rel="apple-touch-icon" sizes="114x114" href="{{ url_for('static', filename='images/apple-touch-icon-114x114.png') }}" />
+  <link rel="apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='images/apple-touch-icon-120x120.png') }}" />
+  <link rel="apple-touch-icon" sizes="144x144" href="{{ url_for('static', filename='images/apple-touch-icon-144x144.png') }}" />
+  <link rel="apple-touch-icon" sizes="152x152" href="{{ url_for('static', filename='images/apple-touch-icon-152x152.png') }}" />
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/apple-touch-icon-180x180.png') }}" />
+
 
   <meta name="apple-mobile-web-app-capable" content="yes">
 
 
   <script>
-    function formatFacet(s) {
-      return s.replace('_', ' ').replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-    }
     function formatTag(s) {
       return s.split('.')[0].replace('_', ' ');
     }
@@ -40,7 +49,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="/">Kadist Index</a>
+        <img class="pull-left logo-img" src="{{ url_for('static', filename='images/kadist_logo.png') }}"><a href="/" class="navbar-brand logo-text">&nbsp;Kadist Index</a>
       </div>
 
         <div id="navbar" class="navbar-collapse collapse">
@@ -58,17 +67,26 @@
 
       {% if results['facets'] %}
         <div class="col-sm-4 col-md-3 sidebar ">
+          <form id="filter-section" method="post" action="/?q={{q}}" >            
           {% for facet in results['facets'] %}
-            <h3><span class="label label-default"><script>document.write(formatFacet('{{facet}}'))</script>:</span></h3>
+            <h3 class="facet-title"><script>document.write(formatTag('{{facet}}'))</script></h3>
             <ul class="nav nav-sidebar">
-              {% for f in results['facets'][facet] %}
-                <li><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></li>
-              {% endfor %}
-              {% if results['filter'] %}
-                <li><a href="/?q={{q}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></li>
-                {% endif %}
+                {% for f in results['facets'][facet] %}
+                <div class="checkbox-primary"> 
+                  <li>
+                    <label>
+                      <input type="checkbox" name="{{facet}}" value="{{f['key']}}"><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></input>
+                    </label>                  
+                  </li>
+                </div>
+                {% endfor %}
+                {% if results['filter'] %}
+                  <li><a href="/?q={{q}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></li>
+                {% endif %}                                              
             </ul>
           {% endfor %}
+            <input class="btn btn-primary btn-sm" type="submit" value="Filter">
+          </form>
         </div>
       {% endif %}
 
@@ -78,7 +96,7 @@
         <div>
           {% if not q %}
             <div class="panel">
-              <h1><img src="{{ url_for('static', filename='images/kadist_logo.png') }}" class="thumbnail">Welcome to Kadist Art Discovery</h1>
+              <h1>Welcome to Kadist Art Discovery</h1>
                 <p>Kadist's collections and productions reflect the global scope of contemporary
                 art, and its programs develop collaborations with like-minded artists, curators and many art
                 organizations around the world. Local programs in Kadist's hubs of Paris and San Francisco,
@@ -108,6 +126,7 @@
           {% endif %}
         </div>
         <!-- End Search & results count Bar -->
+
 
 
         <!-- Search Results -->
@@ -168,53 +187,13 @@
 
 
   <script src="//code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
   <script src="{{ url_for('static', filename='js/masonry.pkgd.min.js') }}" type="text/javascript"></script>
   <script src="{{ url_for('static', filename='js/imagesloaded.pkgd.min.js') }}" type="text/javascript"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}" type="text/javascript"></script>
 
-  <script>
-
-
-
-    $( document ).ready(function() {
-
-      $("#q").focus();
-      $("#q").select();
-
-      $('#columns').masonry({
-        columnWidth: 235,
-        gutter: 20,
-        itemSelector: '.pin'
-      });
-
-      $('#columns').imagesLoaded(function() {
-        $('#columns').masonry('layout');
-      });
-
-      $(".pin").on('click', function() {
-
-          var el = $(this);
-
-          $(this).find(".details").slideToggle('fast', function(deets) {
-            if($(this).is(':hidden')) {
-              el.removeClass("resize")
-            } else {
-              if($('#columns').width() > 500) {
-                el.addClass("resize");
-              }
-
-              $('html, body').animate({
-                scrollTop: el.offset().top - 20
-              }, 'slow');
-            }
-            $('.pin').not(el).removeClass("resize").find('.details').hide("fast");
-            $('#columns').masonry('layout');
-          });
-
-      });
-    });
-  </script>
 
   </body>
   </html>

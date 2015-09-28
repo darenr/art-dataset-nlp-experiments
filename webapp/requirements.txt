@@ -1,15 +1,6 @@
 flask
 elasticsearch
-xlrd
-pandas
-sklearn
 unicodecsv
-scipy==0.15.1
-numpy==1.9.1
 textblob
-gensim
-wordcloud
-Image
-matplotlib
 requests
 gunicorn
