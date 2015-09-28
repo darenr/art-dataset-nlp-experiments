@@ -120,13 +120,20 @@ def homepage():
     if request.method == 'POST':      
       formData = request.values
 
-      term = {}
+      and_filter = []
+
+      # term = {}
       for filter_field in [key for key in formData.keys() if key != 'q']:
         filter_value = []
         for value in formData.getlist(filter_field):
           filter_value.append(value)    
-        term[filter_field] = filter_value
-      search_body['filter'] = { "and": [ { "terms": term } ] }
+        # term[filter_field] = filter_value
+        and_filter.append({"terms": {filter_field : filter_value } })
+
+      print and_filter
+      # search_body['filter'] = { "and": [ { "terms": term }] }
+
+      search_body['filter'] = { "and": and_filter }
 
 
 
