@@ -3,6 +3,7 @@ import json
 import sys
 import codecs
 import urllib3
+from textblob import TextBlob, Word
 
 urllib3.disable_warnings()
 
