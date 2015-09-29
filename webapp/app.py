@@ -8,7 +8,6 @@ urllib3.disable_warnings()
 app = Flask(__name__)
 
 es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
-#es = Elasticsearch()
 
 @app.route('/', methods=["GET", "POST"])
 def homepage():  
@@ -114,18 +113,19 @@ def homepage():
 
     search_body = more_like_this if q[0] == '_'  else search_regular
 
-
     # TODO: use list comprehension
     if request.method == 'POST':      
       formData = request.values
 
-      term = {}
+      and_filter = []
+
       for filter_field in [key for key in formData.keys() if key != 'q']:
         filter_value = []
         for value in formData.getlist(filter_field):
           filter_value.append(value)    
-        term[filter_field] = filter_value
-      search_body['filter'] = { "and": [ { "terms": term } ] }
+        and_filter.append({"terms": {filter_field : filter_value } })      
+
+      search_body['filter'] = { "and": and_filter }
 
 
 
