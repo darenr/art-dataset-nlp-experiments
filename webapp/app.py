@@ -8,7 +8,6 @@ urllib3.disable_warnings()
 app = Flask(__name__)
 
 es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
-# es = Elasticsearch()
 
 @app.route('/', methods=["GET", "POST"])
 def homepage():  
@@ -21,11 +20,7 @@ def homepage():
     
     q = q.strip()
 
-    # fuzziness is allowed edit distance (ED), for words that are short we disable it, but for longer words
-    # where the chance of a misspelling are increased we ED 2
-
-    fuzziness = "0" if len(q) < 10 else "1"
-
+    # initialize the common query dictionaries
     qry_aggs =  {
       "worktype": {
         "terms": {
@@ -88,13 +83,16 @@ def homepage():
       }
     }
 
+    # the main search query
+
     search_regular = {
       "size": 50,
       "query": {
         "multi_match": {
           "query": q,
-          "fuzziness": fuzziness,
           "type": "phrase",
+          "slop": 50,
+          "minimum_should_match": "50%",
           "fields": ["major_tags^5",
                      "minor_tags^4",
                      "title^3",
@@ -115,23 +113,17 @@ def homepage():
 
     search_body = more_like_this if q[0] == '_'  else search_regular
 
-
     # TODO: use list comprehension
     if request.method == 'POST':      
       formData = request.values
 
       and_filter = []
 
-      # term = {}
       for filter_field in [key for key in formData.keys() if key != 'q']:
         filter_value = []
         for value in formData.getlist(filter_field):
           filter_value.append(value)    
-        # term[filter_field] = filter_value
-        and_filter.append({"terms": {filter_field : filter_value } })
-
-      print and_filter
-      # search_body['filter'] = { "and": [ { "terms": term }] }
+        and_filter.append({"terms": {filter_field : filter_value } })      
 
       search_body['filter'] = { "and": and_filter }
 

@@ -20,17 +20,28 @@
 // });
 
 $(function() {
-  $("#q").focus();
-  //$("#q").select();
+  $("#q").attr("tabindex", 1);
+
+  $('#columns').addClass('blur-me');
+
 
   $('#columns').masonry({
     columnWidth: 235,
     gutter: 20,
-    itemSelector: '.pin'
+    itemSelector: '.pin',
+    isAnimated: true
   });
 
   $('#columns').imagesLoaded(function() {
     $('#columns').masonry('layout');
+    console.log("finsihed loading images");
+  });
+
+  /*
+   * replace any broken images with a better image
+   */
+  $(".pin img").error(function () {
+    $(this).unbind("error").attr("src", "static/images/missing.png");
   });
 
   $(".pin img").on('click', function() {
