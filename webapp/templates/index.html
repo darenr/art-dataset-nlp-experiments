@@ -136,16 +136,24 @@
                   {% if hit['imgurl'] %}
                     <div class="pin">
                       <img class="img" src="{{hit['imgurl']}}">
-                      <center>
-                        <h4>{{hit['title']}}</h4>
-                        <p><a href="/?q={{hit['artist_name']}}">{{hit['artist_name']}}</a>{% if hit['year'] %}, <a href="/?q={{hit['year']}}">{{hit['year']}}</a>{% endif %}
-                        <a href="/?q=_{{hit['id']}}" title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a>
-                        </p>
-                      </center>
+                        <table width="100%" border="0">
+                          <tr>
+                            <td><h4>&quot;{{hit['title']}}&quot;</h4></td>
+                            <td align="right"><a href="/?q=_{{hit['id']}}"  title="More like this..."><span class="glyphicon glyphicon glyphicon-duplicate" aria-hidden="true"></span></a></td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <a href="/?q={{hit['artist_name']}}">{{hit['artist_name']}}</a>
+                            </td>
+                            <td align="right">
+                              {% if hit['year'] %}<a href="/?q={{hit['year']}}">{{hit['year']}}</a>{% endif %}
+                            </td>
+                          </tr>
+                        </table>
                         <div class="details">
                         <hr/>
                         {% if hit['description'] %}
-                          <h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;Works Description</h4>
+                          <h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;Work</h4>
                           <p>
                             {% if hit['worktype'] %}
                               <a href="/?q={{hit['worktype']}}"><h5>{{hit['worktype']}}</h5></a>
@@ -154,8 +162,8 @@
                           </p>
                         {% endif %}
 
-                        {% if hit['artist_name'] and hit['artist_description'] %}
-                          <a href="/?q={{hit['artist_name']}}"><h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;{{hit['artist_name']}}</h4></a>
+                        {% if hit['artist_description'] %}
+                          <h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;Artist</h4></a>
                           <p>
                             {{hit['artist_description']}}
                           </p>
@@ -164,11 +172,11 @@
                         {% if hit['major_tags'] or hit['minor_tags'] %}
                           <h4><span class="glyphicon glyphicon-triangle-right" aria-hidden="true"></span>&nbsp;Tags</h4>
                           {% for tag in hit['major_tags'] %}
-                            <a href="/?q={{tag}}"><span class="label label-primary tags"><script>document.write(formatTag('{{tag}}'))</script></span></a>
+                            <a href="/?q={{tag}}" title="{{tag}}"><span class="label label-primary tags"><script>document.write(formatTag('{{tag}}'))</script></span></a>
                           {% endfor %}
 
                           {% for tag in hit['minor_tags'] %}
-                            <a href="/?q={{tag}}"><span class="label label-info tags"><script>document.write(formatTag('{{tag}}'))</script></span></a>
+                            <a href="/?q={{tag}}" title="{{tag}}"><span class="label label-info tags"><script>document.write(formatTag('{{tag}}'))</script></span></a>
                           {% endfor %}
                         {% endif %}
                       </div>

@@ -21,11 +21,7 @@ def homepage():
     
     q = q.strip()
 
-    # fuzziness is allowed edit distance (ED), for words that are short we disable it, but for longer words
-    # where the chance of a misspelling are increased we ED 2
-
-    fuzziness = "0" if len(q) < 10 else "1"
-
+    # initialize the common query dictionaries
     qry_aggs =  {
       "worktype": {
         "terms": {
@@ -88,13 +84,16 @@ def homepage():
       }
     }
 
+    # the main search query
+
     search_regular = {
       "size": 50,
       "query": {
         "multi_match": {
           "query": q,
-          "fuzziness": fuzziness,
           "type": "phrase",
+          "slop": 50,
+          "minimum_should_match": "50%",
           "fields": ["major_tags^5",
                      "minor_tags^4",
                      "title^3",
