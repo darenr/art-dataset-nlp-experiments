@@ -7,7 +7,8 @@ urllib3.disable_warnings()
 
 app = Flask(__name__)
 
-es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
+#es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
+es=Elasticsearch()
 
 @app.route('/', methods=["GET", "POST"])
 def homepage():  
@@ -22,9 +23,9 @@ def homepage():
 
     # initialize the common query dictionaries
     qry_aggs =  {
-      "worktype": {
+      "medium": {
         "terms": {
-          "field": "worktype",
+          "field": "medium",
         },
       },
       "collection": {
@@ -157,7 +158,7 @@ def homepage():
       "took": sr['took']/1000.0,
       "hits": [hit['_source'] for hit in hits['hits'] if hit['_source']['description']],
       "facets": {
-        "worktype": sorted([x for x in aggs['worktype']['buckets'] if len(x['key'])>1]),
+        "medium": sorted([x for x in aggs['medium']['buckets'] if len(x['key'])>1]),
         "collection": sorted([x for x in aggs['collection']['buckets'] if len(x['key'])>1]),
         "decade": sorted([x for x in aggs['decade']['buckets'] if len(x['key'])>2]),
         "artist_name": sorted([x for x in aggs['artist_name']['buckets'] if len(x['key'])>1])

@@ -4,8 +4,20 @@ import sys
 import codecs
 import urllib3
 from textblob import TextBlob, Word
+import re
 
 urllib3.disable_warnings()
+
+def facet_worktype(wt):
+  if re.match( r'photography|giclee|inkjet|photographic|photographs?|Chromogenic|r?c\-print', wt, re.U|re.I):
+    return 'Photograph'
+
+  for medium in ['Oil', 'Paint', 'Video', 'Acrylic', 'Installation', 'Print', 'Watercolor', 'Gouache', 'Charcoal']:
+    if re.search( medium, wt, re.U|re.I):
+      return medium
+
+  return 'Other'
+
 
 def load_data(filename, es):
   index = 'kadist'
@@ -55,6 +67,12 @@ def load_data(filename, es):
       doc_type: {
         "properties": {
           "worktype": {
+            "store": "true",
+            "type": "string",
+            "term_vector": "yes",
+            "search_analyzer": "kadist_synonyms"
+          },
+          "medium": {
             "store": "true",
             "type": "string",
             "term_vector": "yes",
@@ -133,6 +151,7 @@ def load_data(filename, es):
 
       m['collection'] = 'Kadist'
       m['decade'] = str(int(m['year'] / 10) * 10) + "s" if m['year'] else '0'
+      m['medium'] = facet_worktype(m['worktype'])
 
       try:
         es.index(index=index, doc_type=doc_type, id=m['id'], body=m)
@@ -142,13 +161,15 @@ def load_data(filename, es):
         print m
 
 
-if len(sys.argv) != 3 and sys.argv[2] in ['dev', 'prod']:
+if len(sys.argv) != 3 and sys.argv[2] in ['localhost', 'prod']:
   print 'usage: <kadist.json> <dev|prod>'
   sys.exit(-1)
 else:
-  if sys.argv[2] == 'dev':
-    print 'loading localhost:9200 elasticsearch'
+  if sys.argv[2] == 'localhost':
+    print 'loading localhost elasticsearch'
     es = Elasticsearch(['http://localhost:9200'])
   else:
+    print 'loading bonsai.io elasticsearch'
     es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
+
   load_data(filename=sys.argv[1], es=es)

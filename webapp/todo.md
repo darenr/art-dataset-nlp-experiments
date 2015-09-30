@@ -19,3 +19,20 @@
     }
 }
 ```
+
+- for similarity measure that's computed using an external to es algorithm the result should be a list of ids which
+are then submitted to es for consistency using the ids query type
+
+```
+{
+    "filtered" : {
+        "filter" : {
+          {
+              "ids" : {
+                  "values" : ["1", "4", "100"]
+              }
+          }
+        }
+    }
+}
+```
