@@ -42,21 +42,24 @@
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <img class="pull-left logo-img" src="{{ url_for('static', filename='images/kadist_logo.png') }}"><a href="/" class="navbar-brand logo-text">&nbsp;Kadist Index</a>
+
+        <span class="navbar-brand" >
+          <form role="search" method="get" class="search-form">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <a class="btn btn-default header-bar" href="/"><img class="logo-img" src="{{ url_for('static', filename='images/kadist_logo.png') }}"></a>
+              </span>
+              <input type="search" name="q" id="q" value="{% if q %}{{q}}{% endif %}" autocomplete="off" autocapitalize="off"
+                autocorrect="off" class="search-field form-control header-bar" placeholder="Search">
+              <span class="input-group-btn">
+                <button class="btn btn-default header-bar" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+              </span>
+            </div>
+          </form>
+        </span>
+
       </div>
 
-        <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="http://www.kapsul.org" target="_blank">Kapsul.org</a></li>
-          <li><a href="http://www.kadist.org" target="_blank">Kadist.org</a></li>
-        </ul>
-      </div><!--/.navbar-collapse -->
     </div> <!-- container-fluid -->
   </nav>
 
@@ -67,23 +70,23 @@
       {% if results['facets'] %}
         <div class="col-sm-4 col-md-3 sidebar ">
           <form id="filter-section" method="post" action="/?q={{q}}" >            
-          {% for facet in results['facets'] %}
-            <h3 class="facet-title"><script>document.write(formatTag('{{facet}}'))</script></h3>
-            <ul class="nav nav-sidebar">
-                {% for f in results['facets'][facet] %}
-                <div class="checkbox-primary"> 
-                  <li>
-                    <label>
-                      <input type="checkbox" name="{{facet}}" value="{{f['key']}}" id="{{f['key']}}"><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></input>
-                    </label>                  
-                  </li>
-                </div>
-                {% endfor %}
-                {% if results['filter'] %}
-                  <li><a href="/?q={{q}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></li>
-                {% endif %}                                              
+            {% for facet in results['facets'] %}
+              <h3 class="facet-title"><script>document.write(formatTag('{{facet}}'))</script></h3>
+              <ul class="nav nav-sidebar">
+                  {% for f in results['facets'][facet] %}
+                  <div class="checkbox-primary">
+                    <li>
+                      <label>
+                        <input type="checkbox" name="{{facet}}" value="{{f['key']}}" id="{{f['key']}}"><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></input>
+                      </label>
+                    </li>
+                  </div>
+                  {% endfor %}
             </ul>
-          {% endfor %}
+            {% endfor %}
+            {% if results['filter'] %}
+              <a href="/?q={{q}}" class="btn btn-primary btn-sm">Clear Filter(s)</a>
+            {% endif %}
             <input class="btn btn-primary btn-sm" type="submit" value="Filter">
           </form>
         </div>
@@ -95,24 +98,18 @@
         <div>
           {% if not q %}
             <div class="panel">
-              <h1>Welcome to Kadist Art Discovery</h1>
-                <p>Kadist's collections and productions reflect the global scope of contemporary
+              <div class="welcome">
+                <h1>Welcome to Kadist Art Discovery</h1>
+                <br/>
+                <p><img align="left" hspace="15" vspace="15" height="100" src="{{ url_for('static', filename='images/kadist_logo.png') }}">Kadist's collections and productions reflect the global scope of contemporary
                 art, and its programs develop collaborations with like-minded artists, curators and many art
                 organizations around the world. Local programs in Kadist's hubs of Paris and San Francisco,
                 including exhibitions, public events, residencies and educational initiatives, aim at creating
                 vibrant conversations about contemporary art and ideas.</p>
+              </div>
             </div>
           {% endif %}
 
-          <form role="search" method="get" class="search-form">
-            <div class="input-group full-width">
-              <input type="search" name="q" id="q" value="{% if q %}{{q}}{% endif %}" autocomplete="off" autocapitalize="off"
-                autocorrect="off" class="search-field form-control" placeholder="Search">
-              <span class="input-group-btn">
-                <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
-              </span>
-            </div>
-          </form>
 
           {% if q %}
             <p class="search-result-header">

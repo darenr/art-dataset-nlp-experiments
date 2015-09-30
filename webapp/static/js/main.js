@@ -66,8 +66,11 @@ $(function() {
 
   });
 
+});
 
-  // Maintain State
+$(document).ready(function(){ 
+
+  // Maintain State of Checkboxes
   $(":checkbox").on("change", function(){
     var checkboxValues = {};
     $(":checkbox").each(function(){
@@ -75,11 +78,11 @@ $(function() {
     });
       
     $.cookie('checkboxValues', checkboxValues, { expires: 7, path: '/' });
-
   });
 
   function repopulateCheckboxes(){    
     var checkboxValues = $.cookie('checkboxValues');    
+        
     if(checkboxValues){    
 
       Object.keys(checkboxValues).forEach(function(element) {    
@@ -93,4 +96,3 @@ $(function() {
   repopulateCheckboxes();
 
 });
-
