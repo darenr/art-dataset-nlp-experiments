@@ -67,23 +67,23 @@
       {% if results['facets'] %}
         <div class="col-sm-4 col-md-3 sidebar ">
           <form id="filter-section" method="post" action="/?q={{q}}" >            
-          {% for facet in results['facets'] %}
-            <h3 class="facet-title"><script>document.write(formatTag('{{facet}}'))</script></h3>
-            <ul class="nav nav-sidebar">
-                {% for f in results['facets'][facet] %}
-                <div class="checkbox-primary"> 
-                  <li>
-                    <label>
-                      <input type="checkbox" name="{{facet}}" value="{{f['key']}}"><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></input>
-                    </label>                  
-                  </li>
-                </div>
-                {% endfor %}
-                {% if results['filter'] %}
-                  <li><a href="/?q={{q}}"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a></li>
-                {% endif %}                                              
+            {% for facet in results['facets'] %}
+              <h3 class="facet-title"><script>document.write(formatTag('{{facet}}'))</script></h3>
+              <ul class="nav nav-sidebar">
+                  {% for f in results['facets'][facet] %}
+                  <div class="checkbox-primary">
+                    <li>
+                      <label>
+                        <input type="checkbox" name="{{facet}}" value="{{f['key']}}"><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></input>
+                      </label>
+                    </li>
+                  </div>
+                  {% endfor %}
             </ul>
-          {% endfor %}
+            {% endfor %}
+            {% if results['filter'] %}
+              <a href="/?q={{q}}" class="btn btn-primary btn-sm">Clear Filter(s)</a>
+            {% endif %}
             <input class="btn btn-primary btn-sm" type="submit" value="Filter">
           </form>
         </div>

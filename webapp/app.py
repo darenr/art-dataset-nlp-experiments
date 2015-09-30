@@ -113,8 +113,15 @@ def homepage():
 
     search_body = more_like_this if q[0] == '_'  else search_regular
 
-    # TODO: use list comprehension
-    if request.method == 'POST':      
+
+    if request.args.get('filter_field') and request.args.get('filter_value'):
+      search_body['filter'] = {
+        "term":{
+          request.args.get('filter_field'): request.args.get('filter_value')
+        }
+      }
+
+    if request.method == 'POST':
       formData = request.values
 
       and_filter = []
