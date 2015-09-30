@@ -9,7 +9,7 @@ def test_images(filename):
     kadist = json.loads(f.read())
     for m in kadist:
       if 'imgurl' in m and m['imgurl']:
-        r = requests.get(m['imgurl'])
+        r = requests.head(m['imgurl'])
         if r.status_code != 200:
           print(m['imgurl'], r.status_code)
 
