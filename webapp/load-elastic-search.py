@@ -6,6 +6,9 @@ import urllib3
 from textblob import TextBlob, Word
 import re
 
+# unicode quote characters
+punctuation = { 0x2018:0x27, 0x2019:0x27, 0x201C:0x22, 0x201D:0x22 }
+
 urllib3.disable_warnings()
 
 def facet_worktype(wt):
@@ -18,6 +21,16 @@ def facet_worktype(wt):
 
   return 'Other'
 
+
+def create_phrases(m):
+  def valid_phrase(p):
+    stop_phrases = ['untitled', 'born', 'art']
+    if len(x.split()) <=3:
+      if not x.lower() in stop_phrases:
+        return True
+    return False
+  blob = TextBlob(re.sub("'s", " ", ' '.join([m['artist_description'], m['description']])))
+  return [x for x in blob.noun_phrases if valid_phrase(x)]
 
 def load_data(filename, es):
   index = 'kadist'
@@ -73,6 +86,12 @@ def load_data(filename, es):
             "search_analyzer": "kadist_synonyms"
           },
           "medium": {
+            "store": "true",
+            "type": "string",
+            "term_vector": "yes",
+            "index": "not_analyzed"
+          },
+          "phrases": {
             "store": "true",
             "type": "string",
             "term_vector": "yes",
@@ -140,14 +159,22 @@ def load_data(filename, es):
   with codecs.open(filename, 'rb', 'utf-8') as f:
     kadist = json.loads(f.read())
     for m in kadist:
+
+      # translate any quote characters to their simple ascii versions
+      for key in m.keys():
+        if isinstance(m[key], basestring):
+          m[key] = m[key].translate(punctuation)
+
       if 'imgurl' in m and m['imgurl']:
         m['imgurl'] = m['imgurl'].split('?')[0]
+
+      m['phrases'] = create_phrases(m)
+
 
       if len(m['major_tags']) or len(m['minor_tags']):
         m['mlt_tags'] = ' '.join([x.replace('.', '') for x in m['major_tags'] + m['minor_tags']])
       else:
-        blob = TextBlob(' '.join([m['artist_name'], m['description']]))
-        m['mlt_tags'] = ' '.join([x for x in blob.noun_phrases if blob.noun_phrases.count(x) > 0])
+        m['mlt_tags'] = ' '.join([x for x in m['phrases'] if len(m['phrases']) > 0])
 
       m['collection'] = 'Kadist'
       m['decade'] = str(int(m['year'] / 10) * 10) + "s" if m['year'] else '0'
