@@ -37,6 +37,7 @@
 </head>
 
 <body class="body">
+  <form role="search" method="get" class="search-form">
 
   <!-- Fixed navbar -->
   <nav class="navbar navbar-default navbar-fixed-top">
@@ -44,7 +45,6 @@
       <div class="navbar-header">
 
         <span class="navbar-brand" >
-          <form role="search" method="get" class="search-form">
             <div class="input-group">
               <span class="input-group-btn">
                 <a class="btn btn-default header-bar" href="/"><img class="logo-img" src="{{ url_for('static', filename='images/kadist_logo.png') }}"></a>
@@ -55,7 +55,6 @@
                 <button class="btn btn-default header-bar" type="submit"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
               </span>
             </div>
-          </form>
         </span>
 
       </div>
@@ -68,31 +67,26 @@
     <div class="row">
 
       {% if results['facets'] %}
-        <div class="col-sm-4 col-md-3 sidebar ">
-          <form id="filter-section" method="post" action="/?q={{q}}" >            
-            {% for facet in results['facets'] %}
-              <h3 class="facet-title"><script>document.write(formatTag('{{facet}}'))</script></h3>
-              <ul class="nav nav-sidebar">
-                  {% for f in results['facets'][facet] %}
-                  <div class="checkbox-primary">
-                    <li>
-                      <label>
-                        <input type="checkbox" name="{{facet}}" value="{{f['key']}}"><a href="/?q={{q}}&filter_field={{facet}}&filter_value={{f['key']}}">{{f['key']}} ({{f['doc_count']}})</a></input>
-                      </label>
-                    </li>
-                  </div>
-                  {% endfor %}
-            </ul>
-            {% endfor %}
-            {% if results['filter'] %}
-              <a href="/?q={{q}}" class="btn btn-primary btn-sm">Clear Filter(s)</a>
-            {% endif %}
-            <input class="btn btn-primary btn-sm" type="submit" value="Filter">
-          </form>
+        <div class="col-sm-4 col-md-3 sidebar filter-section">
+          {% for facet in results['facets'] %}
+            <h3 class="facet-title"><script>document.write(formatTag('{{facet}}'))</script></h3>
+            <ul class="nav nav-sidebar">
+                {% for f in results['facets'][facet] %}
+                <div class="checkbox-primary">
+                  <li>
+                      <input type="checkbox" name="{{facet}}" value="{{f['key']}}" {% if results['req_filters'] and f['key'] in results['req_filters'][facet] %}checked{% endif %}>{{f['key']}} ({{f['doc_count']}})</input>
+                  </li>
+                </div>
+                {% endfor %}
+          </ul>
+          {% endfor %}
+          {% if results['req_filters'] %}
+            <a href="/?q={{q}}" class="btn btn-primary btn-sm">Clear Filter(s)</a>
+          {% endif %}
         </div>
       {% endif %}
 
-      <div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3">
+      <div class="col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 main">
 
         <!-- Search & results count Bar -->
         <div>
@@ -113,11 +107,7 @@
 
           {% if q %}
             <p class="search-result-header">
-                {{results['count']}} results
-                {% if results['filter'] %}
-                  ({{results['filter'][0]}}:&nbsp;"{{results['filter'][1]}}")
-                {% endif %}
-                &nbsp;({{results['took']}} seconds)
+                {{results['count']}} results ({{results['took']}} seconds)
             </p>
           {% endif %}
         </div>
@@ -188,6 +178,8 @@
       </div> <!-- main -->
     </div> <!-- row -->
   </div> <!-- container -->
+  </form>
+
 
 
   <script src="//code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>

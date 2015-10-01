@@ -7,7 +7,7 @@ urllib3.disable_warnings()
 
 app = Flask(__name__)
 
-@app.route('/', methods=["GET", "POST"])
+@app.route('/', methods=["GET"])
 def homepage():  
 
   title = "Kadist"
@@ -25,9 +25,9 @@ def homepage():
           "field": "medium",
         },
       },
-      "phrases": {
+      "popular_phrases": {
         "terms": {
-          "field": "phrases",
+          "field": "popular_phrases",
         },
       },
       "collection": {
@@ -116,28 +116,16 @@ def homepage():
 
     search_body = more_like_this if q[0] == '_'  else search_regular
 
-
-    if request.args.get('filter_field') and request.args.get('filter_value'):
-      search_body['filter'] = {
-        "term":{
-          request.args.get('filter_field'): request.args.get('filter_value')
-        }
-      }
-
-    if request.method == 'POST':
-      formData = request.values
-
+    req_filters = dict([(x,request.args.getlist(x)) for x in request.args.keys() if x != 'q'])
+    if req_filters:
       and_filter = []
-
-      for filter_field in [key for key in formData.keys() if key != 'q']:
+      for filter_field in req_filters.keys():
         filter_value = []
-        for value in formData.getlist(filter_field):
-          filter_value.append(value)    
-        and_filter.append({"terms": {filter_field : filter_value } })      
-
+        for value in req_filters[filter_field]:
+          filter_value.append(value)
+        and_filter.append({"terms": {filter_field : filter_value } })
       search_body['filter'] = { "and": and_filter }
-
-
+      print search_body['filter']
 
     sr = es.search(index="kadist", body=search_body)
 
@@ -164,20 +152,17 @@ def homepage():
         "collection": [x for x in aggs['collection']['buckets'] if len(x['key'])>1],
         "decade": [x for x in aggs['decade']['buckets'] if len(x['key'])>2],
         "artist_name": [x for x in aggs['artist_name']['buckets'] if len(x['key'])>1],
-        "phrases": [x for x in aggs['phrases']['buckets'] if len(x['key'])>1]
+        "popular_phrases": [x for x in aggs['popular_phrases']['buckets'] if len(x['key'])>1]
       },
     }
 
-    if 'term' in search_body['filter']:
-      results['filter'] = tuple(search_body['filter']['term'].items()[0])
-
+    if req_filters:
+      results['req_filters'] = req_filters
 
   else:
     results = {
       "count": 0,
     }
-
-  # print results
 
   try:
     return render_template("index.html",

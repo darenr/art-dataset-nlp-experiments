@@ -1,23 +1,3 @@
-// $(function() {
-// 	$('#submit').on('click', function(e) {
-// 		console.log('clicked!')
-// 		e.preventDefault();				
-
-// 		$.ajax({
-// 			url: '/',
-// 			type: 'post',			
-// 			data: $('form').serialize(),
-// 			success: function() {
-// 				console.log('Success!')
-// 				console.log( $('form').serialize());
-// 			},
-// 			error: function(xhr, textStatus, errorThrown) {
-// 				console.log(xhr.responseText);
-// 				console.log($('form').serialize());
-// 			}
-// 		});
-// 	});
-// });
 
 $(function() {
   $("#q").attr("tabindex", 1);
@@ -26,7 +6,7 @@ $(function() {
 
 
   $('#columns').masonry({
-    columnWidth: 235,
+    columnWidth: 225,
     gutter: 20,
     itemSelector: '.pin',
     isAnimated: true
@@ -34,7 +14,6 @@ $(function() {
 
   $('#columns').imagesLoaded(function() {
     $('#columns').masonry('layout');
-    console.log("finsihed loading images");
   });
 
   /*
@@ -42,6 +21,11 @@ $(function() {
    */
   $(".pin img").error(function () {
     $(this).unbind("error").attr("src", "static/images/missing.png");
+  });
+
+  $("input:checkbox").on('click', function() {
+    console.log("yeah")
+    $(".search-form").submit();
   });
 
   $(".pin img").on('click', function() {

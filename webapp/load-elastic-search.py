@@ -91,7 +91,7 @@ def load_data(filename, es):
             "term_vector": "yes",
             "index": "not_analyzed"
           },
-          "phrases": {
+          "popular_phrases": {
             "store": "true",
             "type": "string",
             "term_vector": "yes",
@@ -168,13 +168,12 @@ def load_data(filename, es):
       if 'imgurl' in m and m['imgurl']:
         m['imgurl'] = m['imgurl'].split('?')[0]
 
-      m['phrases'] = create_phrases(m)
-
+      m['popular_phrases'] = create_phrases(m)
 
       if len(m['major_tags']) or len(m['minor_tags']):
         m['mlt_tags'] = ' '.join([x.replace('.', '') for x in m['major_tags'] + m['minor_tags']])
       else:
-        m['mlt_tags'] = ' '.join([x for x in m['phrases'] if len(m['phrases']) > 0])
+        m['mlt_tags'] = ' '.join([x for x in m['popular_phrases'] if len(m['popular_phrases']) > 0])
 
       m['collection'] = 'Kadist'
       m['decade'] = str(int(m['year'] / 10) * 10) + "s" if m['year'] else '0'
@@ -188,8 +187,8 @@ def load_data(filename, es):
         print m
 
 
-if len(sys.argv) != 3 and sys.argv[2] in ['localhost', 'prod']:
-  print 'usage: <kadist.json> <dev|prod>'
+if len(sys.argv) < 3:
+  print 'usage: <kadist.json> <localhost|prod>'
   sys.exit(-1)
 else:
   if sys.argv[2] == 'localhost':
