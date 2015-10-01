@@ -42,7 +42,7 @@ body {
 
 @media (min-width: 768px) {
   .main {
-    padding-right: 25px;
+    padding-right: 0px;
     padding-left: 25px;
   }
 }
