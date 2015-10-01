@@ -7,6 +7,8 @@ urllib3.disable_warnings()
 
 app = Flask(__name__)
 
+es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
+
 @app.route('/', methods=["GET"])
 def homepage():  
 
@@ -172,14 +174,6 @@ def homepage():
   except Exception, e:
     return str(e)
 
-
 if __name__ == "__main__":
-  if len(sys.argv) == 2 and sys.argv[1] == 'localhost':
-    print 'running with localhost elasticsearch'
-    es=Elasticsearch()
-  else:
-    print 'running with bonsai.io elasticsearch'
-    es = Elasticsearch(['https://tcw4l779:9xy6x6d2vg9u6f83@dogwood-2734599.us-east-1.bonsai.io'])
-
   app.run(debug=True, host='0.0.0.0', port=5000, passthrough_errors=True)
 
