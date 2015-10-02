@@ -7,9 +7,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes">
 
+  <script src="{{ url_for('static', filename='js/pace.min.js') }}">
+    console.log('starting pace');
+    pace.start();
+  </script>
+  <link href="{{ url_for('static', filename='css/pace.css') }}" rel="stylesheet" />
+
   <title>Kadist Index Search</title>
 
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
 
 
   <!-- local styles -->
@@ -112,7 +119,6 @@
           {% endif %}
         </div>
         <!-- End Search & results count Bar -->
-
 
 
         <!-- Search Results -->

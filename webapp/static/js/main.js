@@ -1,5 +1,14 @@
 
 $(function() {
+
+  /*
+   * replace any broken images with a better image
+   */
+  $(".pin img").error(function () {
+    $(this).unbind("error").attr("src", "static/images/missing.png");
+  });
+
+
   $("#q").attr("tabindex", 1);
 
   $('#columns').addClass('blur-me');
@@ -13,15 +22,11 @@ $(function() {
   });
 
   $('#columns').imagesLoaded(function() {
+    $('.blur').removeClass();
     $('#columns').masonry('layout');
   });
 
-  /*
-   * replace any broken images with a better image
-   */
-  $(".pin img").error(function () {
-    $(this).unbind("error").attr("src", "static/images/missing.png");
-  });
+
 
   $("input:checkbox").on('click', function() {
     console.log("yeah")
