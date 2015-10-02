@@ -1,8 +1,8 @@
 #TODO List
 
+- add to welcome screen some example searches
 - use http://leaverou.github.io/awesomplete/ seed with artist names and works titles, tags
 - load other datasets or federate
-- noun phrase facet
 - if q is a synset we need to NOT do fuzzy search
 - use word2vec for synonym expansion without adding runtime dependency on it
 - filtered OR for similar works (possibly)  
