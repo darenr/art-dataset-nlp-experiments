@@ -1,7 +1,8 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*--
 from flask import Flask, render_template, request, Markup
 from elasticsearch import Elasticsearch
 import urllib3
-import sys
 
 urllib3.disable_warnings()
 
@@ -48,6 +49,13 @@ def homepage():
         "terms": {
           "field": "artist_name",
         }
+      },
+      "related" : {
+        "significant_terms" : {
+          "field" : "popular_phrases",
+          "mutual_information": {
+         }
+        }
       }
     }
 
@@ -55,9 +63,9 @@ def homepage():
       "pre_tags" : ["<em>"],
       "post_tags" : ["</em>"],
       "fields" : {
-          "description" : {},
-          "artist_description" : {},
-          "title" : {}
+          "description" : {"number_of_fragments" : 0},
+          "artist_description" : {"number_of_fragments" : 0},
+          "title" : {"number_of_fragments" : 0}
         }
     }
 
@@ -128,7 +136,6 @@ def homepage():
           filter_value.append(value)
         and_filter.append({"terms": {filter_field : filter_value } })
       search_body['filter'] = { "and": and_filter }
-      print search_body['filter']
 
     sr = es.search(index="kadist", body=search_body)
 
@@ -150,12 +157,13 @@ def homepage():
       "count": hits['total'],
       "took": sr['took']/1000.0,
       "hits": [hit['_source'] for hit in hits['hits'] if hit['_source']['description']],
+      "related": [x for x in aggs['related']['buckets'] if not q.lower() in x['key'].lower() ],
       "facets": {
-        "medium": [x for x in aggs['medium']['buckets'] if len(x['key'])>1],
-        "collection": [x for x in aggs['collection']['buckets'] if len(x['key'])>1],
-        "decade": [x for x in aggs['decade']['buckets'] if len(x['key'])>2],
-        "artist_name": [x for x in aggs['artist_name']['buckets'] if len(x['key'])>1],
-        "popular_phrases": [x for x in aggs['popular_phrases']['buckets'] if len(x['key'])>1]
+        "medium": [x for x in aggs['medium']['buckets'] if x['doc_count']>1],
+        "collection": [x for x in aggs['collection']['buckets'] if x['doc_count']>1],
+        "decade": [x for x in aggs['decade']['buckets'] if x['doc_count']>1],
+        "artist_name": [x for x in aggs['artist_name']['buckets'] if x['doc_count']>1],
+        "popular_phrases": [x for x in aggs['popular_phrases']['buckets'] if x['doc_count']>1]
       },
     }
 

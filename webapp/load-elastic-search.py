@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from elasticsearch import Elasticsearch
 import json
 import sys
@@ -6,8 +8,9 @@ import urllib3
 from textblob import TextBlob, Word
 import re
 
-# unicode quote characters
-punctuation = { 0x2018:0x27, 0x2019:0x27, 0x201C:0x22, 0x201D:0x22 }
+# unicode quote and hyphen characters
+punctuation = { 0x2018:0x27, 0x2019:0x27, 0x201C:0x22, 0x201D:0x22, 0x2010:0x20, 0x2011:0x20,
+                0x2012:0x20, 0x2013:0x20, 0x2014:0x20, 0x2043:0x20, 0x2212:0x20 }
 
 urllib3.disable_warnings()
 
@@ -25,7 +28,7 @@ def facet_worktype(wt):
 def create_phrases(m):
   def valid_phrase(p):
     stop_phrases = ['untitled', 'born', 'art']
-    if len(x.split()) <=3:
+    if len(x.split()) <=4:
       if not x.lower() in stop_phrases:
         return True
     return False
@@ -58,8 +61,7 @@ def load_data(filename, es):
           #
           # add synonyms here, they can be multi word. "leap,hop => jump"
           #
-          "gender issues,feminism,gay=>gender",
-          "cat=>kadist"
+          "gender issues,feminism,gay=>gender"
         ]
       }
     }

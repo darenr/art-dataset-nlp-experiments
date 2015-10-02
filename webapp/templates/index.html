@@ -108,7 +108,16 @@
 
           {% if q %}
             <p class="search-result-header">
-                {{results['count']}} results ({{results['took']}} seconds)
+              <p><b>{{results['count']}} results</b>&nbsp;<small>({{results['took']}} seconds)</small></p>
+              {% if results['related'] %}
+                <div>
+                  <b>Related: </b>
+                    {% for related in results['related'] %}
+                      <a href="/?q={{related['key']}}">{{related['key']}} ({{related['doc_count']}})</a>&nbsp;
+                    {% endfor %}
+                  <hr/>
+                </div>
+              {% endif %}
             </p>
           {% endif %}
         </div>
