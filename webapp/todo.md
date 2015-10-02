@@ -1,6 +1,8 @@
 #TODO List
 
 - add to welcome screen some example searches
+- add to detail page google image search below the main work
+- use bing api http://api.bing.com/osjson.aspx?query=catherine%20opie
 - use http://leaverou.github.io/awesomplete/ seed with artist names and works titles, tags
 - load other datasets or federate
 - if q is a synset we need to NOT do fuzzy search
