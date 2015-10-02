@@ -33,6 +33,9 @@ minor_tags = {} # keyed on tag ID
 minor_tags_rel = defaultdict(list) # keyed by work ID
 works = []
 
+def fixupImgurl(img):
+  return re.sub(r'\.pdf\.jpg|\.pct|\.jpg\.jpeg|\.JPG|\.png|\.tiff?', '.jpg', img).replace('#', '')
+
 with codecs.open(sys.argv[1], 'rb', 'utf-8') as f:
 
   kadist = json.loads(f.read())
@@ -71,7 +74,7 @@ with codecs.open(sys.argv[1], 'rb', 'utf-8') as f:
       d['artist_name'] = artists[row['fields']['creator']]['name']
       d['artist_description'] = row['fields']['artistdescription']
       d['description'] = row['fields']['description']
-      d['imgurl'] = re.sub(r'\.tiff?$', '.jpg', row['fields']['imgurl'])
+      d['imgurl'] = fixupImgurl(row['fields']['imgurl'])
       d['worktype'] = row['fields']['worktype']
       d['year'] = row['fields']['year']
       d['title'] = row['fields']['title']
