@@ -113,7 +113,12 @@
                 <div>
                   <b>Related: </b>
                     {% for related in results['related'] %}
-                      <a href="/?q={{related['key']}}">{{related['key']}} ({{related['doc_count']}})</a>&nbsp;
+                      <a href="/?q={{related['key']}}">{{related['key']|title}}</a>
+                      {% if loop.last %}
+                        &nbsp;
+                      {% else %}
+                        |&nbsp;
+                      {% endif %}
                     {% endfor %}
                   <hr/>
                 </div>

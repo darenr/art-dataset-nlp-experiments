@@ -34,7 +34,7 @@ minor_tags_rel = defaultdict(list) # keyed by work ID
 works = []
 
 def fixupImgurl(img):
-  return re.sub(r'\.pdf\.jpg|\.pct|\.jpg\.jpeg|\.JPG|\.png|\.tiff?', '.jpg', img).replace('#', '')
+  return re.sub(r'\.pdf\.jpg$|\.pct$|\.jpeg$|\.jpg\.jpeg$|\.JPG$|\.png$|\.tiff?$', '.jpg', img).replace('#', '')
 
 with codecs.open(sys.argv[1], 'rb', 'utf-8') as f:
 

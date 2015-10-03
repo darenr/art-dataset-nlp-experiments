@@ -53,7 +53,7 @@ def homepage():
       "related" : {
         "significant_terms" : {
           "field" : "popular_phrases",
-          "mutual_information": {
+          "chi_square": {
          }
         }
       }
