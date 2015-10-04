@@ -1,6 +1,0 @@
-flask
-elasticsearch
-unicodecsv
-textblob
-requests
-gunicorn
