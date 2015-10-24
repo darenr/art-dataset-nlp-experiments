@@ -18,10 +18,10 @@
 
   function draw(words) {
     d3.select("body").append("svg")
-        .attr("width", 300)
-        .attr("height", 300)
+        .attr("width", 600)
+        .attr("height", 600)
       .append("g")
-        .attr("transform", "translate(150,150)")
+        .attr("transform", "translate(300,300)")
       .selectAll("text")
         .data(words)
       .enter().append("text")
@@ -33,9 +33,6 @@
           return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
         })
         .text(function(d) { return d.text; })
-          .on("mouseover", function(d) {
-            d.style('cursor', 'hand');
-          })
           .on("click", function(d) {
             alert(d.text);
         });
