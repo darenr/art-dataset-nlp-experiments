@@ -17,8 +17,7 @@ idx = kmeans_clustering.fit_predict( word_vectors )
 # a cluster number                                                                                            
 word_centroid_map = dict(zip( model.index2word, idx ))
 
-# For the first 10 clusters
-for cluster in len(word_centroid_map.values()):
+for cluster in xrange(0,len(word_centroid_map.values())):
     words = []
     for i in xrange(0,len(word_centroid_map.values())):
         if( word_centroid_map.values()[i] == cluster ):
