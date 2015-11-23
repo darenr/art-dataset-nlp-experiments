@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*--
 from bs4 import BeautifulSoup
 import urllib2
 from urlparse import urljoin
@@ -23,6 +25,6 @@ def scrape_type2(url):
 
 
 if __name__ == "__main__":
-  #scrape_type1('https://en.wikipedia.org/wiki/Category:American_conceptual_artists')
+  scrape_type1('https://en.wikipedia.org/wiki/Category:American_conceptual_artists')
   #scrape_type1('https://en.wikipedia.org/wiki/Category:Conceptual_artists')
-  scrape_type2('https://en.wikipedia.org/wiki/List_of_contemporary_artists')
+  #scrape_type2('https://en.wikipedia.org/wiki/List_of_contemporary_artists')
