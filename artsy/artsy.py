@@ -36,8 +36,18 @@ class BaseRequest(object):
                     # 'X-Access-Token': self.access_token['access_token'] 
                 }, **kwargs)
 
+    def new_raw_request(self, method, url, **kwargs):
+        return requests.request(method, url, 
+                headers={
+                    'X-Xapp-Token': self.xapp_token['token'],
+                    # 'X-Access-Token': self.access_token['access_token'] 
+                }, **kwargs)
+
     def get(self, path, **kwargs):
         return self.new_request('GET', path, **kwargs)
+
+    def get_raw(self, path, **kwargs):
+        return self.new_raw_request('GET', path, **kwargs)
 
     def post(self, path, **kwargs):
         return self.new_request('POST', path, **kwargs)
