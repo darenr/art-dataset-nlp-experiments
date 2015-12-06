@@ -1,8 +1,8 @@
 import os
 from gensim.models import Word2Vec
 
-model = Word2Vec.load_word2vec_format(os.environ['HOME'] + "/models/en_deps_300D_words.model")
+model = Word2Vec.load_word2vec_format(os.environ['HOME'] + "/models/glove.42B.300d.txt", binary=False)
 
-for word in ["gender_issues", "lgbt", "gender", "light", "blackness"]:
+for word in ["childhood", "loss", "memory"]:
   if word in model:
     print word, model.most_similar(word)
