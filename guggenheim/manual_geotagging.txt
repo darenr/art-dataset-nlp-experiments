@@ -1,158 +1,142 @@
-New York
-Germany
-Tokyo
-Paris
-California
-Boston
-Italy
-New York City
-New Jersey
-France
-Warsaw
-London
-UK
-Connecticut
-Spain
-Ohio
+New York|USA
+Germany|DEU
+Tokyo|JPN
+Paris|FRA
+California|USA
+Boston|USA
+Italy|ITA
+New York City|USA
+New Jersey|USA
+France|FRA
+Warsaw|POL
+London|GBR
+UK|GBR
+Connecticut|USA
+Spain|ESP
+Ohio|USA
 Brazil
-Los Angeles
-Iowa
-Mexico
-Florida
-Virginia
-San Francisco
-Panama
-Milan
-Massachusetts
-Switzerland
-New Mexico
-Australia
-Pennsylvania
-Netherlands
-Mexico City
-Corsica
-China
-Canada
-Zurich
-Vietnam
-Madrid
-Korea
-Istanbul
-Indiana
-Dusseldorf
-Washington
-Missouri
-Michigan
-Barcelona
-Texas
-Tennessee
-Sweden
-Nice
-Nevada
-Cuba
-Chicago
-Berlin
-Toronto
-Tel Aviv
-South Africa
-Rome
-Poland
-Pakistan
-Louisiana
-India
-Argentina
-West Germany
-Singapore
-Sao Paulo
-Peoples Republic of China
-NY
-Miami
-Maryland
-Malaysia
-Japan
-Israel
-Dresden
-Costa Rica
-Chile
-Brussels
-Arizona
-Wyoming
-Venezuela
-Thailand
-South Korea
-Seoul
-Scotland
-Rio de Janeiro
-Quebec City
-Puerto Rico
-Philippines
-Peru
-Palestine
-Oklahoma
-North Dakota
-New Orleans
-Myanmar
-Massachussetts
-Maine
-Johannesburg
-Iran
-Indonesia
-Havana
-Hamburg
-Guatemala City
-Glasgow
-died 1982
-Denmark
-CT
-Copenhagen
-Cambodia
-Buenos Aires
-Belgium
-Beirut
-Basel
-Albania
-1954
-Yugoslavia
-Vermont
-Venice
-Utah
-Uruguay
-Taiwan
-Seattle
-Sao Paolo
-Saigon
-Oxford
-Nebraska
-Nazareth
-Munich
-Montreal
-Lima
-Kobe
-Illinois
-Ibiza
-Hungary
-Honolulu
-Hong Kong
-Greece
-Georgia
-Geneva
-founded 1989
-Ecuador
-died 1981
-DC
-Colombia
-Cape Town
-Bulgaria
-British Columbia
-Bordeaux
-Bombay
-Bolivia
-Bern
-Beijing
-Bangladesh
-Baltimore
-Bahamas
-Algeria
-2013
-1989
-970
+Los Angeles|USA
+Iowa|USA
+Mexico|MEX
+Florida|USA
+Virginia|USA
+San Francisco|USA
+Panama|PAN
+Milan|ITA
+Massachusetts|USA
+Switzerland|CHE
+New Mexico|USA
+Australia|AUS
+Pennsylvania|USA
+Netherlands|NLD
+Mexico City|MEX
+China|CHN
+Canada|CDN
+Zurich|CHE
+Madrid|ESP
+Istanbul|TUR
+Indiana|USA
+Dusseldorf|DEU
+Washington|USA
+Missouri|USA
+Michigan|USA
+Barcelona|ESP
+Texas|USA
+Tennessee|USA
+Sweden|SWE
+Nice|FRA
+Nevada|USA
+Cuba|CUB
+Chicago|USA
+Berlin|DEU
+TorontoCDN
+South Africa|ZAF
+Rome|ITA
+Poland|POL
+Pakistan|PAK
+Louisiana|USA
+India|IND
+Argentina|ARG
+West Germany|DEU
+Singapore|SGP
+Peoples Republic of China|CHN
+NY|USA
+Miami|USA
+Maryland|USA
+Malaysia|MYS
+Japan|JAP
+Israel|ISR
+Dresden|DEU
+Costa Rica|CRI
+Chile|RCH
+Brussels|BEL
+Arizona|USA
+Wyoming|USA
+Venezuela|VEN
+Thailand|THA
+Scotland|GBR
+Rio de Janeiro|BRA
+Quebec City|CND
+Puerto Rico|PRI
+Philippines|PHL
+Peru|PER
+Palestine|PSE
+Oklahoma|USA
+North Dakota|USA
+New Orleans|USA
+Myanmar|MMR
+Massachussetts|USA
+Maine|USA
+Johannesburg|ZAF
+Iran|IRN
+Indonesia|IDN
+Havana|CUB
+Hamburg|DEU
+Guatemala City|GTM
+Glasgow|GBR
+Denmark|DNK
+CT|USA
+Copenhagen|DNK
+Cambodia|KHM
+Buenos Aires|ARG
+Belgium|BEL
+Beirut|ISR
+Basel|CHE
+Albania|ALB
+Yugoslavia|MKD
+Vermont|USA
+Venice|ITA
+Utah|USA
+Uruguay|URY
+Taiwan|TWN
+Seattle|USA
+Sao Paolo|BRA
+Oxford|GBR
+Nebraska|USA
+Nazareth|USA
+Munich|DEU
+Montreal|CDN
+Lima|PER
+Illinois|USA
+Ibiza|ESP
+Hungary|HUN
+Honolulu|USA
+Hong Kong|CHN
+Greece|GRC
+Georgia|USA
+Geneva|CHE
+Ecuador|ECU
+DC|USA
+Colombia|COL
+Cape Town|ZAF
+Bulgaria|BGR
+British Columbia|CDN
+Bordeaux|FRA
+Bombay|IND
+Bolivia|BOL
+Bern|CHE
+Beijing|CHN
+Bangladesh|BGD
+Baltimore|USA
+Bahamas|BHS
+Algeria|DZA
