@@ -10,6 +10,9 @@ with codecs.open('postwar_unicode_guggenheim.json', 'wb', 'utf-8') as fout:
           if 'date' in map: 
             try:
               if int(map['date']) >= 1945:
+                d =map['description']
+                if d.startswith('\nDescription\n'):
+                  map['description'] = map['description'][len('\nDescription\n'):]
                 results.append(map)
             except:
               pass
