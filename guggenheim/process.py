@@ -19,17 +19,14 @@ with codecs.open('postwar_unicode_guggenheim.json', 'wb', 'utf-8') as fout:
   with codecs.open('unicode_guggenheim.json', 'rb', 'utf-8') as fin:
     guggenheim = json.loads(fin.read())
     for map in guggenheim:
-      if 'date' in map: 
+      if 'date' in {k:map[k].strip() for k in map }: 
         try:
           if int(map['date']) >= 1945: # only keep post war artworks
 
             if map['description'].startswith('Description\n'):
               map['description'] = map['description'][len('Description\n'):]
 
-            map['description'] = "%s\n\n%s" % (map['description'], map['url'])
-
             if 'artist_meta_data' in map:
-              map['artist_meta_data'] = map['artist_meta_data'].strip()
               x = r.split(map['artist_meta_data'].strip())[-1].strip()
               if x in loc_map:
                 map['nationality_code'] = loc_map[x]
