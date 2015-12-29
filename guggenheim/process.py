@@ -15,26 +15,26 @@ with codecs.open('manual_geotagging.csv', 'rb', 'utf-8') as mtf:
 
   
 with codecs.open('postwar_unicode_guggenheim.json', 'wb', 'utf-8') as fout:
-    results = []
-    with codecs.open('unicode_guggenheim.json', 'rb', 'utf-8') as fin:
-        guggenheim = json.loads(fin.read())
-        for map in guggenheim:
-          if 'date' in map: 
-            try:
-              if int(map['date']) >= 1945:
-                map['artist_meta_data'] = map['artist_meta_data'].strip()
-                if map['description'].startswith('\nDescription\n'):
-                  map['description'] = map['description'][len('\nDescription\n'):]
+  results = []
+  with codecs.open('unicode_guggenheim.json', 'rb', 'utf-8') as fin:
+    guggenheim = json.loads(fin.read())
+    for map in guggenheim:
+      if 'date' in {k:map[k].strip() for k in map }: 
+        try:
+          if int(map['date']) >= 1945: # only keep post war artworks
 
-                if 'artist_meta_data' in map:
-                  x = r.split(map['artist_meta_data'].strip())[-1].strip()
-                  if x in loc_map:
-                    map['nationality_code'] = loc_map[x]
+            if map['description'].startswith('Description\n'):
+              map['description'] = map['description'][len('Description\n'):]
 
-                results.append(map)
-            except:
-              pass
-    fout.write(json.dumps(results, indent=2, sort_keys=True, ensure_ascii=False))
+            if 'artist_meta_data' in map:
+              x = r.split(map['artist_meta_data'].strip())[-1].strip()
+              if x in loc_map:
+                map['nationality_code'] = loc_map[x]
+
+            results.append(map)
+        except:
+          pass
+  fout.write(json.dumps(results, indent=2, sort_keys=True, ensure_ascii=False))
 
 
-                
+        
