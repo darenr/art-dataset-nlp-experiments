@@ -18,5 +18,5 @@ def wv_synonyms(word):
   else:
     return []
 
-for word in [ "pollution", "urbanization", "reclamation", "globalization", "landscape", "abstraction", "appropriation"]:
+for word in [ "transience", "urbanization", "reclamation", "globalization", "landscape", "abstraction", "appropriation"]:
   print word, wv_synonyms(word), "\n\n"

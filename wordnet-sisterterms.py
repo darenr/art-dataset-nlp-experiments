@@ -20,8 +20,7 @@ def wn_make_synset(word):
     else:
       return None
 
-for word in [ "battle" ]:
-  
+for word in [ "transience" ]:
 
   synonyms = []
 
