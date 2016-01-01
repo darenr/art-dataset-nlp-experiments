@@ -49,6 +49,9 @@ def contains_number(word):
 def bad(word):
   return contains_number(word) or word.lower() in stoplist or len(word) < 3
 
+def extract_capitalized(text):
+  return list(set(re.findall(r'([A-Z][a-z]+(?=\s[A-Z])(?:\s[A-Z][a-z]+)+)', re.sub(r'\n', ' _ ', text))))
+
 tb = Blobber(np_extractor=ConllExtractor())
 
 if __name__ == "__main__":
@@ -66,4 +69,5 @@ if __name__ == "__main__":
       print arg
       print '=' *60
       print ' *', Counter(step1)
+      print ' *', extract_capitalized(text)
 
